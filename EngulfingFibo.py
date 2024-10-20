@@ -79,7 +79,7 @@ class SignalCalculator:
         self.df_daily['tr0'] = abs(self.df_daily['h'] - self.df_daily['l'])
         self.df_daily['tr1'] = abs(self.df_daily['h'] - self.df_daily['c'].shift(1))
         self.df_daily['tr2'] = abs(self.df_daily['l'] - self.df_daily['c'].shift(1))
-        self.['tr'] = self.df_daily[['tr0', 'tr1', 'tr2']].max(axis=1)
+        self.df_daily['tr'] = self.df_daily[['tr0', 'tr1', 'tr2']].max(axis=1)
         self.df_daily['atr'] = self.df_daily['tr'].ewm(alpha=1 / n, adjust=False).mean()
         return self.df_daily
 
