@@ -938,7 +938,8 @@ def calculate_sl_tp(entries, df_daily, df_hourly, zigzag_df, daily_zigzag):
 
 def main():
     # Base path where your data files are stored
-    base_path = r"C:\Users\grave\OneDrive\Coding\PAC\fxdata"
+    #base_path = r"C:\Users\grave\OneDrive\Coding\PAC\fxdata"
+    base_path = r"/Users/koengraveland/PAC/fxdata"
     file_pairs = [('EUR_USD_D.xlsx', 'EUR_USD_H1.xlsx')]
 
     for daily_file, hourly_file in file_pairs:
@@ -957,7 +958,8 @@ def main():
         df_daily = signal_calculator.calculate_atr()
 
         # Load precomputed zigzag data
-        zigzag_file_path = r"C:\Users\grave\OneDrive\Coding\PAC\zigzag.xlsx"
+        #zigzag_file_path = r"C:\Users\grave\OneDrive\Coding\PAC\zigzag.xlsx"
+        zigzag_file_path = r"/Users/koengraveland/PAC/zigzag.xlsx"
         zigzag_df = pd.read_excel(zigzag_file_path)
         zigzag_df['time'] = pd.to_datetime(zigzag_df['time'])
         print(f"Loaded zigzag file: {zigzag_file_path}")
