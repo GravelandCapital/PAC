@@ -604,46 +604,44 @@ class HammerShootingStarHandler:
     def calculate_gowith_entry(self):
         signal = self.signal
         signal_time = self.df_daily.loc[self.row_index, 'time']
-        hammer_high = self.df_daily.loc[self.row_index, 'h']
-        shootingstar_low = self.df_daily.loc[self.row_index, 'l']
         entries = []
-        relevant_hourly = self.df_hourly[self.df_hourly['time'] >= signal_time]
-        breakout_level = None
+        relevant_hourly = self.df_hourly[self.df_hourly['time'] >= signal_time].reset_index(drop=True)
 
         if signal == "hammer":
-            failed_breakout_count = 0
-            found_breakout = False
-            highs_between = []
+            hammer_high = self.df_daily.loc[self.row_index, 'h']
             breakout_level = hammer_high
             failure_point = self.df_daily.loc[self.row_index, 'l']
-            highs_between.append(hammer_high)
-
+            highs_between = [hammer_high]
+            failed_breakout_count = 0
             i = 0
-
             while i < len(relevant_hourly) - 1:
                 row = relevant_hourly.iloc[i]
                 close = row['c']
                 high = row['h']
                 low = row['l']
+
                 highs_between.append(high)
 
                 if close > breakout_level:
-                    print (f"Close: {close} found at {row['time']}")
-                    found_breakout = True
-                    highs_between = highs_between[:-1]
+                    print(f"Close above breakout level: {close} at {row['time']}")
+                    # Remove the breakout candle's high from highs_between temporarily
+                    breakout_candle_high = highs_between.pop()
 
                     if i + 1 < len(relevant_hourly):
-                        next_low = relevant_hourly.iloc[i + 1]['l']
+                        next_row = relevant_hourly.iloc[i + 1]
+                        next_low = next_row['l']
+                        next_high = next_row['h']
                     else:
-                        break
+                        break  # No more data
 
                     max_high = max(highs_between) if highs_between else breakout_level
-                    print (f"Max High: {max_high}")
+                    print(f"Max High before breakout: {max_high}")
 
                     if next_low > max_high:
+                        # Valid breakout
                         entry_time = row['time']
                         entry_price = max_high
-                        print (f"next low is greater than max high - Entry Price: {entry_price}")
+                        print(f"Next low {next_low} is greater than max high {max_high} - Entry Price: {entry_price}")
                         entry = Entry(
                             signal=signal,
                             entry_type='GWHMR',
@@ -654,58 +652,68 @@ class HammerShootingStarHandler:
                         entries.append(entry)
                         break
                     else:
+                        # Failed breakout
                         failed_breakout_count += 1
-                        highs_between.append(high)
-                        print (f"Failed breakout count: {failed_breakout_count}")
+                        print(f"Failed breakout count: {failed_breakout_count}")
+
+                        # Include the breakout candle's high and the next candle's high into highs_between
+                        highs_between.append(breakout_candle_high)  # Re-add breakout candle's high
+                        highs_between.append(next_high)  # Include next candle's high
+                        print(f"Including highs: {breakout_candle_high}, {next_high} into highs_between")
+
+                        # Update breakout_level to new max_high
+                        max_high = max(highs_between)
+                        breakout_level = max_high
+                        print(f"Updated Breakout level to max high: {breakout_level}")
 
                         if failed_breakout_count == 2:
-                            print (f"Failed breakout count reached 2")
+                            print("Failed breakout count reached 2")
                             break
                         else:
-                            found_breakout = False
-                            breakout_level = max_high
+                            # Skip to the candle after the next one
                             i += 2
-                            if i >= len(relevant_hourly):
-                                break
-                            print (f"Breakout level set to max high: {breakout_level}")
                             continue
-
                 elif low < failure_point:
+                    print(f"Price broke below failure point at {row['time']}. Exiting.")
                     break
-
-                i += 1
+                else:
+                    i += 1  # Move to the next candle
 
         elif signal == "shooting_star":
-            failed_breakout_count = 0
-            found_breakout = False
-            lows_between = []
-            breakout_level = shootingstar_low
+            shooting_star_low = self.df_daily.loc[self.row_index, 'l']
+            breakout_level = shooting_star_low
             failure_point = self.df_daily.loc[self.row_index, 'h']
-            lows_between.append(shootingstar_low)
-
+            lows_between = [shooting_star_low]
+            failed_breakout_count = 0
             i = 0
-
             while i < len(relevant_hourly) - 1:
                 row = relevant_hourly.iloc[i]
                 close = row['c']
-                low = row['l']
                 high = row['h']
+                low = row['l']
+
                 lows_between.append(low)
 
                 if close < breakout_level:
-                    found_breakout = True
-                    lows_between = lows_between[:-1]
+                    print(f"Close below breakout level: {close} at {row['time']}")
+                    # Remove the breakout candle's low from lows_between temporarily
+                    breakout_candle_low = lows_between.pop()
 
                     if i + 1 < len(relevant_hourly):
-                        next_high = relevant_hourly.iloc[i + 1]['h']
+                        next_row = relevant_hourly.iloc[i + 1]
+                        next_high = next_row['h']
+                        next_low = next_row['l']
                     else:
-                        break
+                        break  # No more data
 
                     min_low = min(lows_between) if lows_between else breakout_level
+                    print(f"Min Low before breakout: {min_low}")
 
                     if next_high < min_low:
+                        # Valid breakout
                         entry_time = row['time']
                         entry_price = min_low
+                        print(f"Next high {next_high} is less than min low {min_low} - Entry Price: {entry_price}")
                         entry = Entry(
                             signal=signal,
                             entry_type='GWSS',
@@ -716,25 +724,35 @@ class HammerShootingStarHandler:
                         entries.append(entry)
                         break
                     else:
+                        # Failed breakout
                         failed_breakout_count += 1
-                        lows_between.append(low)
+                        print(f"Failed breakout count: {failed_breakout_count}")
+
+                        # Include the breakout candle's low and the next candle's low into lows_between
+                        lows_between.append(breakout_candle_low)  # Re-add breakout candle's low
+                        lows_between.append(next_low)  # Include next candle's low
+                        print(f"Including lows: {breakout_candle_low}, {next_low} into lows_between")
+
+                        # Update breakout_level to new min_low
+                        min_low = min(lows_between)
+                        breakout_level = min_low
+                        print(f"Updated Breakout level to min low: {breakout_level}")
 
                         if failed_breakout_count == 2:
+                            print("Failed breakout count reached 2")
                             break
                         else:
-                            found_breakout = False
-                            breakout_level = min_low
+                            # Skip to the candle after the next one
                             i += 2
-                            if i >= len(relevant_hourly):
-                                break
                             continue
-
                 elif high > failure_point:
+                    print(f"Price broke above failure point at {row['time']}. Exiting.")
                     break
-
-                i += 1
+                else:
+                    i += 1  # Move to the next candle
 
         return entries
+
 
     def calculate_stop_loss(self, entry):
 
@@ -938,8 +956,8 @@ def calculate_sl_tp(entries, df_daily, df_hourly, zigzag_df, daily_zigzag):
 
 def main():
     # Base path where your data files are stored
-    base_path = r"C:\Users\grave\OneDrive\Coding\PAC\fxdata"
-    #base_path = r"/Users/koengraveland/PAC/fxdata"
+    #base_path = r"C:\Users\grave\OneDrive\Coding\PAC\fxdata"
+    base_path = r"/Users/koengraveland/PAC/fxdata"
     file_pairs = [('EUR_USD_D.xlsx', 'EUR_USD_H1.xlsx')]
 
     for daily_file, hourly_file in file_pairs:
@@ -958,8 +976,8 @@ def main():
         df_daily = signal_calculator.calculate_atr()
 
         # Load precomputed zigzag data
-        zigzag_file_path = r"C:\Users\grave\OneDrive\Coding\PAC\zigzag.xlsx"
-        #zigzag_file_path = r"/Users/koengraveland/PAC/zigzag.xlsx"
+        #zigzag_file_path = r"C:\Users\grave\OneDrive\Coding\PAC\zigzag.xlsx"
+        zigzag_file_path = r"/Users/koengraveland/PAC/zigzag.xlsx"
         zigzag_df = pd.read_excel(zigzag_file_path)
         zigzag_df['time'] = pd.to_datetime(zigzag_df['time'])
         print(f"Loaded zigzag file: {zigzag_file_path}")
