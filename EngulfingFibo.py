@@ -8,6 +8,7 @@ instruments = ['EUR_USD']
 
 @dataclass
 class Entry:
+    instrument: str
     signal: str
     entry_type: str
     price: float
@@ -84,12 +85,13 @@ class SignalCalculator:
 
 class EngulfingHandler:
     """Handler for Engulfing signals."""
-    def __init__(self, df_daily, df_hourly, row_index, zigzag_df):
+    def __init__(self, df_daily, df_hourly, row_index, zigzag_df, instrument):
         self.df_daily = df_daily
         self.df_hourly = df_hourly
         self.row_index = row_index
         self.signal = df_daily.loc[row_index, 'signal']
         self.zigzag_df = zigzag_df
+        self.instrument = instrument
 
     def calculate_entries(self):
         entries = []
@@ -139,6 +141,7 @@ class EngulfingHandler:
                 # Entry found
                 entry_time = self.find_entry_time(hourly_data, naked_level)
                 return Entry(
+                    instrument = self.instrument,
                     signal=self.signal,
                     entry_type='fib',
                     price=naked_level,
@@ -148,13 +151,16 @@ class EngulfingHandler:
         return None
 
     def calculate_lhpb_entry(self):
+        print(f"Calculating LHPB entry for {self.signal} at row {self.row_index}")
         fibo_level, half_level = self.calculate_fibo()
         if fibo_level is None:
             return None
 
         # Get filtered pivots
         filtered_pivots = self.find_filtered_pivots()
+        print(f"Filtered Pivots: {filtered_pivots}")
         hourly_data = self.get_hourly_data()
+        print(f"Hourly Data Retrieved, Total Rows: {len(hourly_data)}")
 
         if self.signal == "bull_eng":
             for _, pivot in filtered_pivots.iterrows():
@@ -170,6 +176,7 @@ class EngulfingHandler:
                         if (future_candles['l'] > last_high_pre_break).all() and last_high_pre_break < pivot_price and last_high_pre_break > half_level:
                             entry_time = self.find_entry_time(hourly_data, last_high_pre_break)
                             return Entry(
+                                instrument = self.instrument,
                                 signal=self.signal,
                                 entry_type='LHPB',
                                 price=last_high_pre_break,
@@ -181,17 +188,21 @@ class EngulfingHandler:
         elif self.signal == "bear_eng":
             for _, pivot in filtered_pivots.iterrows():
                 pivot_price = pivot['price']
+                print(f"Checking Bear Engulfing for Pivot Price: {pivot_price}")
                 for idx in range(len(hourly_data)):
                     row = hourly_data.iloc[idx]
                     if row['c'] < pivot_price:
                         if idx > 0:
                             last_low_pre_break = hourly_data.iloc[idx - 1]['l']
+                            print(f"Last Low Pre-Break: {last_low_pre_break}")
                         else:
                             break
                         future_candles = hourly_data.iloc[idx + 1:]
                         if (future_candles['h'] < last_low_pre_break).all() and last_low_pre_break > pivot_price and last_low_pre_break < half_level:
                             entry_time = self.find_entry_time(hourly_data, last_low_pre_break)
+                            print(f"LLPB Entry Found - Price: {last_low_pre_break}, Time: {entry_time}")
                             return Entry(
+                                instrument = self.instrument,
                                 signal=self.signal,
                                 entry_type='LLPB',
                                 price=last_low_pre_break,
@@ -199,6 +210,7 @@ class EngulfingHandler:
                                 row_index=self.row_index
                             )
                         else:
+                            print("Condition failed for LLPB entry (Bear Engulfing)")
                             break
         return None
 
@@ -376,16 +388,19 @@ class EngulfingHandler:
                     row = hourly_data.iloc[idx]
                     if row['c'] > pivot_price:
                         if idx > 0:
-                            stop_loss = row['l']
                             stop_loss_time = row['time']
-                            if stop_loss_time == entry_candle_time:
-                                continue
+                            
+                            # Skip if stop loss time is the same as entry time
+                            if stop_loss_time >= entry_candle_time:
+                                continue  # Skip this iteration and continue looking
                             else:
+                                stop_loss = row['l']
                                 return stop_loss
-            else:
-                # No tight stop loss found, use daily low
-                stop_loss = self.df_daily.loc[self.row_index, 'l']
-                return stop_loss
+
+            # No tight stop loss found, use daily low
+            stop_loss = self.df_daily.loc[self.row_index, 'l']
+            return stop_loss
+
         elif self.signal == "bear_eng":
             for _, pivot in sl_pivots.iterrows():
                 pivot_price = pivot['price']
@@ -393,17 +408,21 @@ class EngulfingHandler:
                     row = hourly_data.iloc[idx]
                     if row['c'] < pivot_price:
                         if idx > 0:
-                            stop_loss = row['h']
                             stop_loss_time = row['time']
-                            if stop_loss_time == entry_candle_time:
-                                continue
+                            
+                            # Skip if stop loss time is the same as entry time
+                            if stop_loss_time >= entry_candle_time:
+                                continue  # Skip this iteration and continue looking
                             else:
+                                stop_loss = row['h']
                                 return stop_loss
-            else:
-                # No tight stop loss found, use daily high
-                stop_loss = self.df_daily.loc[self.row_index, 'h']
-                return stop_loss
+
+            # No tight stop loss found, use daily high
+            stop_loss = self.df_daily.loc[self.row_index, 'h']
+            return stop_loss
+
         return None
+
 
     def sl_pivots(self, entry_price):
         entry_time = self.df_daily.loc[self.row_index, 'time']
@@ -508,12 +527,13 @@ class EngulfingHandler:
 
 class HammerShootingStarHandler:
     """Handler for Hammer and Shooting Star signals."""
-    def __init__(self, df_daily, df_hourly, row_index, zigzag_df):
+    def __init__(self, df_daily, df_hourly, row_index, zigzag_df, instrument):
         self.df_daily = df_daily
         self.df_hourly = df_hourly
         self.row_index = row_index
         self.signal = df_daily.loc[row_index, 'signal']
         self.zigzag_df = zigzag_df
+        self.instrument = instrument
 
     def calculate_entries(self):
         entries = []
@@ -573,6 +593,7 @@ class HammerShootingStarHandler:
                     entry_time = row['time']
                     entry_price = high
                     entry = Entry(
+                        instrument = self.instrument,
                         signal=signal,
                         entry_type='PDL',
                         price=entry_price,
@@ -591,6 +612,7 @@ class HammerShootingStarHandler:
                     entry_time = row['time']
                     entry_price = low
                     entry = Entry(
+                        instrument=self.instrument,
                         signal=signal,
                         entry_type='PDH',
                         price=entry_price,
@@ -639,6 +661,7 @@ class HammerShootingStarHandler:
                         entry_time = row['time']
                         entry_price = max_high
                         entry = Entry(
+                            instrument=self.instrument,
                             signal=signal,
                             entry_type='GWHMR',
                             price=entry_price,
@@ -703,6 +726,7 @@ class HammerShootingStarHandler:
                         entry_time = row['time']
                         entry_price = min_low
                         entry = Entry(
+                            instrument=self.instrument,
                             signal=signal,
                             entry_type='GWSS',
                             price=entry_price,
@@ -753,8 +777,6 @@ class HammerShootingStarHandler:
                 failure_point = self.df_daily.loc[self.row_index, 'l']
                 stop_loss = failure_point
 
-                print(f"Hammer - Entry Time: {entry_time}, Failure Point {failure_point}")
-
                 relevant_pivots = self.zigzag_df[
                     (self.zigzag_df['time'] < entry_time) &
                     (self.zigzag_df['price'] < entry.price) &
@@ -766,24 +788,17 @@ class HammerShootingStarHandler:
                     for _, pivot in relevant_pivots.iterrows():
                         pivot_time = pivot['time']
                         pivot_price = pivot['price']
-                        print(f"Checking pivot at time {pivot_time}, price {pivot_price}")
                         future_candles = self.df_hourly[
                             (self.df_hourly['time'] > pivot_time) & 
                             (self.df_hourly['time'] < entry_time)]
 
                         future_lows = future_candles['l'].min() if not future_candles.empty else None
-                        print(f"Minimum future low: {future_lows} for {pivot_time} {pivot_price}")
 
                         if future_lows is None or future_lows > pivot_price:
                             stop_loss = pivot_price
-                            print(f"Valid pivot found. Stop loss set to pivot price: {stop_loss}")
                             break 
                         else: 
-                            print(f"No relevant pivots found. Stop loss set to failure point: {stop_loss}")
                             break
-
-                else: 
-                    print(f"No relevant pivots found. Stop loss set to failure point: {stop_loss}")
                 
                 return stop_loss
 
@@ -791,7 +806,6 @@ class HammerShootingStarHandler:
                 entry_time = entry.time
                 failure_point = self.df_daily.loc[self.row_index, 'h']
                 stop_loss = failure_point
-                print(f"Shooting Star - Entry Time: {entry_time}, Failure Point {failure_point}")
                 relevant_pivots = self.zigzag_df[
                     (self.zigzag_df['time'] < entry_time) &
                     (self.zigzag_df['price'] > entry.price) &
@@ -809,17 +823,11 @@ class HammerShootingStarHandler:
 
                         future_highs = future_candles['h'].max() if not future_candles.empty else None
 
-                        print(f"Maximum future high: {future_highs} for {pivot_time} {pivot_price}")
-
                         if future_highs is None or future_highs < pivot_price:
                             stop_loss = pivot_price
-                            print(f"Valid pivot found. Stop loss set to pivot price: {stop_loss}")
                             break
                         else: 
-                            print(f"No relevant pivots found. Stop loss set to failure point: {stop_loss}") 
                             break
-                else: 
-                    print(f"No relevant pivots found. Stop loss set to failure point: {stop_loss}")
 
                 return stop_loss
 
@@ -908,14 +916,14 @@ def calculate_zigzag_daily(df_daily, depth=3):
     daily_zigzag['time'] = pd.to_datetime(daily_zigzag['time'])
     return daily_zigzag
 
-def process_signals(df_daily, df_hourly, zigzag_df):
+def process_signals(df_daily, df_hourly, zigzag_df, instrument):
     entries = []
     for row_index in df_daily.index:
         signal = df_daily.loc[row_index, 'signal']
         if signal == 'bull_eng' or signal == 'bear_eng':
-            handler = EngulfingHandler(df_daily, df_hourly, row_index, zigzag_df)
+            handler = EngulfingHandler(df_daily, df_hourly, row_index, zigzag_df, instrument)
         elif signal == 'hammer' or signal == 'shooting_star':
-            handler = HammerShootingStarHandler(df_daily, df_hourly, row_index, zigzag_df)
+            handler = HammerShootingStarHandler(df_daily, df_hourly, row_index, zigzag_df, instrument)
         else:
             continue  # No signal, skip
 
@@ -924,12 +932,12 @@ def process_signals(df_daily, df_hourly, zigzag_df):
         entries.extend(signal_entries)
     return entries
 
-def calculate_sl_tp(entries, df_daily, df_hourly, zigzag_df, daily_zigzag):
+def calculate_sl_tp(entries, df_daily, df_hourly, zigzag_df, daily_zigzag, instrument):
     for entry in entries:
         if entry.signal in ['bull_eng', 'bear_eng']:
-            handler = EngulfingHandler(df_daily, df_hourly, entry.row_index, zigzag_df)
+            handler = EngulfingHandler(df_daily, df_hourly, entry.row_index, zigzag_df, instrument)
         elif entry.signal in ['hammer', 'shooting_star']:
-            handler = HammerShootingStarHandler(df_daily, df_hourly, entry.row_index, zigzag_df)
+            handler = HammerShootingStarHandler(df_daily, df_hourly, entry.row_index, zigzag_df, instrument)
         else:
             continue
 
@@ -937,15 +945,21 @@ def calculate_sl_tp(entries, df_daily, df_hourly, zigzag_df, daily_zigzag):
         entry.stop_loss = handler.calculate_stop_loss(entry)
         entry.take_profit = handler.calculate_take_profit(entry, daily_zigzag)
 
+def extract_instrument_from_filename(filename):
+    """Extracts the instrument name from the filename."""
+    return filename.split('_')[0] + '_' + filename.split('_')[1]
+
 def main():
     # Base path where your data files are stored
-    #base_path = r"C:\Users\grave\OneDrive\Coding\PAC\fxdata"
-    base_path = r"/Users/koengraveland/PAC/fxdata"
+    base_path = r"C:\Users\grave\OneDrive\Coding\PAC\fxdata"
+    #base_path = r"/Users/koengraveland/PAC/fxdata"
     file_pairs = [('EUR_USD_D.xlsx', 'EUR_USD_H1.xlsx')]
 
     for daily_file, hourly_file in file_pairs:
         daily_path = os.path.join(base_path, daily_file)
         hourly_path = os.path.join(base_path, hourly_file)
+
+        instrument = extract_instrument_from_filename(daily_file)
 
         # Fetch data
         data_fetcher = DataFetcher(daily_path, hourly_path)
@@ -959,22 +973,22 @@ def main():
         df_daily = signal_calculator.calculate_atr()
 
         # Load precomputed zigzag data
-        #zigzag_file_path = r"C:\Users\grave\OneDrive\Coding\PAC\zigzag.xlsx"
-        zigzag_file_path = r"/Users/koengraveland/PAC/zigzag.xlsx"
+        zigzag_file_path = r"C:\Users\grave\OneDrive\Coding\PAC\zigzag.xlsx"
+        #zigzag_file_path = r"/Users/koengraveland/PAC/zigzag.xlsx"
         zigzag_df = pd.read_excel(zigzag_file_path)
         zigzag_df['time'] = pd.to_datetime(zigzag_df['time'])
         print(f"Loaded zigzag file: {zigzag_file_path}")
 
         # Process signals and calculate entries
-        entries = process_signals(df_daily, df_hourly, zigzag_df)
+        entries = process_signals(df_daily, df_hourly, zigzag_df, instrument)
 
         # Calculate stop loss and take profit
         daily_zigzag = calculate_zigzag_daily(df_daily, depth=3)
-        calculate_sl_tp(entries, df_daily, df_hourly, zigzag_df, daily_zigzag)
+        calculate_sl_tp(entries, df_daily, df_hourly, zigzag_df, daily_zigzag, instrument)
 
         # Print entries
         for entry in entries:
-            print(f"Signal: {entry.signal}, Entry Type: {entry.entry_type}, Price: {entry.price}, Time: {entry.time}, SL: {entry.stop_loss}, TP: {entry.take_profit}")
+            print(f"Instrument: {entry.instrument}, Signal: {entry.signal}, Entry Type: {entry.entry_type}, Price: {entry.price}, Time: {entry.time}, SL: {entry.stop_loss}, TP: {entry.take_profit}")
 
 if __name__ == "__main__":
     main()
