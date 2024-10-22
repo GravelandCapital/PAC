@@ -151,7 +151,7 @@ class EngulfingHandler:
         return None
 
     def calculate_lhpb_entry(self):
-        print(f"Calculating LHPB entry for {self.signal} at row {self.row_index}")
+        print(f"Calculating LHPB entry for {self.signal} at date {self.df_daily.loc[self.row_index, 'time'].date()}")
         fibo_level, half_level = self.calculate_fibo()
         if fibo_level is None:
             return None
