@@ -403,6 +403,9 @@ class EngulfingHandler:
         print(f"Entry Signal: {self.signal}, Entry Time: {entry_candle_time}, Pip Value: {pip_value}")
         print(f"Daily Signal Time: {daily_signal_time}, End Time: {end_time}")
 
+        # Initialize list to store all potential stop losses
+        stop_loss_list = []
+
         if self.signal == "bull_eng":
             failure_point = self.df_daily.loc[self.row_index, 'l']
             stop_loss = failure_point - pip_value
@@ -442,17 +445,22 @@ class EngulfingHandler:
 
                         # Validate the stop loss based on future candles
                         if future_min_low > row['l']:
-                            stop_loss = row['l']
+                            temp_stop_loss = row['l']
                             # Final check to ensure stop loss is not less than the original pivot price
-                            if stop_loss < original_pivot_price:
-                                stop_loss = row['l']
-                            print(f"Valid Stop Loss: {stop_loss} (Future Min Low: {future_min_low})")
-                            return stop_loss
-                        else:
-                            stop_loss = failure_point - pip_value
-                            print(f"stop loss at failure: {stop_loss}")
-                            return stop_loss
-            return stop_loss
+                            if temp_stop_loss < original_pivot_price:
+                                temp_stop_loss = row['l'] - pip_value
+                            stop_loss_list.append(temp_stop_loss)
+                            print(f"Potential Stop Loss Stored: {temp_stop_loss} (Future Min Low: {future_min_low})")
+                            break
+            
+            # Return the max stop loss for a bullish signal
+            if stop_loss_list:
+                max_stop_loss = max(stop_loss_list)
+                print(f"Max Stop Loss Selected: {max_stop_loss}")
+                return max_stop_loss
+            else:
+                print(f"No valid stop loss found, returning failure point stop loss: {stop_loss}")
+                return stop_loss
 
         elif self.signal == "bear_eng":
             failure_point = self.df_daily.loc[self.row_index, 'h']
@@ -493,19 +501,22 @@ class EngulfingHandler:
 
                         # Validate the stop loss based on future candles
                         if future_max_high < row['h']:
-                            stop_loss = row['h']
+                            temp_stop_loss = row['h']
                             # Final check to ensure stop loss is not more than the original pivot price
-                            if stop_loss > original_pivot_price:
-                                stop_loss = row['h']
-                            print(f"Valid Stop Loss: {stop_loss} (Future Max High: {future_max_high})")
-                            return stop_loss
-                        else: 
-                            stop_loss = failure_point + pip_value
-                            print(f"stop loss at failure: {stop_loss}")
-                            return stop_loss
-
-            return stop_loss
-
+                            if temp_stop_loss > original_pivot_price:
+                                temp_stop_loss = row['h'] + pip_value
+                            stop_loss_list.append(temp_stop_loss)
+                            print(f"Potential Stop Loss Stored: {temp_stop_loss} (Future Max High: {future_max_high})")
+                            break
+            
+            # Return the min stop loss for a bearish signal
+            if stop_loss_list:
+                min_stop_loss = min(stop_loss_list)
+                print(f"Min Stop Loss Selected: {min_stop_loss}")
+                return min_stop_loss
+            else:
+                print(f"No valid stop loss found, returning failure point stop loss: {stop_loss}")
+                return stop_loss
 
     def sl_pivots(self, entry_price):
         entry_time = self.df_daily.loc[self.row_index, 'time']
@@ -1041,8 +1052,8 @@ def extract_instrument_from_filename(filename):
 
 def main():
     # Base path where your data files are stored
-    base_path = r"C:\Users\grave\OneDrive\Coding\PAC\fxdata"
-    #base_path = r"/Users/koengraveland/PAC/fxdata"
+    #base_path = r"C:\Users\grave\OneDrive\Coding\PAC\fxdata"
+    base_path = r"/Users/koengraveland/PAC/fxdata"
     file_pairs = [('EUR_USD_D.xlsx', 'EUR_USD_H1.xlsx')]
 
     for daily_file, hourly_file in file_pairs:
@@ -1063,8 +1074,8 @@ def main():
         df_daily = signal_calculator.calculate_atr()
 
         # Load precomputed zigzag data
-        zigzag_file_path = r"C:\Users\grave\OneDrive\Coding\PAC\zigzag.xlsx"
-        #zigzag_file_path = r"/Users/koengraveland/PAC/zigzag.xlsx"
+        #zigzag_file_path = r"C:\Users\grave\OneDrive\Coding\PAC\zigzag.xlsx"
+        zigzag_file_path = r"/Users/koengraveland/PAC/zigzag.xlsx"
         zigzag_df = pd.read_excel(zigzag_file_path)
         zigzag_df['time'] = pd.to_datetime(zigzag_df['time'])
         print(f"Loaded zigzag file: {zigzag_file_path}")
