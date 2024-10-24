@@ -390,29 +390,16 @@ class EngulfingHandler:
             return 0.01
         else:
             return 0.0001
-        
-    def adjust_stop_loss(self, instrument, stop_loss, signal):
-        """Adjusts the stop loss by adding 1 pip based on the instrument."""
-        pip_value = self.get_pip_value(instrument)
-        
-        if signal == "bull_eng" or signal == "hammer":
-            # Adjust for a long position: add 1 pip to the stop loss
-            adjusted_stop_loss = stop_loss + pip_value
-        elif signal == "bear_eng" or signal == "shooting_star":
-            # Adjust for a short position: subtract 1 pip from the stop loss
-            adjusted_stop_loss = stop_loss - pip_value
-        else:
-            adjusted_stop_loss = stop_loss
-
-        return adjusted_stop_loss
 
     def calculate_stop_loss(self, entry):
-        stop_loss = None
         sl_pivots = self.sl_pivots(entry.price)
         hourly_data = self.get_hourly_data()
         entry_candle_time = entry.time
+        pip_value = self.get_pip_value(self.instrument)
 
         if self.signal == "bull_eng":
+            failure_point = self.df_daily.loc[self.row_index, 'l']
+            stop_loss = failure_point - pip_value
             for _, pivot in sl_pivots.iterrows():
                 pivot_price = pivot['price']
                 for idx in range(len(hourly_data)):
@@ -425,18 +412,14 @@ class EngulfingHandler:
                             if stop_loss_time >= entry_candle_time:
                                 continue  # Skip this iteration and continue looking
                             else:
-                                stop_loss = row['l']
+                                stop_loss = row['l'] - pip_value
                                 return stop_loss
 
-            # No tight stop loss found, use daily low
-            if stop_loss is None: 
-                stop_loss = self.df_daily.loc[self.row_index, 'l']
-                
-            #adjust stop_loss by 1 pip 
-            adjusted_stop_loss = self.adjust_stop_loss(self.instrument, stop_loss, self.signal)
-            return adjusted_stop_loss
+            return stop_loss
 
         elif self.signal == "bear_eng":
+            failure_point = self.df_daily.loc[self.row_index, 'h']
+            stop_loss = failure_point + pip_value
             for _, pivot in sl_pivots.iterrows():
                 pivot_price = pivot['price']
                 for idx in range(len(hourly_data)):
@@ -449,17 +432,10 @@ class EngulfingHandler:
                             if stop_loss_time >= entry_candle_time:
                                 continue  # Skip this iteration and continue looking
                             else:
-                                stop_loss = row['h']
+                                stop_loss = row['h'] + pip_value
                                 return stop_loss
 
-            # No tight stop loss found, use daily high
-            if stop_loss is None: 
-                stop_loss = self.df_daily.loc[self.row_index, 'h']
-            
-            adjusted_stop_loss = self.adjust_stop_loss(self.instrument, stop_loss, self.signal)
-            return adjusted_stop_loss
-
-        return None
+            return stop_loss
 
 
     def sl_pivots(self, entry_price):
@@ -803,33 +779,22 @@ class HammerShootingStarHandler:
             return 0.01
         else:
             return 0.0001
-        
-    def adjust_stop_loss(self, instrument, stop_loss, signal):
-        pip_value = self.get_pip_value(instrument)
-        
-        if signal == "hammer":
-            adjusted_stop_loss = stop_loss - pip_value
-        elif signal == "shooting_star":
-            adjusted_stop_loss = stop_loss + pip_value
-        else:
-            adjusted_stop_loss = stop_loss
-
-        return adjusted_stop_loss
 
     def calculate_stop_loss(self, entry):
+        pip_value = self.get_pip_value(self.instrument)
         if entry.entry_type == "PDH":
-            stop_loss = self.df_daily.loc[entry.row_index, 'h']
+            stop_loss = self.df_daily.loc[entry.row_index, 'h'] + pip_value
             return stop_loss
 
         elif entry.entry_type == "PDL":
-            stop_loss = self.df_daily.loc[entry.row_index, 'l']
+            stop_loss = self.df_daily.loc[entry.row_index, 'l'] - pip_value
             return stop_loss
 
         elif entry.entry_type in ["GWHMR", "GWSS"]:
             if entry.signal == "hammer":
                 entry_time = entry.time
                 failure_point = self.df_daily.loc[self.row_index, 'l']
-                stop_loss = failure_point
+                stop_loss = failure_point - pip_value
 
                 relevant_pivots = self.zigzag_df[
                     (self.zigzag_df['time'] < entry_time) &
@@ -849,18 +814,17 @@ class HammerShootingStarHandler:
                         future_lows = future_candles['l'].min() if not future_candles.empty else None
 
                         if future_lows is None or future_lows > pivot_price:
-                            stop_loss = pivot_price
-                            adjusted_stop_loss = self.adjust_stop_loss(self.instrument, stop_loss, entry.signal)
+                            stop_loss = pivot_price - pip_value
                             break 
                         else: 
                             break
                 
-                return adjusted_stop_loss
+                return stop_loss
 
             elif entry.signal == "shooting_star":
                 entry_time = entry.time
                 failure_point = self.df_daily.loc[self.row_index, 'h']
-                stop_loss = failure_point
+                stop_loss = failure_point + pip_value
                 relevant_pivots = self.zigzag_df[
                     (self.zigzag_df['time'] < entry_time) &
                     (self.zigzag_df['price'] > entry.price) &
@@ -879,13 +843,13 @@ class HammerShootingStarHandler:
                         future_highs = future_candles['h'].max() if not future_candles.empty else None
 
                         if future_highs is None or future_highs < pivot_price:
-                            stop_loss = pivot_price
-                            adjusted_stop_loss = self.adjust_stop_loss(self.instrument, stop_loss, entry.signal)
+                            stop_loss = pivot_price - pip_value
                             break
                         else: 
                             break
 
-                return adjusted_stop_loss
+                return stop_loss
+
 
     def calculate_take_profit(self, entry, daily_zigzag):
         entry_price = entry.price
@@ -1044,7 +1008,7 @@ def main():
 
         # Print entries
         for entry in entries:
-            print(f"Instrument: {entry.instrument}, Signal: {entry.signal}, Entry Type: {entry.entry_type}, Price: {entry.price}, Time: {entry.time}, SL: {entry.stop_loss}, TP: {entry.take_profit}")
+            print(f"{entry.instrument}, {entry.signal}, {entry.entry_type}, {entry.time}, Price: {entry.price}, SL: {entry.stop_loss}, TP: {entry.take_profit}")
 
 if __name__ == "__main__":
     main()
