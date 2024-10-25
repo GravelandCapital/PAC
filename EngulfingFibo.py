@@ -408,8 +408,8 @@ class EngulfingHandler:
 
         if self.signal == "bull_eng":
             failure_point = self.df_daily.loc[self.row_index, 'l']
+            signal_high = self.df_daily.loc[self.row_index, 'h']
             stop_loss = failure_point - pip_value
-            original_pivot_price = None
             print(f"Initial Stop Loss: {stop_loss} (Failure Point: {failure_point} - Pip: {pip_value})")
 
             for _, pivot in sl_pivots.iterrows():
@@ -425,7 +425,11 @@ class EngulfingHandler:
 
                 for idx in range(len(hourly_data)):
                     row = hourly_data.iloc[idx]
-                    print(f"Checking Hourly Candle: Close = {row['c']}, Low = {row['l']} at {row['time']}")
+                    
+                    # If the candle high exceeds the signal high, stop the search, no more valid pivots
+                    if row['h'] > signal_high:
+                        print(f"High of the candle exceeds signal high {signal_high}, stopping search.")
+                        break
 
                     # Update the pivot price if the candle wicks but does not close above the pivot
                     if row['h'] > pivot_price and row['c'] <= pivot_price:
@@ -451,8 +455,8 @@ class EngulfingHandler:
                                 temp_stop_loss = row['l'] - pip_value
                             stop_loss_list.append(temp_stop_loss)
                             print(f"Potential Stop Loss Stored: {temp_stop_loss} (Future Min Low: {future_min_low})")
-                            break
-            
+                            break  # Move to the next pivot once a valid stop loss is stored
+
             # Return the max stop loss for a bullish signal
             if stop_loss_list:
                 max_stop_loss = max(stop_loss_list)
@@ -464,8 +468,8 @@ class EngulfingHandler:
 
         elif self.signal == "bear_eng":
             failure_point = self.df_daily.loc[self.row_index, 'h']
+            signal_low = self.df_daily.loc[self.row_index, 'l']
             stop_loss = failure_point + pip_value
-            original_pivot_price = None
             print(f"Initial Stop Loss: {stop_loss} (Failure Point: {failure_point} + Pip: {pip_value})")
 
             for _, pivot in sl_pivots.iterrows():
@@ -481,7 +485,11 @@ class EngulfingHandler:
 
                 for idx in range(len(hourly_data)):
                     row = hourly_data.iloc[idx]
-                    print(f"Checking Hourly Candle: Close = {row['c']}, High = {row['h']} at {row['time']}")
+                    
+                    # If the candle low is below the signal low, stop the search, no more valid pivots
+                    if row['l'] < signal_low:
+                        print(f"Low of the candle below signal low {signal_low}, stopping search.")
+                        break
 
                     # Update the pivot price if the candle wicks but does not close below the pivot
                     if row['l'] < pivot_price and row['c'] >= pivot_price:
@@ -507,8 +515,8 @@ class EngulfingHandler:
                                 temp_stop_loss = row['h'] + pip_value
                             stop_loss_list.append(temp_stop_loss)
                             print(f"Potential Stop Loss Stored: {temp_stop_loss} (Future Max High: {future_max_high})")
-                            break
-            
+                            break  # Move to the next pivot once a valid stop loss is stored
+                    
             # Return the min stop loss for a bearish signal
             if stop_loss_list:
                 min_stop_loss = min(stop_loss_list)
@@ -518,55 +526,71 @@ class EngulfingHandler:
                 print(f"No valid stop loss found, returning failure point stop loss: {stop_loss}")
                 return stop_loss
 
+
     def sl_pivots(self, entry_price):
         entry_time = self.df_daily.loc[self.row_index, 'time']
+        threshold_time = entry_time - pd.Timedelta(days=365)
+        daily_high = self.df_daily.loc[self.row_index, 'h']
+        daily_low = self.df_daily.loc[self.row_index, 'l']
+
+        print(f"Fetching SL pivots within 365 days prior to {entry_time}")
+
         if self.signal == "bull_eng":
             relevant_pivots = self.zigzag_df[
-                (self.zigzag_df['time'] < entry_time) &
-                (self.zigzag_df['price'] < entry_price) &
+                (self.zigzag_df['time'] < entry_time) & 
+                (self.zigzag_df['time'] >= threshold_time) &
                 (self.zigzag_df['type'] == 'h')
-                ].sort_values('time', ascending=False)
-            # Initialize the filtered pivots list
-            sl_pivots = []
+            ].sort_values('time', ascending=False)
 
-            # Initialize highest pivot to None
+            sl_pivots = []
             highest_pivot = None
 
             for _, pivot in relevant_pivots.iterrows():
                 pivot_price = pivot['price']
+                print(f"Evaluating Pivot: {pivot_price} at {pivot['time']}")
 
-                if highest_pivot is None:
-                    sl_pivots.append(pivot)
-                    highest_pivot = pivot_price
-                elif pivot_price > highest_pivot:
-                    sl_pivots.append(pivot)
-                elif pivot_price > entry_price:
+                if pivot_price < daily_high:
+                    if highest_pivot is None or (pivot_price > highest_pivot):
+                        sl_pivots.append(pivot)
+                        highest_pivot = pivot_price
+                        print(f"Added Pivot to SL list: {pivot_price}")
+                else:
+                    print(f"Pivot exceeded daily high {daily_high}, stopping search.")
                     break
 
         elif self.signal == "bear_eng":
             relevant_pivots = self.zigzag_df[
-                (self.zigzag_df['time'] < entry_time) &
-                (self.zigzag_df['price'] > entry_price) &
+                (self.zigzag_df['time'] < entry_time) & 
+                (self.zigzag_df['time'] >= threshold_time) &
                 (self.zigzag_df['type'] == 'l')
-                ].sort_values('time', ascending=False)
-            # Initialize the filtered pivots list
-            sl_pivots = []
+            ].sort_values('time', ascending=False)
 
-            # Initialize lowest pivot to None
+            sl_pivots = []
             lowest_pivot = None
 
             for _, pivot in relevant_pivots.iterrows():
                 pivot_price = pivot['price']
+                print(f"Evaluating Pivot: {pivot_price} at {pivot['time']}")
 
-                if lowest_pivot is None:
-                    sl_pivots.append(pivot)
-                    lowest_pivot = pivot_price
-                elif pivot_price < lowest_pivot:
-                    sl_pivots.append(pivot)
-                elif pivot_price < entry_price:
+                if pivot_price > daily_low:
+                    if lowest_pivot is None or (pivot_price < lowest_pivot):
+                        sl_pivots.append(pivot)
+                        lowest_pivot = pivot_price
+                        print(f"Added Pivot to SL list: {pivot_price}")
+                else:
+                    print(f"Pivot fell below daily low {daily_low}, stopping search.")
                     break
-        sl_pivots = pd.DataFrame(sl_pivots)
-        return sl_pivots
+
+        # Check if sl_pivots has any entries; if not, return an empty DataFrame
+        if not sl_pivots:
+            print("No relevant pivots found, returning empty DataFrame.")
+            return pd.DataFrame()  # Return an empty DataFrame if no pivots
+
+        sl_pivots_df = pd.DataFrame(sl_pivots)
+        print(f"Returning SL pivots DataFrame with {len(sl_pivots_df)} entries.")
+        return sl_pivots_df
+
+
 
 
     def calculate_take_profit(self, entry, daily_zigzag):
@@ -1052,8 +1076,8 @@ def extract_instrument_from_filename(filename):
 
 def main():
     # Base path where your data files are stored
-    #base_path = r"C:\Users\grave\OneDrive\Coding\PAC\fxdata"
-    base_path = r"/Users/koengraveland/PAC/fxdata"
+    base_path = r"C:\Users\grave\OneDrive\Coding\PAC\fxdata"
+    #base_path = r"/Users/koengraveland/PAC/fxdata"
     file_pairs = [('EUR_USD_D.xlsx', 'EUR_USD_H1.xlsx')]
 
     for daily_file, hourly_file in file_pairs:
@@ -1074,8 +1098,8 @@ def main():
         df_daily = signal_calculator.calculate_atr()
 
         # Load precomputed zigzag data
-        #zigzag_file_path = r"C:\Users\grave\OneDrive\Coding\PAC\zigzag.xlsx"
-        zigzag_file_path = r"/Users/koengraveland/PAC/zigzag.xlsx"
+        zigzag_file_path = r"C:\Users\grave\OneDrive\Coding\PAC\zigzag.xlsx"
+        #zigzag_file_path = r"/Users/koengraveland/PAC/zigzag.xlsx"
         zigzag_df = pd.read_excel(zigzag_file_path)
         zigzag_df['time'] = pd.to_datetime(zigzag_df['time'])
         print(f"Loaded zigzag file: {zigzag_file_path}")
