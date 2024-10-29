@@ -186,6 +186,8 @@ class EngulfingHandler:
                                 time=entry_time,
                                 row_index=self.row_index
                             ))
+                        else: 
+                            break # Stop searching if the condition is not met
 
         elif self.signal == "bear_eng":
             # Iterate through pivots for a bear engulfing signal
@@ -210,6 +212,8 @@ class EngulfingHandler:
                                 time=entry_time,
                                 row_index=self.row_index
                             ))
+                        else: 
+                            break # Stop searching if the condition is not met
 
         # After collecting all entries, return the max for LHPB and min for LLPB
         if entries:
@@ -398,7 +402,7 @@ class EngulfingHandler:
 
         # Define the end time as the last hourly candle of the signal (i.e., the end of the daily candle)
         daily_signal_time = self.df_daily.loc[self.row_index, 'time']
-        end_time = daily_signal_time + pd.Timedelta(hours=23)
+        end_time = entry_candle_time
 
         print(f"Entry Signal: {self.signal}, Entry Time: {entry_candle_time}, Pip Value: {pip_value}")
         print(f"Daily Signal Time: {daily_signal_time}, End Time: {end_time}")
@@ -448,14 +452,17 @@ class EngulfingHandler:
                         print(f"Future Min Low: {future_min_low}")
 
                         # Validate the stop loss based on future candles
-                        if future_min_low > row['l']:
+                        if future_min_low > row['l'] and row['l']:
                             temp_stop_loss = row['l']
                             # Final check to ensure stop loss is not less than the original pivot price
                             if temp_stop_loss < original_pivot_price:
                                 temp_stop_loss = row['l'] - pip_value
-                            stop_loss_list.append(temp_stop_loss)
-                            print(f"Potential Stop Loss Stored: {temp_stop_loss} (Future Min Low: {future_min_low})")
-                            break  # Move to the next pivot once a valid stop loss is stored
+                                stop_loss_list.append(temp_stop_loss)
+                                print(f"Potential Stop Loss Stored: {temp_stop_loss} (Future Min Low: {future_min_low})")
+                                break  # Move to the next pivot once a valid stop loss is stored
+                            else: 
+                                print (f" stop loss invalid - greater than original pivot price")
+                                break
 
             # Return the max stop loss for a bullish signal
             if stop_loss_list:
@@ -513,9 +520,12 @@ class EngulfingHandler:
                             # Final check to ensure stop loss is not more than the original pivot price
                             if temp_stop_loss > original_pivot_price:
                                 temp_stop_loss = row['h'] + pip_value
-                            stop_loss_list.append(temp_stop_loss)
-                            print(f"Potential Stop Loss Stored: {temp_stop_loss} (Future Max High: {future_max_high})")
-                            break  # Move to the next pivot once a valid stop loss is stored
+                                stop_loss_list.append(temp_stop_loss)
+                                print(f"Potential Stop Loss Stored: {temp_stop_loss} (Future Max High: {future_max_high})")
+                                break  # Move to the next pivot once a valid stop loss is stored
+                            else:
+                                print (f" stop loss invalid - less than original pivot price")
+                                break
                     
             # Return the min stop loss for a bearish signal
             if stop_loss_list:
@@ -530,6 +540,7 @@ class EngulfingHandler:
     def sl_pivots(self, entry_price):
         entry_time = self.df_daily.loc[self.row_index, 'time']
         threshold_time = entry_time - pd.Timedelta(days=365)
+        confirmation_time = entry_time - pd.Timedelta(hours = 4)
         daily_high = self.df_daily.loc[self.row_index, 'h']
         daily_low = self.df_daily.loc[self.row_index, 'l']
 
@@ -537,10 +548,13 @@ class EngulfingHandler:
 
         if self.signal == "bull_eng":
             relevant_pivots = self.zigzag_df[
-                (self.zigzag_df['time'] < entry_time) & 
+                (self.zigzag_df['time'] < confirmation_time) & 
+                (self.zigzag_df['price'] < entry_price) &
                 (self.zigzag_df['time'] >= threshold_time) &
                 (self.zigzag_df['type'] == 'h')
             ].sort_values('time', ascending=False)
+
+            print(f"relevant pivots: entry_time: {entry_time}, threshold_time: {threshold_time}, daily_high: {daily_high}, daily_low: {daily_low}")
 
             sl_pivots = []
             highest_pivot = None
@@ -560,10 +574,13 @@ class EngulfingHandler:
 
         elif self.signal == "bear_eng":
             relevant_pivots = self.zigzag_df[
-                (self.zigzag_df['time'] < entry_time) & 
+                (self.zigzag_df['time'] < confirmation_time) & 
+                (self.zigzag_df['price'] > entry_price) &
                 (self.zigzag_df['time'] >= threshold_time) &
                 (self.zigzag_df['type'] == 'l')
             ].sort_values('time', ascending=False)
+
+            print(f"relevant pivots: entry_time: {entry_time}, threshold_time: {threshold_time}, daily_high: {daily_high}, daily_low: {daily_low}")
 
             sl_pivots = []
             lowest_pivot = None
