@@ -399,12 +399,14 @@ class EngulfingHandler:
         sl_pivots = self.sl_pivots(entry.price)
         entry_candle_time = entry.time
         pip_value = self.get_pip_value(self.instrument)
+        min_atr = self.df_daily.loc[self.row_index, 'atr'] * 0.4
+        entry_price = entry.price
 
         # Define the end time as the last hourly candle of the signal (i.e., the end of the daily candle)
         daily_signal_time = self.df_daily.loc[self.row_index, 'time']
         end_time = entry_candle_time
 
-        print(f"Entry Signal: {self.signal}, Entry Time: {entry_candle_time}, Pip Value: {pip_value}")
+        print(f"Entry Signal: {self.signal}, Entry Time: {entry_candle_time}, Pip Value: {pip_value}, .5 ATR: {min_atr}")
         print(f"Daily Signal Time: {daily_signal_time}, End Time: {end_time}")
 
         # Initialize list to store all potential stop losses
@@ -452,17 +454,18 @@ class EngulfingHandler:
                         print(f"Future Min Low: {future_min_low}")
 
                         # Validate the stop loss based on future candles
-                        if future_min_low > row['l'] and row['l']:
+                        if future_min_low > row['l']:
                             temp_stop_loss = row['l']
+                            stop_loss_value = entry_price - stop_loss
                             # Final check to ensure stop loss is not less than the original pivot price
-                            if temp_stop_loss < original_pivot_price:
+                            if temp_stop_loss < original_pivot_price and stop_loss_value >= min_atr:
                                 temp_stop_loss = row['l'] - pip_value
                                 stop_loss_list.append(temp_stop_loss)
                                 print(f"Potential Stop Loss Stored: {temp_stop_loss} (Future Min Low: {future_min_low})")
-                                break  # Move to the next pivot once a valid stop loss is stored
+                                continue  # Move to the next pivot once a valid stop loss is stored
                             else: 
                                 print (f" stop loss invalid - greater than original pivot price")
-                                break
+                                continue
 
             # Return the max stop loss for a bullish signal
             if stop_loss_list:
@@ -517,15 +520,16 @@ class EngulfingHandler:
                         # Validate the stop loss based on future candles
                         if future_max_high < row['h']:
                             temp_stop_loss = row['h']
+                            stop_loss_value = stop_loss - entry_price
                             # Final check to ensure stop loss is not more than the original pivot price
-                            if temp_stop_loss > original_pivot_price:
+                            if temp_stop_loss > original_pivot_price and stop_loss_value >= min_atr:
                                 temp_stop_loss = row['h'] + pip_value
                                 stop_loss_list.append(temp_stop_loss)
                                 print(f"Potential Stop Loss Stored: {temp_stop_loss} (Future Max High: {future_max_high})")
-                                break  # Move to the next pivot once a valid stop loss is stored
+                                continue  # Move to the next pivot once a valid stop loss is stored
                             else:
                                 print (f" stop loss invalid - less than original pivot price")
-                                break
+                                continue
                     
             # Return the min stop loss for a bearish signal
             if stop_loss_list:
@@ -904,12 +908,18 @@ class HammerShootingStarHandler:
 
     def calculate_stop_loss(self, entry):
         pip_value = self.get_pip_value(self.instrument)
+        min_atr = self.df_daily.loc[self.row_index, 'atr'] * 0.4
+        entry_price = entry.price
+        print(f"Calculating stop loss for entry type: {entry.entry_type}, Entry Price: {entry_price}, Pip Value: {pip_value}")
+
         if entry.entry_type == "PDH":
             stop_loss = self.df_daily.loc[entry.row_index, 'h'] + pip_value
+            print(f"PDH Stop Loss: {stop_loss}")
             return stop_loss
 
         elif entry.entry_type == "PDL":
             stop_loss = self.df_daily.loc[entry.row_index, 'l'] - pip_value
+            print(f"PDL Stop Loss: {stop_loss}")
             return stop_loss
 
         elif entry.entry_type in ["GWHMR", "GWSS"]:
@@ -917,6 +927,7 @@ class HammerShootingStarHandler:
                 entry_time = entry.time
                 failure_point = self.df_daily.loc[self.row_index, 'l']
                 stop_loss = failure_point - pip_value
+                print(f"Initial Hammer Stop Loss: {stop_loss}, Failure Point: {failure_point}")
 
                 relevant_pivots = self.zigzag_df[
                     (self.zigzag_df['time'] < entry_time) &
@@ -929,24 +940,36 @@ class HammerShootingStarHandler:
                     for _, pivot in relevant_pivots.iterrows():
                         pivot_time = pivot['time']
                         pivot_price = pivot['price']
+                        print(f"Evaluating Pivot: {pivot_price} at {pivot_time}")
+
                         future_candles = self.df_hourly[
                             (self.df_hourly['time'] > pivot_time) & 
-                            (self.df_hourly['time'] < entry_time)]
-
+                            (self.df_hourly['time'] < entry_time)
+                        ]
                         future_lows = future_candles['l'].min() if not future_candles.empty else None
+                        print(f"Future Lows: {future_lows}")
 
-                        if future_lows is None or future_lows > pivot_price:
-                            stop_loss = pivot_price - pip_value
-                            break 
+                        if future_lows is None or (future_lows > pivot_price):
+                            temp_stop_loss = pivot_price - pip_value
+                            stop_loss_value = entry_price - temp_stop_loss
+                            if stop_loss_value >= min_atr:
+                                stop_loss = temp_stop_loss
+                                print(f"Valid Stop Loss Found: {stop_loss}")
+                                break
+                            else:
+                                print("Invalid Stop Loss - Future candles {future_lows} and or stop loss value {stop_loss_value}")
+                                continue
                         else: 
-                            break
-                
+                            continue
+
                 return stop_loss
 
             elif entry.signal == "shooting_star":
                 entry_time = entry.time
                 failure_point = self.df_daily.loc[self.row_index, 'h']
                 stop_loss = failure_point + pip_value
+                print(f"Initial Shooting Star Stop Loss: {stop_loss}, Failure Point: {failure_point}")
+
                 relevant_pivots = self.zigzag_df[
                     (self.zigzag_df['time'] < entry_time) &
                     (self.zigzag_df['price'] > entry.price) &
@@ -958,19 +981,30 @@ class HammerShootingStarHandler:
                     for _, pivot in relevant_pivots.iterrows():
                         pivot_time = pivot['time']
                         pivot_price = pivot['price']
+                        print(f"Evaluating Pivot: {pivot_price} at {pivot_time}")
+
                         future_candles = self.df_hourly[
                             (self.df_hourly['time'] > pivot_time) & 
-                            (self.df_hourly['time'] < entry_time)]
-
+                            (self.df_hourly['time'] < entry_time)
+                        ]
                         future_highs = future_candles['h'].max() if not future_candles.empty else None
+                        print(f"Future Highs: {future_highs}")
 
-                        if future_highs is None or future_highs < pivot_price:
-                            stop_loss = pivot_price - pip_value
-                            break
+                        if future_highs is None or (future_highs < pivot_price):
+                            temp_stop_loss = pivot_price + pip_value
+                            stop_loss_value = temp_stop_loss - entry_price
+                            if stop_loss_value >= min_atr:
+                                stop_loss = temp_stop_loss
+                                print (f"Valid Stop Loss Found: {stop_loss}")
+                                break
+                            else:
+                                print(f"Invalid Stop Loss - Future candles {future_highs} and or stop loss value {stop_loss_value}")
+                                continue
                         else: 
-                            break
+                            continue
 
                 return stop_loss
+
 
 
     def calculate_take_profit(self, entry, daily_zigzag):
