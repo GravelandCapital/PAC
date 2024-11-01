@@ -406,6 +406,9 @@ class EngulfingHandler:
         daily_signal_time = self.df_daily.loc[self.row_index, 'time']
         end_time = entry_candle_time
 
+        print(f"Calculating stop loss for {self.signal.upper()} | Entry Price: {entry_price}, Pip Value: {pip_value}, Min ATR: {min_atr}")
+        print(f"Daily Signal Time: {daily_signal_time}, End Time: {end_time}")
+
         # Initialize list to store all potential stop losses
         stop_loss_list = []
 
@@ -413,106 +416,122 @@ class EngulfingHandler:
             failure_point = self.df_daily.loc[self.row_index, 'l']
             signal_high = self.df_daily.loc[self.row_index, 'h']
             stop_loss = failure_point - pip_value
+            print(f"Bullish Engulfing | Initial Stop Loss: {stop_loss}, Failure Point: {failure_point}, Signal High: {signal_high}")
 
             for _, pivot in sl_pivots.iterrows():
-                original_pivot_price = pivot['price']  # Store the original pivot price
-                pivot_price = original_pivot_price  # Initialize pivot price as original pivot
+                original_pivot_price = pivot['price']
+                pivot_price = original_pivot_price
+                print(f"Checking Pivot: {pivot_price} at {pivot['time']}")
 
-                # Filter hourly data between the pivot time and the end time (last hourly candle of the daily signal)
                 hourly_data = self.df_hourly[
                     (self.df_hourly['time'] >= pivot['time']) & (self.df_hourly['time'] <= end_time)
                 ]
 
                 for idx in range(len(hourly_data)):
                     row = hourly_data.iloc[idx]
-                    
-                    # If the candle high exceeds the signal high, stop the search, no more valid pivots
+                    print(f"Hour {idx} | High: {row['h']}, Close: {row['c']}, Pivot Price: {pivot_price}")
+
                     if row['h'] > signal_high:
+                        print("Candle high exceeds signal high. Stopping search for this pivot.")
                         break
 
-                    # Update the pivot price if the candle wicks but does not close above the pivot
                     if row['h'] > pivot_price and row['c'] <= pivot_price:
                         pivot_price = row['h']
+                        print(f"Pivot wicked but not closed above. New Pivot Price: {pivot_price}")
 
-                    # Check if current close is above the pivot price
                     if row['c'] > pivot_price:
-
-                        # If the close is above, store future candles up to the end time
+                        breakout_low = None
+                        breakout_low = row['l']
                         future_candles = hourly_data.iloc[idx + 1:]
-                        # Find the minimum low of all future candles
                         future_min_low = future_candles['l'].min()
+                        print(f"Close above Pivot. Future Min Low: {future_min_low}, breakout_low: {breakout_low}")
 
+                        if future_min_low > breakout_low:
+                            print(f"Future Min Low: {future_min_low} > Breakout Low: {breakout_low}")
+                            temp_stop_loss = breakout_low
+                            stop_loss_value = entry_price - temp_stop_loss
 
-                        # Validate the stop loss based on future candles
-                        if future_min_low > row['l']:
-                            temp_stop_loss = row['l']
-                            stop_loss_value = entry_price - stop_loss
-                            # Final check to ensure stop loss is not less than the original pivot price
+                            # Debugging prints for condition check
+                            print(f"Evaluating Stop Loss Condition: Temp Stop Loss: {temp_stop_loss}, "
+                            f"Original Pivot Price: {original_pivot_price}, "
+                            f"Stop Loss Value: {stop_loss_value}, Min ATR: {min_atr}")
+
                             if temp_stop_loss < original_pivot_price and stop_loss_value >= min_atr:
-                                temp_stop_loss = row['l'] - pip_value
+                                temp_stop_loss = breakout_low - pip_value
                                 stop_loss_list.append(temp_stop_loss)
-                                continue  # Move to the next pivot once a valid stop loss is stored
-                            else: 
-                                continue
+                                print(f"Valid Stop Loss Found: {temp_stop_loss} (Future Min Low: {future_min_low})")
+                                break
+                            else:
+                                print("Stop loss invalid - greater than original pivot or below min ATR")
+                                break
 
-            # Return the max stop loss for a bullish signal
             if stop_loss_list:
                 max_stop_loss = max(stop_loss_list)
+                print(f"Max Stop Loss Selected: {max_stop_loss}")
                 return max_stop_loss
             else:
+                print(f"No valid stop loss found, using initial stop loss: {stop_loss}")
                 return stop_loss
 
         elif self.signal == "bear_eng":
             failure_point = self.df_daily.loc[self.row_index, 'h']
             signal_low = self.df_daily.loc[self.row_index, 'l']
             stop_loss = failure_point + pip_value
+            print(f"Bearish Engulfing | Initial Stop Loss: {stop_loss}, Failure Point: {failure_point}, Signal Low: {signal_low}")
 
             for _, pivot in sl_pivots.iterrows():
-                original_pivot_price = pivot['price']  # Store the original pivot price
-                pivot_price = original_pivot_price  # Initialize pivot price as original pivot
+                original_pivot_price = pivot['price']
+                pivot_price = original_pivot_price
+                print(f"Checking Pivot: {pivot_price} at {pivot['time']}")
 
-                # Filter hourly data between the pivot time and the end time (last hourly candle of the daily signal)
                 hourly_data = self.df_hourly[
                     (self.df_hourly['time'] >= pivot['time']) & (self.df_hourly['time'] <= end_time)
                 ]
 
                 for idx in range(len(hourly_data)):
                     row = hourly_data.iloc[idx]
-                    
-                    # If the candle low is below the signal low, stop the search, no more valid pivots
+                    print(f"Hour {idx} | Low: {row['l']}, Close: {row['c']}, Pivot Price: {pivot_price}")
+
                     if row['l'] < signal_low:
+                        print("Candle low below signal low. Stopping search for this pivot.")
                         break
 
-                    # Update the pivot price if the candle wicks but does not close below the pivot
                     if row['l'] < pivot_price and row['c'] >= pivot_price:
                         pivot_price = row['l']
+                        print(f"Pivot wicked but not closed below. New Pivot Price: {pivot_price}")
 
-                    # Check if current close is below the pivot price
                     if row['c'] < pivot_price:
-
-                        # If the close is below, store future candles up to the end time
+                        breakout_high = None 
+                        breakout_high = row['h']
                         future_candles = hourly_data.iloc[idx + 1:]
-                        # Find the maximum high of all future candles
                         future_max_high = future_candles['h'].max()
+                        print(f"Close below Pivot. Future Max High: {future_max_high}, breakout_high: {breakout_high}")
 
+                        if future_max_high < breakout_high:
+                            print (f"Future Max High: {future_max_high} < Breakout High: {breakout_high}")
+                            temp_stop_loss = breakout_high
+                            stop_loss_value = stop_loss - temp_stop_loss
 
-                        # Validate the stop loss based on future candles
-                        if future_max_high < row['h']:
-                            temp_stop_loss = row['h']
-                            stop_loss_value = stop_loss - entry_price
-                            # Final check to ensure stop loss is not more than the original pivot price
+                            # Debugging prints for condition check
+                            print(f"Evaluating Stop Loss Condition: Temp Stop Loss: {temp_stop_loss}, "
+                            f"Original Pivot Price: {original_pivot_price}, "
+                            f"Stop Loss Value: {stop_loss_value}, Min ATR: {min_atr}")
+
                             if temp_stop_loss > original_pivot_price and stop_loss_value >= min_atr:
-                                temp_stop_loss = row['h'] + pip_value
+                                temp_stop_loss = breakout_high + pip_value
                                 stop_loss_list.append(temp_stop_loss)
-                                continue  # Move to the next pivot once a valid stop loss is stored
+                                print(f"Valid Stop Loss Found: {temp_stop_loss} (Future Max High: {future_max_high})")
+                                break
                             else:
-                                continue
-                    
-            # Return the min stop loss for a bearish signal
+                                print("Stop loss invalid - less than original pivot or below min ATR")
+                                break
+
             if stop_loss_list:
                 min_stop_loss = min(stop_loss_list)
+                print(f"Min Stop Loss Selected: {min_stop_loss}")
                 return min_stop_loss
             else:
+                print(f"No valid stop loss found, using initial stop loss: {stop_loss}")
                 return stop_loss
 
 
@@ -573,9 +592,6 @@ class EngulfingHandler:
 
         sl_pivots_df = pd.DataFrame(sl_pivots)
         return sl_pivots_df
-
-
-
 
     def calculate_take_profit(self, entry, daily_zigzag):
         entry_price = entry.price
@@ -1094,8 +1110,8 @@ def extract_instrument_from_filename(filename):
 
 def main():
     # Base path where your data files are stored
-    base_path = r"C:\Users\grave\OneDrive\Coding\PAC\fxdata"
-    #base_path = r"/Users/koengraveland/PAC/fxdata"
+    #base_path = r"C:\Users\grave\OneDrive\Coding\PAC\fxdata"
+    base_path = r"/Users/koengraveland/PAC/fxdata"
     file_pairs = [('EUR_USD_D.xlsx', 'EUR_USD_H1.xlsx')]
 
     for daily_file, hourly_file in file_pairs:
@@ -1116,8 +1132,8 @@ def main():
         df_daily = signal_calculator.calculate_atr()
 
         # Load precomputed zigzag data
-        zigzag_file_path = r"C:\Users\grave\OneDrive\Coding\PAC\zigzag.xlsx"
-        #zigzag_file_path = r"/Users/koengraveland/PAC/zigzag.xlsx"
+        #zigzag_file_path = r"C:\Users\grave\OneDrive\Coding\PAC\zigzag.xlsx"
+        zigzag_file_path = r"/Users/koengraveland/PAC/zigzag.xlsx"
         zigzag_df = pd.read_excel(zigzag_file_path)
         zigzag_df['time'] = pd.to_datetime(zigzag_df['time'])
         print(f"Loaded zigzag file: {zigzag_file_path}")
