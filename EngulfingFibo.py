@@ -476,7 +476,7 @@ class EngulfingHandler:
         elif self.signal == "bear_eng":
             failure_point = self.df_daily.loc[self.row_index, 'h']
             signal_low = self.df_daily.loc[self.row_index, 'l']
-            stop_loss = failure_point + pip_value
+            stop_loss = failure_point
             print(f"Bearish Engulfing | Initial Stop Loss: {stop_loss}, Failure Point: {failure_point}, Signal Low: {signal_low}")
 
             for _, pivot in sl_pivots.iterrows():
@@ -510,7 +510,7 @@ class EngulfingHandler:
                         if future_max_high < breakout_high:
                             print (f"Future Max High: {future_max_high} < Breakout High: {breakout_high}")
                             temp_stop_loss = breakout_high
-                            stop_loss_value = stop_loss - temp_stop_loss
+                            stop_loss_value = temp_stop_loss - entry_price
 
                             # Debugging prints for condition check
                             print(f"Evaluating Stop Loss Condition: Temp Stop Loss: {temp_stop_loss}, "
@@ -532,6 +532,7 @@ class EngulfingHandler:
                 return min_stop_loss
             else:
                 print(f"No valid stop loss found, using initial stop loss: {stop_loss}")
+                stop_loss = stop_loss + pip_value
                 return stop_loss
 
 
