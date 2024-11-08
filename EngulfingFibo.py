@@ -1117,6 +1117,28 @@ def extract_instrument_from_filename(filename):
     """Extracts the instrument name from the filename."""
     return filename.split('_')[0] + '_' + filename.split('_')[1]
 
+def check_order_execution(entry, df_hourly):
+    start_time = entry.time 
+    end_time = start_time + pd.Timedelta(hours=24)
+    hourly_data = df_hourly[(df_hourly['time'] > start_time) & (df_hourly['time'] <= end_time)]
+
+    if entry.signal in ['bull_eng', 'hammer']:
+        condition = hourly_data['l'] <= entry.price
+    elif entry.signal in ['bear_eng', 'shooting_star']:
+        condition = hourly_data['h'] >= entry.price
+    else: 
+        return False 
+    
+    if condition.any():
+        fill_time = hourly_data[condition].iloc[0]['time']
+        entry.filled_time = fill_time
+        entry.order_status = "FILLED"
+        return True
+    else: 
+        entry.order_status = "CANCELLED"
+        return False
+
+
 def main():
     # Base path where your data files are stored
     base_path = r"C:\Users\grave\OneDrive\Coding\PAC\fxdata"
