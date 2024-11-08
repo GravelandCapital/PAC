@@ -16,6 +16,8 @@ class Entry:
     row_index: int  # Index in the daily dataframe
     stop_loss: float = None
     take_profit: float = None
+    order_status: str = "PENDING"
+    filled_time: pd.Timedelta = None
 
 class DataFetcher:
     """Class to fetch daily and hourly data from Excel files."""
@@ -185,6 +187,7 @@ class EngulfingHandler:
                                 price=last_high_pre_break,
                                 time=entry_time,
                                 row_index=self.row_index
+                                order_status="PENDING"
                             ))
                         else: 
                             break # Stop searching if the condition is not met
@@ -211,6 +214,7 @@ class EngulfingHandler:
                                 price=last_low_pre_break,
                                 time=entry_time,
                                 row_index=self.row_index
+                                order_status="PENDING"
                             ))
                         else: 
                             break # Stop searching if the condition is not met
@@ -719,6 +723,7 @@ class HammerShootingStarHandler:
                         price=entry_price,
                         time=entry_time,
                         row_index=self.row_index
+                        order_status="PENDING"
                     )
                     entries.append(entry)
         elif signal == "shooting_star":
@@ -738,6 +743,7 @@ class HammerShootingStarHandler:
                         price=entry_price,
                         time=entry_time,
                         row_index=self.row_index
+                        order_status="PENDING"
                     )
                     entries.append(entry)
         return entries
@@ -787,6 +793,7 @@ class HammerShootingStarHandler:
                             price=entry_price,
                             time=entry_time,
                             row_index=self.row_index
+                            order_status="PENDING"
                         )
                         entries.append(entry)
                         break
@@ -852,6 +859,7 @@ class HammerShootingStarHandler:
                             price=entry_price,
                             time=entry_time,
                             row_index=self.row_index
+                            order_status="PENDING"
                         )
                         entries.append(entry)
                         break
@@ -1111,8 +1119,8 @@ def extract_instrument_from_filename(filename):
 
 def main():
     # Base path where your data files are stored
-    #base_path = r"C:\Users\grave\OneDrive\Coding\PAC\fxdata"
-    base_path = r"/Users/koengraveland/PAC/fxdata"
+    base_path = r"C:\Users\grave\OneDrive\Coding\PAC\fxdata"
+    #base_path = r"/Users/koengraveland/PAC/fxdata"
     file_pairs = [('EUR_USD_D.xlsx', 'EUR_USD_H1.xlsx')]
 
     for daily_file, hourly_file in file_pairs:
@@ -1133,8 +1141,8 @@ def main():
         df_daily = signal_calculator.calculate_atr()
 
         # Load precomputed zigzag data
-        #zigzag_file_path = r"C:\Users\grave\OneDrive\Coding\PAC\zigzag.xlsx"
-        zigzag_file_path = r"/Users/koengraveland/PAC/zigzag.xlsx"
+        zigzag_file_path = r"C:\Users\grave\OneDrive\Coding\PAC\zigzag.xlsx"
+        #zigzag_file_path = r"/Users/koengraveland/PAC/zigzag.xlsx"
         zigzag_df = pd.read_excel(zigzag_file_path)
         zigzag_df['time'] = pd.to_datetime(zigzag_df['time'])
         print(f"Loaded zigzag file: {zigzag_file_path}")
