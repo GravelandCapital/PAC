@@ -1113,31 +1113,53 @@ def calculate_sl_tp(entries, df_daily, df_hourly, zigzag_df, daily_zigzag, instr
     # Replace entries with final list that meets R/R condition
     entries[:] = final_entries
 
+class TradeManager:
+    def __init__(self, df_hourly, zigzag_df, entry):
+        self.df_hourly = df_hourly
+        self.zigzag_df = zigzag_df
+        self.entry = entry
+
+    def get_pip_value(self, entry): 
+        if "JPY" in entry.instrument:
+            return 0.01
+        else:
+            return 0.0001
+    
+    def check_order_execution(self):
+            start_time = self.entry.time 
+            end_time = start_time + pd.Timedelta(hours=24)
+            hourly_data = self.df_hourly[(self.df_hourly['time'] > start_time) & (self.df_hourly['time'] <= end_time)]
+
+            if self.entry.signal in ['bull_eng', 'hammer']:
+                condition = hourly_data['l'] <= self.entry.price
+            elif self.entry.signal in ['bear_eng', 'shooting_star']:
+                condition = hourly_data['h'] >= self.entry.price
+            else: 
+                return False 
+            
+            if condition.any():
+                fill_time = hourly_data[condition].iloc[0]['time']
+                self.entry.filled_time = fill_time
+                self.entry.order_status = "FILLED"
+                return True
+            else: 
+                self.entry.order_status = "CANCELLED"
+                return False
+        
+    def manage_trade(self, df_hourly, zigzag_df, entry): 
+        pip_value = self.get_pip_value(entry.instrument)
+        start_time = entry.filled_time
+        hourly_data = df_hourly[df_hourly['time'] >= start_time].reset_index(drop=True)
+        entry_price = entry.price
+
+        
+
+
+
+
 def extract_instrument_from_filename(filename):
     """Extracts the instrument name from the filename."""
     return filename.split('_')[0] + '_' + filename.split('_')[1]
-
-def check_order_execution(entry, df_hourly):
-    start_time = entry.time 
-    end_time = start_time + pd.Timedelta(hours=24)
-    hourly_data = df_hourly[(df_hourly['time'] > start_time) & (df_hourly['time'] <= end_time)]
-
-    if entry.signal in ['bull_eng', 'hammer']:
-        condition = hourly_data['l'] <= entry.price
-    elif entry.signal in ['bear_eng', 'shooting_star']:
-        condition = hourly_data['h'] >= entry.price
-    else: 
-        return False 
-    
-    if condition.any():
-        fill_time = hourly_data[condition].iloc[0]['time']
-        entry.filled_time = fill_time
-        entry.order_status = "FILLED"
-        return True
-    else: 
-        entry.order_status = "CANCELLED"
-        return False
-
 
 def main():
     # Base path where your data files are stored
