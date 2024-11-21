@@ -15,6 +15,33 @@ class TradeManager:
         pip_value = 0.01 if "JPY" in instrument else 0.0001
         print(f"Calculated pip value for {instrument}: {pip_value}")
         return pip_value
+    
+    def check_order_execution(self):
+        print("Checking order execution...")
+        start_time = self.entry.time 
+        end_time = start_time + pd.Timedelta(hours=24)
+        hourly_data = self.df_hourly[(self.df_hourly['time'] > start_time) & (self.df_hourly['time'] <= end_time)]
+
+        print(f"Order placed at {start_time}, checking for execution up to {end_time}")
+
+        if self.entry.signal in ['bull_eng', 'hammer']:
+            condition = hourly_data['l'] <= self.entry.price
+        elif self.entry.signal in ['bear_eng', 'shooting_star']:
+            condition = hourly_data['h'] >= self.entry.price
+        else: 
+            print("Invalid signal type.")
+            return False 
+
+        if condition.any():
+            fill_time = hourly_data[condition].iloc[0]['time']
+            self.entry.filled_time = fill_time
+            self.entry.order_status = "FILLED"
+            print(f"Order filled at {fill_time}")
+            return True
+        else: 
+            self.entry.order_status = "CANCELLED"
+            print("Order not filled within time frame; order cancelled.")
+            return False
 
     def manage_trade(self):
         print("Starting trade management...")
@@ -40,7 +67,6 @@ class TradeManager:
             current_high = current_row['h']
             current_low = current_row['l']
             self.current_open = current_open  # Set current_open for use in get_latest_pivot
-            print(f"\nProcessing candle at {current_time}: Open={current_open}, Close={current_close}, High={current_high}, Low={current_low}")
 
             if self.entry.signal in ['bull_eng', 'hammer']:
                 direction = 'bullish'
@@ -134,6 +160,7 @@ class TradeManager:
                     highs_between = self.df_hourly[
                         (self.df_hourly['time'] > pivot_time) & (self.df_hourly['time'] < current_time)
                     ]['h']
+                    print (f"Checking if pivot price {pivot_price} is greater than all highs between {pivot_time} and {current_time} (excluding {current_time})")
                     if (highs_between <= pivot_price).all():
                         return pivot
 
@@ -152,6 +179,7 @@ class TradeManager:
                     lows_between = self.df_hourly[
                         (self.df_hourly['time'] > pivot_time) & (self.df_hourly['time'] < current_time)
                     ]['l']
+                    print (f"Checking if pivot price {pivot_price} is less than all lows between {pivot_time} and {current_time} (excluding {current_time})")
                     if (lows_between >= pivot_price).all():
                         return pivot
         return None
