@@ -129,6 +129,7 @@ class HammerShootingStarHandler:
                         next_row = relevant_hourly.iloc[i + 1]
                         next_low = next_row['l']
                         next_high = next_row['h']
+                        order_candle = relevant_hourly.iloc[i + 2]
                     else:
                         break  # No more data
 
@@ -136,7 +137,7 @@ class HammerShootingStarHandler:
 
                     if next_low > max_high:
                         # Valid breakout
-                        entry_time = next_row['time']
+                        entry_time = order_candle['time']
                         entry_price = max_high
                         entry = Entry(
                             instrument=self.instrument,
@@ -195,6 +196,7 @@ class HammerShootingStarHandler:
                         next_row = relevant_hourly.iloc[i + 1]
                         next_high = next_row['h']
                         next_low = next_row['l']
+                        order_candle = relevant_hourly.iloc[i + 2]
                     else:
                         break  # No more data
 
@@ -202,7 +204,7 @@ class HammerShootingStarHandler:
 
                     if next_high < min_low:
                         # Valid breakout
-                        entry_time = next_row['time']
+                        entry_time = order_candle['time']
                         entry_price = min_low
                         entry = Entry(
                             instrument=self.instrument,
