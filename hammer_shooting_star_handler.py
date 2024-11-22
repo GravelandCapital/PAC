@@ -261,7 +261,7 @@ class HammerShootingStarHandler:
 
         elif entry.entry_type in ["GWHMR", "GWSS"]:
             if entry.signal == "hammer":
-                entry_time = entry.time
+                entry_time = entry.order_time
                 failure_point = self.df_daily.loc[self.row_index, 'l']
                 stop_loss = failure_point - pip_value
 
@@ -297,7 +297,7 @@ class HammerShootingStarHandler:
                 return stop_loss
 
             elif entry.signal == "shooting_star":
-                entry_time = entry.time
+                entry_time = entry.order_time
                 failure_point = self.df_daily.loc[self.row_index, 'h']
                 stop_loss = failure_point + pip_value
 

@@ -65,7 +65,7 @@ def main():
             # Update open orders
             for entry in open_orders[:]:  # Iterate over a copy to allow removal
                 # Check if the order should be considered at this time
-                if current_time >= entry.time:
+                if current_time >= entry.order_time:
                     trade_manager = TradeManager(df_hourly, entry, zigzag_df)
                     if trade_manager.check_order_execution():
                         # Order filled, add to open trades

@@ -18,7 +18,7 @@ class TradeManager:
     
     def check_order_execution(self):
         print("Checking order execution...")
-        start_time = self.entry.time 
+        start_time = self.entry.order_time 
         end_time = start_time + pd.Timedelta(hours=24)
         hourly_data = self.df_hourly[(self.df_hourly['time'] > start_time) & (self.df_hourly['time'] <= end_time)]
 

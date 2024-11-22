@@ -306,7 +306,7 @@ class EngulfingHandler:
 
     def calculate_stop_loss(self, entry):
         sl_pivots = self.sl_pivots(entry.price)
-        entry_candle_time = entry.time
+        entry_candle_time = entry.order_time
         pip_value = self.get_pip_value(self.instrument)
         min_atr = self.df_daily.loc[self.row_index, 'atr'] * 0.4
         entry_price = entry.price
