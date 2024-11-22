@@ -57,13 +57,13 @@ class EngulfingHandler:
             difference = abs(naked_level - fibo_level)
             if difference <= atr_range and compare(naked_level):
                 # Entry found
-                entry_time = self.find_entry_time(hourly_data, naked_level)
+                entry_time = self.df_daily.loc[self.row_index, 'time']
                 return Entry(
                     instrument = self.instrument,
                     signal=self.signal,
                     entry_type='fib',
                     price=naked_level,
-                    time=entry_time,
+                    order_time=entry_time,
                     row_index=self.row_index
                 )
         return None
@@ -95,13 +95,13 @@ class EngulfingHandler:
                             break
                         future_candles = hourly_data.iloc[idx + 1:]
                         if (future_candles['l'] > last_high_pre_break).all() and last_high_pre_break < pivot_price and last_high_pre_break > half_level:
-                            entry_time = self.find_entry_time(hourly_data, last_high_pre_break)
+                            entry_time = self.df_daily.loc[self.row_index, 'time']
                             entries.append(Entry(
                                 instrument=self.instrument,
                                 signal=self.signal,
                                 entry_type='LHPB',
                                 price=last_high_pre_break,
-                                time=entry_time,
+                                order_time=entry_time,
                                 row_index=self.row_index,
                                 order_status="PENDING"
                             ))
@@ -122,13 +122,13 @@ class EngulfingHandler:
                             break
                         future_candles = hourly_data.iloc[idx + 1:]
                         if (future_candles['h'] < last_low_pre_break).all() and last_low_pre_break > pivot_price and last_low_pre_break < half_level:
-                            entry_time = self.find_entry_time(hourly_data, last_low_pre_break)
+                            entry_time = self.df_daily.loc[self.row_index, 'time']
                             entries.append(Entry(
                                 instrument=self.instrument,
                                 signal=self.signal,
                                 entry_type='LLPB',
                                 price=last_low_pre_break,
-                                time=entry_time,
+                                order_time=entry_time,
                                 row_index=self.row_index,
                                 order_status="PENDING"
                             ))
@@ -295,17 +295,6 @@ class EngulfingHandler:
         end = self.df_daily.loc[self.row_index, 'time'] - pd.Timedelta(hours=1)
         hourly_data = self.df_hourly[(self.df_hourly['time'] >= start) & (self.df_hourly['time'] <= end)]
         return hourly_data
-
-    def find_entry_time(self, hourly_data, price_level):
-        # Find the time when the price level was reached
-        if self.signal == "bull_eng":
-            entry_candle = hourly_data[hourly_data['h'] == price_level]
-        elif self.signal == "bear_eng":
-            entry_candle = hourly_data[hourly_data['l'] == price_level]
-        if not entry_candle.empty:
-            return entry_candle.iloc[0]['time']
-        else:
-            return None
 
     def get_pip_value(self, instrument):
         """Returns the pip value for a given currency pair."""

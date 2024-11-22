@@ -66,14 +66,14 @@ class HammerShootingStarHandler:
                 future_candles = hourly_data.iloc[i + 2:]
 
                 if high < pdl and next_candle_close > high and (future_candles['l'] > high).all():
-                    entry_time = row['time']
+                    entry_time = self.df_daily.loc[self.row_index, 'time']
                     entry_price = high
                     entry = Entry(
                         instrument = self.instrument,
                         signal=signal,
                         entry_type='PDL',
                         price=entry_price,
-                        time=entry_time,
+                        order_time=entry_time,
                         row_index=self.row_index,
                         order_status="PENDING"
                     )
@@ -86,14 +86,14 @@ class HammerShootingStarHandler:
                 future_candles = hourly_data.iloc[i + 2:]
 
                 if low > pdh and next_candle_close < low and (future_candles['h'] < low).all():
-                    entry_time = row['time']
+                    entry_time = self.df_daily.loc[self.row_index, 'time']
                     entry_price = low
                     entry = Entry(
                         instrument=self.instrument,
                         signal=signal,
                         entry_type='PDH',
                         price=entry_price,
-                        time=entry_time,
+                        order_time=entry_time,
                         row_index=self.row_index,
                         order_status="PENDING"
                     )
@@ -136,14 +136,14 @@ class HammerShootingStarHandler:
 
                     if next_low > max_high:
                         # Valid breakout
-                        entry_time = row['time']
+                        entry_time = next_row['time']
                         entry_price = max_high
                         entry = Entry(
                             instrument=self.instrument,
                             signal=signal,
                             entry_type='GWHMR',
                             price=entry_price,
-                            time=entry_time,
+                            order_time=entry_time,
                             row_index=self.row_index,
                             order_status="PENDING"
                         )
@@ -202,14 +202,14 @@ class HammerShootingStarHandler:
 
                     if next_high < min_low:
                         # Valid breakout
-                        entry_time = row['time']
+                        entry_time = next_row['time']
                         entry_price = min_low
                         entry = Entry(
                             instrument=self.instrument,
                             signal=signal,
                             entry_type='GWSS',
                             price=entry_price,
-                            time=entry_time,
+                            order_time=entry_time,
                             row_index=self.row_index,
                             order_status="PENDING"
                         )

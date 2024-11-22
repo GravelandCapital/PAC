@@ -7,7 +7,7 @@ class Entry:
     signal: str
     entry_type: str
     price: float
-    time: pd.Timestamp
+    order_time: pd.Timestamp
     row_index: int  # Index in the daily dataframe
     stop_loss: float = None
     take_profit: float = None
