@@ -3,7 +3,7 @@ from entry import Entry
 
 class TradeManager:
     def __init__(self, df_hourly, entry, zigzag_df):
-        print(f"Initializing TradeManager for instrument {entry.instrument}")
+        print(f"Initializing TradeManager for instrument {entry.instrument}, for signal {entry.signal}")
         self.df_hourly = df_hourly
         self.entry = entry
         self.zigzag_df = zigzag_df  # Added zigzag_df to the constructor

@@ -72,8 +72,6 @@ def calculate_sl_tp(entries, df_daily, df_hourly, zigzag_df, daily_zigzag, instr
             reward = abs(entry.take_profit - entry.price)
             rr_ratio = reward / risk if risk > 0 else 0
 
-            print(f"Entry: {entry.entry_type}, date {entry.order_time} | Risk: {risk} | Reward: {reward} | R/R Ratio: {rr_ratio}")
-
             # Append to final list only if R/R ratio is at least 1.5
             if rr_ratio >= 1.5:
                 final_entries.append(entry)
