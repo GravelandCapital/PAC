@@ -75,6 +75,12 @@ class TradeManager:
                 if pivot is not None:
                     pivot_price = pivot['price']
                     print(f"Latest confirmed pivot high: {pivot_price} at {pivot['time']}")
+
+                    # Check for wicked pivots, update pivot_price if necessary
+                    if current_high > pivot_price and current_close < pivot_price: 
+                        pivot_price = current_high
+                        print(f"Updated pivot price to {pivot_price} due to wicked pivot.")
+
                     # Check if current close is greater than pivot_price
                     if current_close > pivot_price:
                         # Adjust stop loss to the low of the breakout candle minus pip value
@@ -89,6 +95,12 @@ class TradeManager:
                 if pivot is not None:
                     pivot_price = pivot['price']
                     print(f"Latest confirmed pivot low: {pivot_price} at {pivot['time']}")
+
+                    # Check for wicked pivots, update pivot_price if necessary
+                    if current_low < pivot_price and current_close > pivot_price:
+                        pivot_price = current_low
+                        print(f"Updated pivot price to {pivot_price} due to wicked pivot.")
+
                     # Check if current close is less than pivot_price
                     if current_close < pivot_price:
                         # Adjust stop loss to the high of the breakout candle plus pip value
