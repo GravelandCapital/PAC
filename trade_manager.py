@@ -70,34 +70,28 @@ class TradeManager:
 
             if self.entry.signal in ['bull_eng', 'hammer']:
                 direction = 'bullish'
+                pivot = self.get_latest_pivot(current_time, direction)
 
-                # If no pivot is currently being monitored, find one
-                if self.current_pivot is None:
-                    pivot = self.get_latest_pivot(current_time, direction)
-                    if pivot is not None:
-                        self.current_pivot = {'pivot_price': pivot['price'], 'pivot_time': pivot['time']}
-                        print(f"Monitoring new pivot high: {self.current_pivot['pivot_price']} at {self.current_pivot['pivot_time']}")
-                else:
-                    pivot_price = self.current_pivot['pivot_price']
-                    pivot_time = self.current_pivot['pivot_time']
-
-                    # Check if current_close > pivot_price
-                    if current_close > pivot_price:
-                        # Adjust stop loss to the low of the breakout candle minus pip value
-                        breakout_low = current_low
-                        stop_loss = breakout_low - self.pip_value
-                        self.entry.stop_loss = stop_loss  # Update the entry's stop loss
-                        print(f"Stop loss adjusted to {stop_loss} at {current_time}")
-                        # Reset current_pivot to None to find the next pivot
-                        self.current_pivot = None
-                    # Else if current_high > pivot_price and current_close < pivot_price
-                    elif current_high > pivot_price and current_close < pivot_price:
-                        # Adjust pivot_price to current_high
-                        self.current_pivot['pivot_price'] = current_high
-                        print(f"Adjusted pivot price to {current_high} at {current_time}")
-                    else:
-                        # Continue monitoring the same pivot
-                        pass
+                if pivot is not None:
+                        pivot_price = pivot['price']
+                        print(f"Latest pivot high: {pivot_price} at {pivot['time']}")
+                        # Check if current_close > pivot_price
+                        if current_close > pivot_price:
+                            # Adjust stop loss to the low of the breakout candle minus pip value
+                            breakout_low = current_low
+                            stop_loss = breakout_low - self.pip_value
+                            self.entry.stop_loss = stop_loss  # Update the entry's stop loss
+                            print(f"Stop loss adjusted to {stop_loss} at {current_time}")
+                            # Reset current_pivot to None to find the next pivot
+                            self.current_pivot = None
+                        # Else if current_high > pivot_price and current_close < pivot_price
+                        elif current_high > pivot_price and current_close < pivot_price:
+                            # Adjust pivot_price to current_high
+                            pivot_price = current_high
+                            print(f"Adjusted pivot price to {current_high} at {current_time}")
+                        else:
+                            # Continue monitoring the same pivot
+                            pass
 
             elif self.entry.signal in ['bear_eng', 'shooting_star']:
                 direction = 'bearish'
