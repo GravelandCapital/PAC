@@ -15,9 +15,9 @@ from entry import Entry
 
 def main():
     # Base path where your data files are stored
-    #base_path = r"C:\Users\grave\OneDrive\Coding\PAC\fxdata"
+    base_path = r"C:\Users\grave\OneDrive\Coding\PAC\fxdata"
     # For MacOS/Linux, uncomment the line below
-    base_path = r"/Users/koengraveland/PAC/fxdata"
+    #base_path = r"/Users/koengraveland/PAC/fxdata"
     file_pairs = [('EUR_USD_D.xlsx', 'EUR_USD_H1.xlsx')]
 
     for daily_file, hourly_file in file_pairs:
@@ -38,9 +38,9 @@ def main():
         df_daily = signal_calculator.calculate_atr()
 
         # Load precomputed zigzag data
-        #zigzag_file_path = r"C:\Users\grave\OneDrive\Coding\PAC\zigzag.xlsx"
+        zigzag_file_path = r"C:\Users\grave\OneDrive\Coding\PAC\zigzag.xlsx"
         # For MacOS/Linux, uncomment the line below
-        zigzag_file_path = r"/Users/koengraveland/PAC/zigzag.xlsx"
+        #zigzag_file_path = r"/Users/koengraveland/PAC/zigzag.xlsx"
         zigzag_df = pd.read_excel(zigzag_file_path)
         zigzag_df['time'] = pd.to_datetime(zigzag_df['time'])
         print(f"Loaded zigzag file: {zigzag_file_path}")
@@ -66,7 +66,7 @@ def main():
             for entry in open_orders[:]:  # Iterate over a copy to allow removal
                 # Check if the order should be considered at this time
                 if current_time >= entry.order_time:
-                    trade_manager = TradeManager(df_hourly, entry, zigzag_df)
+                    trade_manager = TradeManager(df_hourly, entry, zigzag_df, depth=4)
                     if trade_manager.check_order_execution():
                         # Order filled, add to open trades
                         open_trades.append(entry)
@@ -79,7 +79,8 @@ def main():
             for entry in open_trades[:]:
                 # Only manage trades at or after the filled time
                 if current_time >= entry.filled_time:
-                    trade_manager = TradeManager(df_hourly, entry, zigzag_df)
+                    depth = 4 
+                    trade_manager = TradeManager(df_hourly, entry, zigzag_df, depth=4)
                     exit_info = trade_manager.manage_trade()
                     if exit_info:
                         # Trade exited, record exit info

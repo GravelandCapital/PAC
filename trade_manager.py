@@ -2,20 +2,20 @@ import pandas as pd
 from entry import Entry 
 
 class TradeManager:
-    def __init__(self, df_hourly, entry, zigzag_df):
-        print(f"Initializing TradeManager for instrument {entry.instrument}, for signal {entry.signal}")
+    def __init__(self, df_hourly, entry, zigzag_df, depth):
+        print(f"Initializing TradeManager for instrument {entry.instrument}")
         self.df_hourly = df_hourly
         self.entry = entry
-        self.zigzag_df = zigzag_df  # Added zigzag_df to the constructor
+        self.zigzag_df = zigzag_df
+        self.depth = depth
         self.pip_value = self.get_pip_value(entry.instrument)
         print(f"Set pip_value to {self.pip_value}")
-        self.current_pivot = None  # Initialize current_pivot to None
-    
-    def get_pip_value(self, instrument): 
+
+    def get_pip_value(self, instrument):
         pip_value = 0.01 if "JPY" in instrument else 0.0001
         print(f"Calculated pip value for {instrument}: {pip_value}")
         return pip_value
-    
+
     def check_order_execution(self):
         print("Checking order execution...")
         start_time = self.entry.order_time 
@@ -67,62 +67,35 @@ class TradeManager:
             current_high = current_row['h']
             current_low = current_row['l']
             self.current_open = current_open  # Set current_open for use in get_latest_pivot
+            print(f"\nProcessing candle at {current_time}: Open={current_open}, Close={current_close}, High={current_high}, Low={current_low}")
 
             if self.entry.signal in ['bull_eng', 'hammer']:
                 direction = 'bullish'
                 pivot = self.get_latest_pivot(current_time, direction)
-
                 if pivot is not None:
-                        pivot_price = pivot['price']
-                        print(f"Latest pivot high: {pivot_price} at {pivot['time']}")
-                        # Check if current_close > pivot_price
-                        if current_close > pivot_price:
-                            # Adjust stop loss to the low of the breakout candle minus pip value
-                            breakout_low = current_low
-                            stop_loss = breakout_low - self.pip_value
-                            self.entry.stop_loss = stop_loss  # Update the entry's stop loss
-                            print(f"Stop loss adjusted to {stop_loss} at {current_time}")
-                            # Reset current_pivot to None to find the next pivot
-                            self.current_pivot = None
-                        # Else if current_high > pivot_price and current_close < pivot_price
-                        elif current_high > pivot_price and current_close < pivot_price:
-                            # Adjust pivot_price to current_high
-                            pivot_price = current_high
-                            print(f"Adjusted pivot price to {current_high} at {current_time}")
-                        else:
-                            # Continue monitoring the same pivot
-                            pass
+                    pivot_price = pivot['price']
+                    print(f"Latest confirmed pivot high: {pivot_price} at {pivot['time']}")
+                    # Check if current close is greater than pivot_price
+                    if current_close > pivot_price:
+                        # Adjust stop loss to the low of the breakout candle minus pip value
+                        breakout_low = current_low
+                        stop_loss = breakout_low - self.pip_value
+                        self.entry.stop_loss = stop_loss  # Update the entry's stop loss
+                        print(f"Stop loss adjusted to {stop_loss} at {current_time}")
 
             elif self.entry.signal in ['bear_eng', 'shooting_star']:
                 direction = 'bearish'
-
-                # If no pivot is currently being monitored, find one
-                if self.current_pivot is None:
-                    pivot = self.get_latest_pivot(current_time, direction)
-                    if pivot is not None:
-                        self.current_pivot = {'pivot_price': pivot['price'], 'pivot_time': pivot['time']}
-                        print(f"Monitoring new pivot low: {self.current_pivot['pivot_price']} at {self.current_pivot['pivot_time']}")
-                else:
-                    pivot_price = self.current_pivot['pivot_price']
-                    pivot_time = self.current_pivot['pivot_time']
-
-                    # Check if current_close < pivot_price
+                pivot = self.get_latest_pivot(current_time, direction)
+                if pivot is not None:
+                    pivot_price = pivot['price']
+                    print(f"Latest confirmed pivot low: {pivot_price} at {pivot['time']}")
+                    # Check if current close is less than pivot_price
                     if current_close < pivot_price:
                         # Adjust stop loss to the high of the breakout candle plus pip value
                         breakout_high = current_high
                         stop_loss = breakout_high + self.pip_value
                         self.entry.stop_loss = stop_loss  # Update the entry's stop loss
                         print(f"Stop loss adjusted to {stop_loss} at {current_time}")
-                        # Reset current_pivot to None to find the next pivot
-                        self.current_pivot = None
-                    # Else if current_low < pivot_price and current_close > pivot_price
-                    elif current_low < pivot_price and current_close > pivot_price:
-                        # Adjust pivot_price to current_low
-                        self.current_pivot['pivot_price'] = current_low
-                        print(f"Adjusted pivot price to {current_low} at {current_time}")
-                    else:
-                        # Continue monitoring the same pivot
-                        pass
 
             # Check for exit condition
             if self.check_exit_condition(current_row, stop_loss):
@@ -136,44 +109,51 @@ class TradeManager:
         return None
 
     def get_latest_pivot(self, current_time, direction):
-        # Filter pivots from zigzag_df before current_time
-        pivots_before_current = self.zigzag_df[self.zigzag_df['time'] < current_time]
+        time_interval = pd.Timedelta(hours=1)  # Adjust if your data has a different time interval
+        depth_timedelta = self.depth * time_interval
+
+        # Calculate confirmation time for each pivot
+        confirmed_pivots = self.zigzag_df.copy()
+        confirmed_pivots['confirmation_time'] = confirmed_pivots['time'] + depth_timedelta
+
+        # Only consider pivots confirmed before or at the current time
+        confirmed_pivots = confirmed_pivots[confirmed_pivots['confirmation_time'] <= current_time]
 
         if direction == 'bullish':
             # Get pivot highs
-            pivot_highs = pivots_before_current[pivots_before_current['type'] == 'h']
-            # Sort by time descending to get the most recent pivot high
-            pivot_highs = pivot_highs.sort_values('time', ascending=False)
+            pivot_highs = confirmed_pivots[confirmed_pivots['type'] == 'h']
+            # Sort by confirmation time descending to get the most recent confirmed pivot high
+            pivot_highs = pivot_highs.sort_values('confirmation_time', ascending=False)
 
             for _, pivot in pivot_highs.iterrows():
                 pivot_time = pivot['time']
                 pivot_price = pivot['price']
+                print(f"Evaluating pivot high at {pivot_time} with confirmation time {pivot['confirmation_time']}")
                 # Check if pivot price is greater than current open
                 if pivot_price > self.current_open:
-                    # Check if pivot price is greater than all highs between pivot_time and current_time (excluding current_time)
+                    # Ensure pivot price is greater than all highs between pivot_time and current_time (excluding current_time)
                     highs_between = self.df_hourly[
                         (self.df_hourly['time'] > pivot_time) & (self.df_hourly['time'] < current_time)
                     ]['h']
-                    print (f"Checking if pivot price {pivot_price} is greater than all highs between {pivot_time} and {current_time} (excluding {current_time})")
                     if (highs_between <= pivot_price).all():
                         return pivot
 
         elif direction == 'bearish':
             # Get pivot lows
-            pivot_lows = pivots_before_current[pivots_before_current['type'] == 'l']
-            # Sort by time descending to get the most recent pivot low
-            pivot_lows = pivot_lows.sort_values('time', ascending=False)
+            pivot_lows = confirmed_pivots[confirmed_pivots['type'] == 'l']
+            # Sort by confirmation time descending to get the most recent confirmed pivot low
+            pivot_lows = pivot_lows.sort_values('confirmation_time', ascending=False)
 
             for _, pivot in pivot_lows.iterrows():
                 pivot_time = pivot['time']
                 pivot_price = pivot['price']
+                print(f"Evaluating pivot low at {pivot_time} with confirmation time {pivot['confirmation_time']}")
                 # Check if pivot price is less than current open
                 if pivot_price < self.current_open:
-                    # Check if pivot price is less than all lows between pivot_time and current_time (excluding current_time)
+                    # Ensure pivot price is less than all lows between pivot_time and current_time (excluding current_time)
                     lows_between = self.df_hourly[
                         (self.df_hourly['time'] > pivot_time) & (self.df_hourly['time'] < current_time)
                     ]['l']
-                    print (f"Checking if pivot price {pivot_price} is less than all lows between {pivot_time} and {current_time} (excluding {current_time})")
                     if (lows_between >= pivot_price).all():
                         return pivot
         return None
