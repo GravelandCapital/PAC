@@ -84,18 +84,35 @@ def extract_instrument_from_filename(filename):
     return filename.split('_')[0] + '_' + filename.split('_')[1]
 
 def analyze_results(trade_results):
-    total_profit = 0
+    total_r = 0  # Initialize total R
+    print("\nTrade Analysis:\n")
+    
     for trade in trade_results:
+        # Determine risk and reward based on signal type
         if trade.signal in ['bull_eng', 'hammer']:
-            profit = trade.exit_price - trade.price
+            risk = trade.price - trade.stop_loss
+            reward = trade.exit_price - trade.price
         elif trade.signal in ['bear_eng', 'shooting_star']:
-            profit = trade.price - trade.exit_price
+            risk = trade.stop_loss - trade.price
+            reward = trade.price - trade.exit_price
         else:
-            profit = 0  # Handle any unexpected cases
-        total_profit += profit
+            risk = 0
+            reward = 0
 
-        print(f"Trade Entry: {trade.order_time}, Exit: {trade.exit_time}, "
-              f"Entry Price: {trade.price}, Exit Price: {trade.exit_price}, "
-              f"Profit: {profit}")
+        # Calculate R with safeguard against divide-by-zero
+        if risk > 0:
+            r = reward / risk
+        else:
+            r = 0  # Set R to 0 if risk is zero
 
-    print(f"\nTotal Profit: {total_profit}")
+        # Accumulate total R
+        total_r += r
+
+        # Print trade details
+        print(f"Trade Signal: {trade.signal}")
+        print(f"Entry Time: {trade.order_time}, Exit Time: {trade.exit_time}")
+        print(f"Entry Price: {trade.price}, Exit Price: {trade.exit_price}")
+        print(f"Stop Loss: {trade.stop_loss}, Risk: {risk:.2f}, Reward: {reward:.2f}, R: {r:.2f}\n")
+
+    print(f"Total R for all trades: {total_r:.2f}")
+    return total_r
