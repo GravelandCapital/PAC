@@ -62,7 +62,7 @@ def calculate_sl_tp(entries, df_daily, df_hourly, zigzag_df, daily_zigzag, instr
             continue
 
         # Calculate stop loss and take profit
-        entry.stop_loss = handler.calculate_stop_loss(entry)
+        entry.stop_loss, entry.original_stop_loss = handler.calculate_stop_loss(entry)
         entry.take_profit = handler.calculate_take_profit(entry, daily_zigzag)
 
         # Ensure stop loss and take profit are set
@@ -90,10 +90,10 @@ def analyze_results(trade_results):
     for trade in trade_results:
         # Determine risk and reward based on signal type
         if trade.signal in ['bull_eng', 'hammer']:
-            risk = trade.price - trade.stop_loss
+            risk = trade.price - trade.original_stop_loss
             reward = trade.exit_price - trade.price
         elif trade.signal in ['bear_eng', 'shooting_star']:
-            risk = trade.stop_loss - trade.price
+            risk = trade.original_stop_loss - trade.price
             reward = trade.price - trade.exit_price
         else:
             risk = 0
@@ -109,10 +109,10 @@ def analyze_results(trade_results):
         total_r += r
 
         # Print trade details
-        print(f"Trade Signal: {trade.signal}")
-        print(f"Entry Time: {trade.order_time}, Exit Time: {trade.exit_time}")
-        print(f"Entry Price: {trade.price}, Exit Price: {trade.exit_price}")
-        print(f"Stop Loss: {trade.stop_loss}, Risk: {risk:.2f}, Reward: {reward:.2f}, R: {r:.2f}\n")
+        print(f"Trade Signal: {trade.signal}, filled: {trade.filled_time}")
+        print(f"entry price: {trade.price}, exit price: {trade.exit_price}")
+        print(f"stop loss original {trade.original_stop_loss}, stop loss final {trade.stop_loss}")
+        print(f"Risk: {risk:.2f}, Reward: {reward:.2f}, R: {r:.2f}\n")
 
     print(f"Total R for all trades: {total_r:.2f}")
     return total_r

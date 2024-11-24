@@ -255,17 +255,21 @@ class HammerShootingStarHandler:
 
         if entry.entry_type == "PDH":
             stop_loss = self.df_daily.loc[entry.row_index, 'h'] + pip_value
-            return stop_loss
+            original_stop_loss = stop_loss
+            return stop_loss, original_stop_loss
 
         elif entry.entry_type == "PDL":
             stop_loss = self.df_daily.loc[entry.row_index, 'l'] - pip_value
-            return stop_loss
+            original_stop_loss = stop_loss
+            return stop_loss, original_stop_loss
 
         elif entry.entry_type in ["GWHMR", "GWSS"]:
             if entry.signal == "hammer":
                 entry_time = entry.order_time
                 failure_point = self.df_daily.loc[self.row_index, 'l']
                 stop_loss = failure_point - pip_value
+                original_stop_loss = stop_loss
+
 
                 relevant_pivots = self.zigzag_df[
                     (self.zigzag_df['time'] < entry_time) &
@@ -296,12 +300,13 @@ class HammerShootingStarHandler:
                         else: 
                             continue
 
-                return stop_loss
+                return stop_loss, original_stop_loss
 
             elif entry.signal == "shooting_star":
                 entry_time = entry.order_time
                 failure_point = self.df_daily.loc[self.row_index, 'h']
                 stop_loss = failure_point + pip_value
+                original_stop_loss = stop_loss
 
                 relevant_pivots = self.zigzag_df[
                     (self.zigzag_df['time'] < entry_time) &
@@ -332,7 +337,7 @@ class HammerShootingStarHandler:
                         else: 
                             continue
 
-                return stop_loss
+                return stop_loss, original_stop_loss
 
     def calculate_take_profit(self, entry, daily_zigzag):
         entry_price = entry.price
