@@ -110,8 +110,8 @@ def analyze_results(trade_results):
 
         # Print trade details
         print(f"Trade Signal: {trade.signal}, filled: {trade.filled_time}")
-        print(f"entry price: {trade.price}, exit price: {trade.exit_price}")
-        print(f"stop loss original {trade.original_stop_loss}, stop loss final {trade.stop_loss}")
+        print(f"entry price: {trade.price}, stop: {trade.original_stop_loss}, take profit: {trade.take_profit}")
+        print(f"exit price: {trade.exit_price}, exit time: {trade.exit_time}")
         print(f"Risk: {risk:.2f}, Reward: {reward:.2f}, R: {r:.2f}\n")
 
     print(f"Total R for all trades: {total_r:.2f}")

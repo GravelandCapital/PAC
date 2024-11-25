@@ -160,15 +160,23 @@ class TradeManager:
                 pivot_time = pivot['time']
                 pivot_price = pivot['price']
                 print(f"Evaluating pivot low at {pivot_time} with confirmation time {pivot['confirmation_time']}")
-                # Check if pivot price is less than current open
-                if pivot_price < self.current_open:
-                    # Ensure pivot price is less than all lows between pivot_time and current_time (excluding current_time)
-                    lows_between = self.df_hourly[
-                        (self.df_hourly['time'] > pivot_time) & (self.df_hourly['time'] < current_time)
-                    ]['l']
-                    if (lows_between >= pivot_price).all():
-                        return pivot
-        return None
+                
+                # Get hourly data 
+                hourly_data = self.df_hourly[(self.df_hourly['time'] > pivot_time) & (self.df_hourly['time'] < current_time)]
+
+                # Check if all closes and lows remain above pivot price 
+                if (hourly_data['c'] > pivot_price).all() and hourly_data['l'].min() > pivot_price:
+                    return pivot
+                
+                # If a low is below pivot price but close stays above, update the pivot price
+                if (hourly_data['c'] > pivot_price).any() and hourly_data['l'].min() < pivot_price:
+                    # Store wicked bars and return minimum low
+                    wicked_bar = hourly_data[hourly_data['c'] > pivot_price] & hourly_data['l'] < pivot_price
+                    if not wicked_bar.empty:
+                        wicked_bar_low = wicked_bar['l'].min()
+                        return {'time': pivot_time, 'price': wicked_bar_low}
+                    
+                        
 
     def check_exit_condition(self, current_row, stop_loss):
         print(f"Checking exit condition at time {current_row['time']} with stop loss {stop_loss}")
