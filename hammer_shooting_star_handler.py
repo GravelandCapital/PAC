@@ -300,7 +300,7 @@ class HammerShootingStarHandler:
                         else: 
                             continue
 
-                return stop_loss, original_stop_loss
+                return stop_loss, stop_loss
 
             elif entry.signal == "shooting_star":
                 entry_time = entry.order_time
@@ -337,7 +337,7 @@ class HammerShootingStarHandler:
                         else: 
                             continue
 
-                return stop_loss, original_stop_loss
+                return stop_loss, stop_loss
 
     def calculate_take_profit(self, entry, daily_zigzag):
         entry_price = entry.price

@@ -360,9 +360,9 @@ class EngulfingHandler:
 
             if stop_loss_list:
                 max_stop_loss = max(stop_loss_list)
-                return max_stop_loss, original_stop_loss
+                return max_stop_loss, max_stop_loss
             else:
-                return stop_loss, original_stop_loss
+                return stop_loss, stop_loss
 
         elif self.signal == "bear_eng":
             failure_point = self.df_daily.loc[self.row_index, 'h']
@@ -406,10 +406,10 @@ class EngulfingHandler:
 
             if stop_loss_list:
                 min_stop_loss = min(stop_loss_list)
-                return min_stop_loss, original_stop_loss
+                return min_stop_loss, min_stop_loss
             else:
                 stop_loss = stop_loss + pip_value
-                return stop_loss, original_stop_loss
+                return stop_loss, stop_loss
 
 
     def sl_pivots(self, entry_price):

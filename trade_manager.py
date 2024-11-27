@@ -141,14 +141,25 @@ class TradeManager:
                 pivot_time = pivot['time']
                 pivot_price = pivot['price']
                 print(f"Evaluating pivot high at {pivot_time} with confirmation time {pivot['confirmation_time']}")
-                # Check if pivot price is greater than current open
-                if pivot_price > self.current_open:
-                    # Ensure pivot price is greater than all highs between pivot_time and current_time (excluding current_time)
-                    highs_between = self.df_hourly[
-                        (self.df_hourly['time'] > pivot_time) & (self.df_hourly['time'] < current_time)
-                    ]['h']
-                    if (highs_between <= pivot_price).all():
-                        return pivot
+
+                # Get hourly data 
+                hourly_data = self.df_hourly[(self.df_hourly['time'] > pivot_time) & (self.df_hourly['time'] < current_time)]
+
+                # Check if all closes and highs remain below pivot price 
+                if (hourly_data['c'] < pivot_price).all() and hourly_data['h'].max() < pivot_price:
+                    print(f"pivot has not wicked, returning {pivot_price}")
+                    return pivot
+                
+                # If a high is above pivot price but close stays below, update the pivot price
+                elif (hourly_data['c'] < pivot_price).all():
+                    wicked_bars = hourly_data[(hourly_data['h'] > pivot_price) & (hourly_data['c'] < pivot_price)]
+                    for _, wicked_bars in wicked_bars.iterrows():
+                        if wicked_bars['h'] > pivot_price:
+                            pivot_price = wicked_bars['h']
+                            print(f"Updated pivot price to {pivot_price} due to wicked pivot.")
+                    print(f"Final pivot price after processing wicks: {pivot_price}")
+                    pivot['price'] = pivot_price
+                    return pivot
 
         elif direction == 'bearish':
             # Get pivot lows
@@ -166,12 +177,19 @@ class TradeManager:
 
                 # Check if all closes and lows remain above pivot price 
                 if (hourly_data['c'] > pivot_price).all() and hourly_data['l'].min() > pivot_price:
+                    print(f"pivot has not wicked, returning {pivot_price}")
                     return pivot
-                
+            
                 # If a low is below pivot price but close stays above, update the pivot price
-                data_up_to_current = hourly_data[hourly_data['time'] <= current_time]
-                wicked_bar = data_up_to_current[data_up_to_current['l'] < pivot_price] & [data_up_to_current['c'] > pivot_price]
-                if not wicked_bar.empty:    
+                elif (hourly_data['c'] > pivot_price).all(): 
+                    wicked_bars = hourly_data[(hourly_data['l'] < pivot_price) & (hourly_data['c'] > pivot_price)]
+                    for _, wicked_bars in wicked_bars.iterrows():
+                        if wicked_bars['l'] < pivot_price:
+                            pivot_price = wicked_bars['l']
+                            print(f"Updated pivot price to {pivot_price} due to wicked pivot.")
+                    print(f"Final pivot price after processing wicks: {pivot_price}")
+                    pivot['price'] = pivot_price
+                    return pivot 
                         
 
     def check_exit_condition(self, current_row, stop_loss):
