@@ -169,13 +169,9 @@ class TradeManager:
                     return pivot
                 
                 # If a low is below pivot price but close stays above, update the pivot price
-                if (hourly_data['c'] > pivot_price).any() and hourly_data['l'].min() < pivot_price:
-                    # Store wicked bars and return minimum low
-                    wicked_bar = hourly_data[hourly_data['c'] > pivot_price] & hourly_data['l'] < pivot_price
-                    if not wicked_bar.empty:
-                        wicked_bar_low = wicked_bar['l'].min()
-                        return {'time': pivot_time, 'price': wicked_bar_low}
-                    
+                data_up_to_current = hourly_data[hourly_data['time'] <= current_time]
+                wicked_bar = data_up_to_current[data_up_to_current['l'] < pivot_price] & [data_up_to_current['c'] > pivot_price]
+                if not wicked_bar.empty:    
                         
 
     def check_exit_condition(self, current_row, stop_loss):
