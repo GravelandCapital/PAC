@@ -58,6 +58,19 @@ class TradeManager:
         stop_loss = self.entry.stop_loss
         print(f"Initial stop loss: {stop_loss}")
 
+        direction = 'bullish' if self.entry.signal in ['bull_eng', 'hammer'] else 'bearish'
+
+        first_pivot = self.find_first_pivot_after_entry(start_time, direction)
+
+        if first_pivot is not None: 
+            exit_pivot_price = first_pivot['price']
+            exit_pivot_time = first_pivot['time']
+            print(f"Exit pivot price: {exit_pivot_price} at {exit_pivot_time}")
+        
+        else: 
+            print(f"No exit pivot found after entry at {start_time}.")
+            exit_pivot_price = None
+        
         # Iterate over each hourly bar
         for idx in range(len(hourly_data)):
             current_row = hourly_data.iloc[idx]
@@ -69,29 +82,31 @@ class TradeManager:
             self.current_open = current_open  # Set current_open for use in get_latest_pivot
             print(f"\nProcessing candle at {current_time}: Open={current_open}, Close={current_close}, High={current_high}, Low={current_low}")
 
+            if exit_pivot_price is not None:
+                confirmation_time = exit_pivot_time + pd.Timedelta(hours=4)
+                if direction == 'bullish':
+                    if current_low < exit_pivot_price and current_close > exit_pivot_price and current_time >= confirmation_time:
+                        exit_pivot_price = current_low
+                        print(f"Updated exit pivot price to {exit_pivot_price} due to wicked pivot.")
+                    elif current_close < exit_pivot_price and current_time >= confirmation_time:
+                        exit_time = current_time 
+                        exit_price = current_close 
+                        print(f"Trade exited at {current_time} with exit price {current_close}")
+                        return {'exit_time': current_time, 'exit_price': current_close}
+                elif direction == 'bearish':
+                    if current_high > exit_pivot_price and current_close < exit_pivot_price and current_time >= confirmation_time:
+                        exit_pivot_price = current_high
+                        print(f"Updated exit pivot price to {exit_pivot_price} due to wicked pivot.")
+                    elif current_close > exit_pivot_price and current_time >= confirmation_time:
+                        exit_time = current_time
+                        exit_price = current_close
+                        print(f"Trade exited at {current_time} with exit price {current_close}")
+                        return {'exit_time': current_time, 'exit_price': current_close}
+
             if self.entry.signal in ['bull_eng', 'hammer']:
                 direction = 'bullish'
-                pivot = self.get_latest_pivot(start_time, direction)
-
-                if first_pivot is None: 
-                    first_pivot_data = self.find_first_pivot_after_entry(current_time, start_time, direction)
-
-                    if first_pivot_data is None: 
-                        return None 
-                    
-                    first_pivot = first_pivot_data['price']
-                    confirmation_time = first_pivot_data['confirmation_time']
-                    print(f"First pivot price set to {first_pivot} with confirmation time {confirmation_time}")
-
-                    if current_low < first_pivot and current_close > first_pivot and confirmation_time <= current_time:
-                        first_pivot = current_low
-                        print(f"Updated first pivot price to {first_pivot} due to wicked pivot.")
-                    
-                    elif current_close < first_pivot and confirmation_time <= current_time:
-                        print (f"Trade exited at {current_time} with exit price {current_close}")
-                        return {'exit_time': current_time, 'exit_price': current_close}
-    
-                    
+                pivot = self.get_latest_pivot(current_time, direction)
+                       
                 if pivot is not None:
                     pivot_price = pivot['price']
                     print(f"Latest confirmed pivot high: {pivot_price} at {pivot['time']}")
@@ -112,26 +127,6 @@ class TradeManager:
             elif self.entry.signal in ['bear_eng', 'shooting_star']:
                 direction = 'bearish'
                 pivot = self.get_latest_pivot(current_time, direction)
-                first_pivot = None 
-
-                if first_pivot is None:
-                    first_pivot_data = self.find_first_pivot_after_entry(current_time, direction)
-
-                    if first_pivot_data is None:
-                        return None
-
-                    first_pivot = first_pivot_data['price']
-                    confirmation_time = first_pivot_data['confirmation_time']
-                    print(f"First pivot price set to {first_pivot} with confirmation time {confirmation_time}")
-
-                    if current_high > first_pivot and current_close < first_pivot and confirmation_time <= current_time:
-                        first_pivot = current_high
-                        print(f"Updated first pivot price to {first_pivot} due to wicked pivot.")
-
-                    elif current_close > first_pivot and confirmation_time <= current_time:
-                        print(f"Trade exited at {current_time} with exit price {current_close}")
-                        return {'exit_time': current_time, 'exit_price': current_close}
-
 
                 if pivot is not None:
                     pivot_price = pivot['price']
@@ -233,16 +228,17 @@ class TradeManager:
                     return pivot 
                 
     def find_first_pivot_after_entry(self, start_time, direction):
+        depth = 4
         time_interval = pd.Timedelta(hours=1)
-        depth_timedelta = self.depth * time_interval
+        depth_timedelta = depth * time_interval
         confirmed_pivots = self.zigzag_df.copy()
         confirmed_pivots['confirmation_time'] = confirmed_pivots['time'] + depth_timedelta
 
         if direction == 'bullish': 
             pivots_after_entry = confirmed_pivots[(confirmed_pivots['type'] == 'l') & 
-                                                  (confirmed_pivots['confirmation_time'] >= start_time)
+                                                  (confirmed_pivots['time'] >= start_time)
                                                   ]
-            
+
             if pivots_after_entry.empty:
                 return None 
 
@@ -254,7 +250,7 @@ class TradeManager:
 
         elif direction == 'bearish':
             pivots_after_entry = confirmed_pivots[(confirmed_pivots['type'] == 'h') & 
-                                                  (confirmed_pivots['confirmation_time'] >= start_time)
+                                                  (confirmed_pivots['time'] >= start_time)
                                                   ]
             
             if pivots_after_entry.empty:
