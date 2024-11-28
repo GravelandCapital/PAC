@@ -115,4 +115,5 @@ def analyze_results(trade_results):
         print(f"Risk: {risk:.2f}, Reward: {reward:.2f}, R: {r:.2f}\n")
 
     print(f"Total R for all trades: {total_r:.2f}")
+    print(f"Number of trades: {len(trade_results)}")
     return total_r

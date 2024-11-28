@@ -176,7 +176,6 @@ class TradeManager:
             for _, pivot in pivot_highs.iterrows():
                 pivot_time = pivot['time']
                 pivot_price = pivot['price']
-                print(f"Evaluating pivot high at {pivot_time} with confirmation time {pivot['confirmation_time']}")
 
                 # Get hourly data 
                 hourly_data = self.df_hourly[(self.df_hourly['time'] > pivot_time) & (self.df_hourly['time'] < current_time)]
@@ -206,7 +205,6 @@ class TradeManager:
             for _, pivot in pivot_lows.iterrows():
                 pivot_time = pivot['time']
                 pivot_price = pivot['price']
-                print(f"Evaluating pivot low at {pivot_time} with confirmation time {pivot['confirmation_time']}")
                 
                 # Get hourly data 
                 hourly_data = self.df_hourly[(self.df_hourly['time'] > pivot_time) & (self.df_hourly['time'] < current_time)]
