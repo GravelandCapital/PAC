@@ -60,6 +60,16 @@ class TradeManager:
 
         direction = 'bullish' if self.entry.signal in ['bull_eng', 'hammer'] else 'bearish'
 
+        pivot = self.get_latest_pivot(start_time, direction)
+
+        if pivot is not None: 
+            pivot_price = pivot['price']
+            pivot_time = pivot['time']
+            print(f"initial pivot price: {pivot_price} at {pivot['time']}")
+        else: 
+            print("No initial pivot found.")
+            pivot_price = None
+
         first_pivot = self.find_first_pivot_after_entry(start_time, direction)
 
         if first_pivot is not None: 
@@ -103,47 +113,55 @@ class TradeManager:
                         print(f"Trade exited at {current_time} with exit price {current_close}")
                         return {'exit_time': current_time, 'exit_price': current_close}
 
-            if self.entry.signal in ['bull_eng', 'hammer']:
-                direction = 'bullish'
-                pivot = self.get_latest_pivot(current_time, direction)
-                       
-                if pivot is not None:
-                    pivot_price = pivot['price']
-                    print(f"Latest confirmed pivot high: {pivot_price} at {pivot['time']}")
+                if direction == 'bullish': 
+                    if pivot_price is not None: 
+                        if current_high > pivot_price and current_close < pivot_price:
+                            pivot_price = current_high
+                            print(f"Updated pivot price to {pivot_price} due to wick.")
+                        else: 
+                            if current_low < pivot_price and current_close > pivot_price:
+                                pivot_price = current_low
+                                print(f"Updated pivot price to {pivot_price} due to wick.")
+                    else: 
+                        print("No pivot price to check for wicks.")
 
-                    # Check for wicked pivots, update pivot_price if necessary
-                    if current_high > pivot_price and current_close < pivot_price: 
-                        pivot_price = current_high
-                        print(f"Updated pivot price to {pivot_price} due to wicked pivot.")
-
-                    # Check if current close is greater than pivot_price
-                    if current_close > pivot_price:
-                        # Adjust stop loss to the low of the breakout candle minus pip value
-                        breakout_low = current_low
-                        stop_loss = breakout_low - self.pip_value
-                        self.entry.stop_loss = stop_loss  # Update the entry's stop loss
+                # Check if candle closes through pivot price
+                pivot_crossed = False 
+                if pivot_price is not None: 
+                    if direction == 'bullish' and current_close > pivot_price:
+                        pivot_crossed = True
+                    elif direction == 'bearish' and current_close < pivot_price:
+                        pivot_crossed = True
+                else: 
+                    print ("No pivot price to check for crossing.")
+                
+                if pivot_crossed:
+                    # Adjust stop_loss 
+                    if direction == 'bullish': 
+                        stop_loss = current_low - self.pip_value
+                        print (f"Stop loss adjusted to {stop_loss} at {current_time}")
+                    elif direction == 'bearish':
+                        stop_loss = current_high + self.pip_value
                         print(f"Stop loss adjusted to {stop_loss} at {current_time}")
+                    self.entry.stop_loss = stop_loss
 
-            elif self.entry.signal in ['bear_eng', 'shooting_star']:
-                direction = 'bearish'
-                pivot = self.get_latest_pivot(current_time, direction)
+                    # Call get latest pivot because pivot was crossed 
+                    pivot = self.get_latest_pivot(current_time, direction)
+                    if pivot is not None:
+                        pivot_price = pivot['price']
+                        pivot_time = pivot['time']
+                        print(f"New pivot called because of croess pivot price: {pivot_price} at {pivot['time']}")
+                    else:
+                        print("No new pivot found after pivot was crossed.")
+                        pivot_price = None
 
-                if pivot is not None:
-                    pivot_price = pivot['price']
-                    print(f"Latest confirmed pivot low: {pivot_price} at {pivot['time']}")
-
-                    # Check for wicked pivots, update pivot_price if necessary
-                    if current_low < pivot_price and current_close > pivot_price:
-                        pivot_price = current_low
-                        print(f"Updated pivot price to {pivot_price} due to wicked pivot.")
-
-                    # Check if current close is less than pivot_price
-                    if current_close < pivot_price:
-                        # Adjust stop loss to the high of the breakout candle plus pip value
-                        breakout_high = current_high
-                        stop_loss = breakout_high + self.pip_value
-                        self.entry.stop_loss = stop_loss  # Update the entry's stop loss
-                        print(f"Stop loss adjusted to {stop_loss} at {current_time}")
+            # Detect if a new pivot has formed closer to the current entry price
+            new_pivot = self.check_for_new_pivot(pivot_price, start_time, current_time, direction)
+            if new_pivot is not None and new_pivot['price'] != pivot_price:
+                pivot = new_pivot
+                pivot_price = pivot['price']
+                pivot_time = pivot['time']
+                print (f"New pivot detected after filling at {pivot_time} with price {pivot_price}")
 
             # Check for exit condition
             if self.check_exit_condition(current_row, stop_loss):
@@ -151,11 +169,7 @@ class TradeManager:
                 exit_price = stop_loss
                 print(f"Trade exited at {exit_time} with exit price {exit_price}")
                 return {'exit_time': exit_time, 'exit_price': exit_price}
-
-        # If trade is still open after iterating through all data
-        print("Trade still open after all data processed.")
-        return None
-
+                
     def get_latest_pivot(self, current_time, direction):
         time_interval = pd.Timedelta(hours=1)  # Adjust if your data has a different time interval
         depth_timedelta = self.depth * time_interval
@@ -168,96 +182,95 @@ class TradeManager:
         confirmed_pivots = confirmed_pivots[confirmed_pivots['confirmation_time'] <= current_time]
 
         if direction == 'bullish':
-            # Get the most recent confirmed pivot high
+            # Get pivot highs
             pivot_highs = confirmed_pivots[confirmed_pivots['type'] == 'h']
-            if pivot_highs.empty:
-                print("No pivot highs found.")
-                return None
-            pivot = pivot_highs.sort_values('confirmation_time', ascending=False).iloc[0]
-            pivot_time = pivot['time']
-            pivot_price = pivot['price']
-            print(f"Initial pivot price: {pivot_price} at {pivot_time}")
+            # Sort by confirmation time descending to get the most recent confirmed pivot high
+            pivot_highs = pivot_highs.sort_values('confirmation_time', ascending=False)
 
-            # Subset hourly data between pivot_time and current_time
-            hourly_data = self.df_hourly[(self.df_hourly['time'] > pivot_time) & (self.df_hourly['time'] <= current_time)]
+            for _, pivot in pivot_highs.iterrows():
+                pivot_time = pivot['time']
+                pivot_price = pivot['price']
 
-            # Initialize updated_pivot_price
-            updated_pivot_price = pivot_price
+                # Get hourly data 
+                hourly_data = self.df_hourly[(self.df_hourly['time'] > pivot_time) & (self.df_hourly['time'] < current_time)]
 
-            # Continue updating pivot_price until it no longer changes
-            while True:
-                # Find candles that wick above the pivot price but close below it
-                wicking_candles = hourly_data[(hourly_data['h'] > updated_pivot_price) & (hourly_data['c'] < updated_pivot_price)]
-
-                if wicking_candles.empty:
-                    break  # No more wicks above the pivot price
-
-                # Update pivot price to the maximum high of wicking candles
-                new_pivot_price = wicking_candles['h'].max()
-                if new_pivot_price == updated_pivot_price:
-                    break  # Pivot price did not change, exit loop
-
-                print(f"Updated pivot price from {updated_pivot_price} to {new_pivot_price} due to wicks.")
-                updated_pivot_price = new_pivot_price
-
-            # Check if any candle closes above the updated pivot price
-            if (hourly_data['c'] >= updated_pivot_price).any():
-                print("Pivot invalidated due to close above pivot price.")
-                return None  # Pivot is invalidated
-
-            # Update pivot price in the pivot data
-            pivot['price'] = updated_pivot_price
-            print(f"Final pivot price: {updated_pivot_price}")
-            return pivot
+                # Check if all closes and highs remain below pivot price 
+                if (hourly_data['c'] < pivot_price).all() and hourly_data['h'].max() < pivot_price:
+                    print(f"pivot has not wicked, returning {pivot_price}")
+                    return pivot
+                
+                # If a high is above pivot price but close stays below, update the pivot price
+                elif (hourly_data['c'] < pivot_price).all():
+                    wicked_bars = hourly_data[(hourly_data['h'] > pivot_price) & (hourly_data['c'] < pivot_price)]
+                    for _, wicked_bars in wicked_bars.iterrows():
+                        if wicked_bars['h'] > pivot_price:
+                            pivot_price = wicked_bars['h']
+                            print(f"Updated pivot price to {pivot_price} due to wicked pivot.")
+                    print(f"Final pivot price after processing wicks: {pivot_price}")
+                    pivot['price'] = pivot_price
+                    return pivot
 
         elif direction == 'bearish':
-            # Similar logic for bearish scenario
-            # Get the most recent confirmed pivot low
+            # Get pivot lows
             pivot_lows = confirmed_pivots[confirmed_pivots['type'] == 'l']
-            if pivot_lows.empty:
-                print("No pivot lows found.")
+            # Sort by confirmation time descending to get the most recent confirmed pivot low
+            pivot_lows = pivot_lows.sort_values('confirmation_time', ascending=False)
+
+            for _, pivot in pivot_lows.iterrows():
+                pivot_time = pivot['time']
+                pivot_price = pivot['price']
+                
+                # Get hourly data 
+                hourly_data = self.df_hourly[(self.df_hourly['time'] > pivot_time) & (self.df_hourly['time'] < current_time)]
+
+                # Check if all closes and lows remain above pivot price 
+                if (hourly_data['c'] > pivot_price).all() and hourly_data['l'].min() > pivot_price:
+                    print(f"pivot has not wicked, returning {pivot_price}")
+                    return pivot
+            
+                # If a low is below pivot price but close stays above, update the pivot price
+                elif (hourly_data['c'] > pivot_price).all(): 
+                    wicked_bars = hourly_data[(hourly_data['l'] < pivot_price) & (hourly_data['c'] > pivot_price)]
+                    for _, wicked_bars in wicked_bars.iterrows():
+                        if wicked_bars['l'] < pivot_price:
+                            pivot_price = wicked_bars['l']
+                            print(f"Updated pivot price to {pivot_price} due to wicked pivot.")
+                    print(f"Final pivot price after processing wicks: {pivot_price}")
+                    pivot['price'] = pivot_price
+                    return pivot
+
+    def check_for_new_pivot(self, last_pivot_price, filled_time, current_time, direction): 
+        depth = 4
+        depth_timedelta = depth * pd.Timedelta(hours=1)
+        confirmed_pivots = self.zigzag_df.copy()
+        confirmed_pivots['confirmation_time'] = confirmed_pivots['time'] + depth_timedelta
+
+        confirmed_pivots = confirmed_pivots [(confirmed_pivots['confirmation_time'] <= current_time) & (confirmed_pivots['time'] > filled_time)]
+       
+
+        if direction == 'bullish':
+            new_pivots = confirmed_pivots[(confirmed_pivots['type'] == 'h') & 
+            (confirmed_pivots['time'] > filled_time) & 
+            (confirmed_pivots['price'] < last_pivot_price)]
+
+            if new_pivots.empty:
                 return None
-            pivot = pivot_lows.sort_values('confirmation_time', ascending=False).iloc[0]
-            pivot_time = pivot['time']
-            pivot_price = pivot['price']
-            print(f"Initial pivot price: {pivot_price} at {pivot_time}")
 
-            # Subset hourly data between pivot_time and current_time
-            hourly_data = self.df_hourly[(self.df_hourly['time'] > pivot_time) & (self.df_hourly['time'] <= current_time)]
+            newest_pivot = new_pivots.sort_values('price', ascending=False).iloc[0]
+        
+        elif direction == 'bearish':
+            new_pivots = confirmed_pivots[(confirmed_pivots['type'] == 'l') & 
+            (confirmed_pivots['time'] > filled_time) & 
+            (confirmed_pivots['price'] > last_pivot_price)]
 
-            # Initialize updated_pivot_price
-            updated_pivot_price = pivot_price
+            if new_pivots.empty:
+                return None
 
-            # Continue updating pivot_price until it no longer changes
-            while True:
-                # Find candles that wick below the pivot price but close above it
-                wicking_candles = hourly_data[(hourly_data['l'] < updated_pivot_price) & (hourly_data['c'] > updated_pivot_price)]
+            newest_pivot = new_pivots.sort_values('price', ascending=True).iloc[0]
+        
+        return newest_pivot
 
-                if wicking_candles.empty:
-                    break  # No more wicks below the pivot price
 
-                # Update pivot price to the minimum low of wicking candles
-                new_pivot_price = wicking_candles['l'].min()
-                if new_pivot_price == updated_pivot_price:
-                    break  # Pivot price did not change, exit loop
-
-                print(f"Updated pivot price from {updated_pivot_price} to {new_pivot_price} due to wicks.")
-                updated_pivot_price = new_pivot_price
-
-            # Check if any candle closes below the updated pivot price
-            if (hourly_data['c'] <= updated_pivot_price).any():
-                print("Pivot invalidated due to close below pivot price.")
-                return None  # Pivot is invalidated
-
-            # Update pivot price in the pivot data
-            pivot['price'] = updated_pivot_price
-            print(f"Final pivot price: {updated_pivot_price}")
-            return pivot
-
-        else:
-            print("Invalid direction.")
-            return None
-    
                 
     def find_first_pivot_after_entry(self, start_time, direction):
         depth = 4
