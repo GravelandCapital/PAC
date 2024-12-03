@@ -51,22 +51,35 @@ class EngulfingHandler:
             compare = lambda level: level < half_level
         else:
             return None
+        
+        fib_entries = []
 
         # Find matching naked level
         for naked_level in naked_levels:
             difference = abs(naked_level - fibo_level)
             if difference <= atr_range and compare(naked_level):
-                # Entry found
+                fib_entries.append(naked_level)
+
+            if fib_entries:
                 entry_time = self.df_daily.loc[self.row_index, 'time']
+
+                if self.signal == "bull_eng":
+                    selected_entry = max(fib_entries)
+                elif self.signal == "bear_eng":
+                    selected_entry = min(fib_entries)
+                else: 
+                    return None 
                 return Entry(
-                    instrument = self.instrument,
+                    instrument=self.instrument,
                     signal=self.signal,
                     entry_type='fib',
-                    price=naked_level,
+                    price=selected_entry,
                     order_time=entry_time,
                     row_index=self.row_index
                 )
-        return None
+            
+            else: 
+                return None
 
     def calculate_lhpb_entry(self):
         entries = []  # Collect all valid entries

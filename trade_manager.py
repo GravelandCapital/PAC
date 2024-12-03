@@ -92,6 +92,7 @@ class TradeManager:
             self.current_open = current_open  # Set current_open for use in get_latest_pivot
             print(f"\nProcessing candle at {current_time}: Open={current_open}, Close={current_close}, High={current_high}, Low={current_low}")
 
+            #  Logic for exit on close of the exit pivot 
             if exit_pivot_price is not None:
                 confirmation_time = exit_pivot_time + pd.Timedelta(hours=4)
                 if direction == 'bullish':
@@ -118,20 +119,22 @@ class TradeManager:
                         if current_high > pivot_price and current_close < pivot_price:
                             pivot_price = current_high
                             print(f"Updated pivot price to {pivot_price} due to wick.")
-                        else: 
-                            if current_low < pivot_price and current_close > pivot_price:
-                                pivot_price = current_low
-                                print(f"Updated pivot price to {pivot_price} due to wick.")
-                    else: 
-                        print("No pivot price to check for wicks.")
+                elif direction == 'bearish':
+                    if pivot_price is not None: 
+                        if current_low < pivot_price and current_close > pivot_price:
+                            pivot_price = current_low
+                            print(f"Updated pivot price to {pivot_price} due to wick.")
+                        
 
-                # Check if candle closes through pivot price
+                # Logic for if price closes through a pivot 
                 pivot_crossed = False 
                 if pivot_price is not None: 
                     if direction == 'bullish' and current_close > pivot_price:
                         pivot_crossed = True
+                        print (f"Pivot crossed at {current_time} because close {current_close} is above pivot price {pivot_price}")
                     elif direction == 'bearish' and current_close < pivot_price:
                         pivot_crossed = True
+                        print (f"Pivot crossed at {current_time} because close {current_close} is below pivot price {pivot_price}")
                 else: 
                     print ("No pivot price to check for crossing.")
                 
@@ -150,7 +153,7 @@ class TradeManager:
                     if pivot is not None:
                         pivot_price = pivot['price']
                         pivot_time = pivot['time']
-                        print(f"New pivot called because of croess pivot price: {pivot_price} at {pivot['time']}")
+                        print(f"New pivot retrieved because of pivot cross with price {pivot_price}")
                     else:
                         print("No new pivot found after pivot was crossed.")
                         pivot_price = None
@@ -192,7 +195,7 @@ class TradeManager:
                 pivot_price = pivot['price']
 
                 # Get hourly data 
-                hourly_data = self.df_hourly[(self.df_hourly['time'] > pivot_time) & (self.df_hourly['time'] < current_time)]
+                hourly_data = self.df_hourly[(self.df_hourly['time'] > pivot_time) & (self.df_hourly['time'] <= current_time)]
 
                 # Check if all closes and highs remain below pivot price 
                 if (hourly_data['c'] < pivot_price).all() and hourly_data['h'].max() < pivot_price:
@@ -221,7 +224,7 @@ class TradeManager:
                 pivot_price = pivot['price']
                 
                 # Get hourly data 
-                hourly_data = self.df_hourly[(self.df_hourly['time'] > pivot_time) & (self.df_hourly['time'] < current_time)]
+                hourly_data = self.df_hourly[(self.df_hourly['time'] > pivot_time) & (self.df_hourly['time'] <= current_time)]
 
                 # Check if all closes and lows remain above pivot price 
                 if (hourly_data['c'] > pivot_price).all() and hourly_data['l'].min() > pivot_price:
