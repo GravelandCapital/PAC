@@ -3,60 +3,47 @@ from entry import Entry
 
 class TradeManager:
     def __init__(self, df_hourly, entry, zigzag_df, depth):
-        print(f"Initializing TradeManager for instrument {entry.instrument}")
         self.df_hourly = df_hourly
         self.entry = entry
         self.zigzag_df = zigzag_df
         self.depth = depth
         self.pip_value = self.get_pip_value(entry.instrument)
-        print(f"Set pip_value to {self.pip_value}")
 
     def get_pip_value(self, instrument):
         pip_value = 0.01 if "JPY" in instrument else 0.0001
-        print(f"Calculated pip value for {instrument}: {pip_value}")
         return pip_value
 
     def check_order_execution(self):
-        print("Checking order execution...")
         start_time = self.entry.order_time 
         end_time = start_time + pd.Timedelta(hours=24)
         hourly_data = self.df_hourly[(self.df_hourly['time'] > start_time) & (self.df_hourly['time'] <= end_time)]
-
-        print(f"Order placed at {start_time}, checking for execution up to {end_time}")
 
         if self.entry.signal in ['bull_eng', 'hammer']:
             condition = hourly_data['l'] <= self.entry.price
         elif self.entry.signal in ['bear_eng', 'shooting_star']:
             condition = hourly_data['h'] >= self.entry.price
         else: 
-            print("Invalid signal type.")
             return False 
 
         if condition.any():
             fill_time = hourly_data[condition].iloc[0]['time']
             self.entry.filled_time = fill_time
             self.entry.order_status = "FILLED"
-            print(f"Order filled at {fill_time}")
             return True
         else: 
             self.entry.order_status = "CANCELLED"
-            print("Order not filled within time frame; order cancelled.")
             return False
 
     def manage_trade(self):
-        print("Starting trade management...")
         start_time = self.entry.filled_time
         if not start_time:
-            print("Trade not filled yet.")
             return None  # Trade not filled yet
 
         # Subset hourly data after trade is filled
         hourly_data = self.df_hourly[self.df_hourly['time'] >= start_time].reset_index(drop=True)
-        print(f"Managing trade from {start_time} onwards.")
 
         # Initialize variables
         stop_loss = self.entry.stop_loss
-        print(f"Initial stop loss: {stop_loss}")
 
         direction = 'bullish' if self.entry.signal in ['bull_eng', 'hammer'] else 'bearish'
 
@@ -65,9 +52,7 @@ class TradeManager:
         if pivot is not None: 
             pivot_price = pivot['price']
             pivot_time = pivot['time']
-            print(f"initial pivot price: {pivot_price} at {pivot['time']}")
         else: 
-            print("No initial pivot found.")
             pivot_price = None
 
         first_pivot = self.find_first_pivot_after_entry(start_time, direction)
@@ -75,10 +60,8 @@ class TradeManager:
         if first_pivot is not None: 
             exit_pivot_price = first_pivot['price']
             exit_pivot_time = first_pivot['time']
-            print(f"Exit pivot price: {exit_pivot_price} at {exit_pivot_time}")
         
         else: 
-            print(f"No exit pivot found after entry at {start_time}.")
             exit_pivot_price = None
         
         # Iterate over each hourly bar
@@ -90,7 +73,6 @@ class TradeManager:
             current_high = current_row['h']
             current_low = current_row['l']
             self.current_open = current_open  # Set current_open for use in get_latest_pivot
-            print(f"\nProcessing candle at {current_time}: Open={current_open}, Close={current_close}, High={current_high}, Low={current_low}")
 
             #  Logic for exit on close of the exit pivot 
             if exit_pivot_price is not None:
@@ -98,32 +80,26 @@ class TradeManager:
                 if direction == 'bullish':
                     if current_low < exit_pivot_price and current_close > exit_pivot_price and current_time >= confirmation_time:
                         exit_pivot_price = current_low
-                        print(f"Updated exit pivot price to {exit_pivot_price} due to wicked pivot.")
                     elif current_close < exit_pivot_price and current_time >= confirmation_time:
                         exit_time = current_time 
                         exit_price = current_close 
-                        print(f"Trade exited at {current_time} with exit price {current_close}")
                         return {'exit_time': current_time, 'exit_price': current_close}
                 elif direction == 'bearish':
                     if current_high > exit_pivot_price and current_close < exit_pivot_price and current_time >= confirmation_time:
                         exit_pivot_price = current_high
-                        print(f"Updated exit pivot price to {exit_pivot_price} due to wicked pivot.")
                     elif current_close > exit_pivot_price and current_time >= confirmation_time:
                         exit_time = current_time
                         exit_price = current_close
-                        print(f"Trade exited at {current_time} with exit price {current_close}")
                         return {'exit_time': current_time, 'exit_price': current_close}
 
                 if direction == 'bullish': 
                     if pivot_price is not None: 
                         if current_high > pivot_price and current_close < pivot_price:
                             pivot_price = current_high
-                            print(f"Updated pivot price to {pivot_price} due to wick.")
                 elif direction == 'bearish':
                     if pivot_price is not None: 
                         if current_low < pivot_price and current_close > pivot_price:
                             pivot_price = current_low
-                            print(f"Updated pivot price to {pivot_price} due to wick.")
                         
 
                 # Logic for if price closes through a pivot 
@@ -131,21 +107,15 @@ class TradeManager:
                 if pivot_price is not None: 
                     if direction == 'bullish' and current_close > pivot_price:
                         pivot_crossed = True
-                        print (f"Pivot crossed at {current_time} because close {current_close} is above pivot price {pivot_price}")
                     elif direction == 'bearish' and current_close < pivot_price:
                         pivot_crossed = True
-                        print (f"Pivot crossed at {current_time} because close {current_close} is below pivot price {pivot_price}")
-                else: 
-                    print ("No pivot price to check for crossing.")
                 
                 if pivot_crossed:
                     # Adjust stop_loss 
                     if direction == 'bullish': 
                         stop_loss = current_low - self.pip_value
-                        print (f"Stop loss adjusted to {stop_loss} at {current_time}")
                     elif direction == 'bearish':
                         stop_loss = current_high + self.pip_value
-                        print(f"Stop loss adjusted to {stop_loss} at {current_time}")
                     self.entry.stop_loss = stop_loss
 
                     # Call get latest pivot because pivot was crossed 
@@ -153,9 +123,7 @@ class TradeManager:
                     if pivot is not None:
                         pivot_price = pivot['price']
                         pivot_time = pivot['time']
-                        print(f"New pivot retrieved because of pivot cross with price {pivot_price}")
                     else:
-                        print("No new pivot found after pivot was crossed.")
                         pivot_price = None
 
             # Detect if a new pivot has formed closer to the current entry price
@@ -164,13 +132,11 @@ class TradeManager:
                 pivot = new_pivot
                 pivot_price = pivot['price']
                 pivot_time = pivot['time']
-                print (f"New pivot detected after filling at {pivot_time} with price {pivot_price}")
 
             # Check for exit condition
             if self.check_exit_condition(current_row, stop_loss):
                 exit_time = current_time
                 exit_price = stop_loss
-                print(f"Trade exited at {exit_time} with exit price {exit_price}")
                 return {'exit_time': exit_time, 'exit_price': exit_price}
                 
     def get_latest_pivot(self, current_time, direction):
@@ -199,7 +165,6 @@ class TradeManager:
 
                 # Check if all closes and highs remain below pivot price 
                 if (hourly_data['c'] < pivot_price).all() and hourly_data['h'].max() < pivot_price:
-                    print(f"pivot has not wicked, returning {pivot_price}")
                     return pivot
                 
                 # If a high is above pivot price but close stays below, update the pivot price
@@ -208,8 +173,6 @@ class TradeManager:
                     for _, wicked_bars in wicked_bars.iterrows():
                         if wicked_bars['h'] > pivot_price:
                             pivot_price = wicked_bars['h']
-                            print(f"Updated pivot price to {pivot_price} due to wicked pivot.")
-                    print(f"Final pivot price after processing wicks: {pivot_price}")
                     pivot['price'] = pivot_price
                     return pivot
 
@@ -228,7 +191,6 @@ class TradeManager:
 
                 # Check if all closes and lows remain above pivot price 
                 if (hourly_data['c'] > pivot_price).all() and hourly_data['l'].min() > pivot_price:
-                    print(f"pivot has not wicked, returning {pivot_price}")
                     return pivot
             
                 # If a low is below pivot price but close stays above, update the pivot price
@@ -237,8 +199,6 @@ class TradeManager:
                     for _, wicked_bars in wicked_bars.iterrows():
                         if wicked_bars['l'] < pivot_price:
                             pivot_price = wicked_bars['l']
-                            print(f"Updated pivot price to {pivot_price} due to wicked pivot.")
-                    print(f"Final pivot price after processing wicks: {pivot_price}")
                     pivot['price'] = pivot_price
                     return pivot
 
@@ -293,7 +253,6 @@ class TradeManager:
             pivots_after_entry.reset_index(drop=True, inplace=True)
             first_pivot_after_entry = pivots_after_entry.loc[0]
 
-            print (f"First pivot after entry: {first_pivot_after_entry['price']} at {first_pivot_after_entry['time']}")
             return first_pivot_after_entry
 
         elif direction == 'bearish':
@@ -307,19 +266,14 @@ class TradeManager:
             pivots_after_entry.reset_index(drop=True, inplace=True)
             first_pivot_after_entry = pivots_after_entry.loc[0]
 
-            print (f"First pivot after entry: {first_pivot_after_entry['price']} at {first_pivot_after_entry['time']}")
             return first_pivot_after_entry
 
     def check_exit_condition(self, current_row, stop_loss):
-        print(f"Checking exit condition at time {current_row['time']} with stop loss {stop_loss}")
         # Determine if the trade should be exited based on stop loss being hit
         if self.entry.signal in ['bull_eng', 'hammer']:
             exit_condition = current_row['l'] <= stop_loss
-            print(f"Bullish exit condition is {'met' if exit_condition else 'not met'}.")
             return exit_condition
         elif self.entry.signal in ['bear_eng', 'shooting_star']:
             exit_condition = current_row['h'] >= stop_loss
-            print(f"Bearish exit condition is {'met' if exit_condition else 'not met'}.")
             return exit_condition
-        print("Invalid signal type for exit condition.")
         return False

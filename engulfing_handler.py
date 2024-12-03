@@ -59,6 +59,7 @@ class EngulfingHandler:
             difference = abs(naked_level - fibo_level)
             if difference <= atr_range and compare(naked_level):
                 fib_entries.append(naked_level)
+                print (f"Found fib entry at {naked_level} on {self.df_daily.loc[self.row_index, 'time']}")
 
             if fib_entries:
                 entry_time = self.df_daily.loc[self.row_index, 'time']
