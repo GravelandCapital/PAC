@@ -19,6 +19,10 @@ class EngulfingHandler:
         lhpb_entry = self.calculate_lhpb_entry()
         if lhpb_entry:
             entries.append(lhpb_entry)
+
+        print(f"\nTotal entries found: {len(entries)}")
+        for entry in entries:
+            print(f"Entry: {entry.price} at {entry.order_time} for {entry.signal} signal")
         
         # Select max (for bull_Eng) and min (for bear_Eng) price levels
         if entries: 
@@ -28,6 +32,9 @@ class EngulfingHandler:
                 best_entry = min(entries, key=lambda x: x.price)
             else:
                 best_entry = None
+            if best_entry:
+                print(f"\nSelected best entry:")
+                print(f"Type: {best_entry.entry_type}, Price: {best_entry.price}")
             return [best_entry] if best_entry else []
         else: 
             return []
@@ -44,43 +51,49 @@ class EngulfingHandler:
         # Calculate ATR range
         atr_range = self.df_daily.loc[self.row_index, 'atr'] * 0.1
 
-        # Define comparison function based on signal
+        # Define comparison function and difference calculation based on signal
         if self.signal == "bull_eng":
             compare = lambda level: level > half_level
+            difference_calc = lambda level: level - fibo_level
         elif self.signal == "bear_eng":
             compare = lambda level: level < half_level
+            difference_calc = lambda level: fibo_level - level
         else:
             return None
-        
+
         fib_entries = []
 
-        # Find matching naked level
+        # Find matching naked levels
         for naked_level in naked_levels:
-            difference = abs(naked_level - fibo_level)
-            if difference <= atr_range and compare(naked_level):
+            difference = difference_calc(naked_level)
+            if 0 <= difference <= atr_range and compare(naked_level):
                 fib_entries.append(naked_level)
-                print (f"Found fib entry at {naked_level} on {self.df_daily.loc[self.row_index, 'time']}")
+                print(f"Found fib entry at {naked_level} on {self.df_daily.loc[self.row_index, 'time']}")
 
-            if fib_entries:
-                entry_time = self.df_daily.loc[self.row_index, 'time']
+        # After the loop, check if any entries were found
+        if fib_entries:
+            print(f"Total fib entries found: {len(fib_entries)}")
+            entry_time = self.df_daily.loc[self.row_index, 'time']
 
-                if self.signal == "bull_eng":
-                    selected_entry = max(fib_entries)
-                elif self.signal == "bear_eng":
-                    selected_entry = min(fib_entries)
-                else: 
-                    return None 
-                return Entry(
-                    instrument=self.instrument,
-                    signal=self.signal,
-                    entry_type='fib',
-                    price=selected_entry,
-                    order_time=entry_time,
-                    row_index=self.row_index
-                )
-            
+            if self.signal == "bull_eng":
+                selected_entry = max(fib_entries)
+            elif self.signal == "bear_eng":
+                selected_entry = min(fib_entries)
             else: 
-                return None
+                return None 
+            print(f"Selected fib entry: {selected_entry}")
+            return Entry(
+                instrument=self.instrument,
+                signal=self.signal,
+                entry_type='fib',
+                price=selected_entry,
+                order_time=entry_time,
+                row_index=self.row_index
+            )
+        else:
+            print("No fib entries found.")
+            return None
+
 
     def calculate_lhpb_entry(self):
         entries = []  # Collect all valid entries
