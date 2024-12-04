@@ -20,10 +20,6 @@ class EngulfingHandler:
         if lhpb_entry:
             entries.append(lhpb_entry)
 
-        print(f"\nTotal entries found: {len(entries)}")
-        for entry in entries:
-            print(f"Entry: {entry.price} at {entry.order_time} for {entry.signal} signal")
-        
         # Select max (for bull_Eng) and min (for bear_Eng) price levels
         if entries: 
             if self.signal == "bull_eng":
@@ -32,9 +28,6 @@ class EngulfingHandler:
                 best_entry = min(entries, key=lambda x: x.price)
             else:
                 best_entry = None
-            if best_entry:
-                print(f"\nSelected best entry:")
-                print(f"Type: {best_entry.entry_type}, Price: {best_entry.price}")
             return [best_entry] if best_entry else []
         else: 
             return []
@@ -67,14 +60,12 @@ class EngulfingHandler:
                 difference = fibo_level - naked_level 
             elif fibo_level < naked_level: 
                 difference = naked_level - fibo_level
-                
+
             if 0 <= difference <= atr_range and compare(naked_level):
                 fib_entries.append(naked_level)
-                print(f"Found fib entry at {naked_level} on {self.df_daily.loc[self.row_index, 'time']}")
 
         # After the loop, check if any entries were found
         if fib_entries:
-            print(f"Total fib entries found: {len(fib_entries)}")
             entry_time = self.df_daily.loc[self.row_index, 'time']
 
             if self.signal == "bull_eng":
@@ -83,7 +74,6 @@ class EngulfingHandler:
                 selected_entry = min(fib_entries)
             else: 
                 return None 
-            print(f"Selected fib entry: {selected_entry}")
             return Entry(
                 instrument=self.instrument,
                 signal=self.signal,
@@ -93,7 +83,6 @@ class EngulfingHandler:
                 row_index=self.row_index
             )
         else:
-            print("No fib entries found.")
             return None
 
 
