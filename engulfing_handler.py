@@ -54,10 +54,8 @@ class EngulfingHandler:
         # Define comparison function and difference calculation based on signal
         if self.signal == "bull_eng":
             compare = lambda level: level > half_level
-            difference_calc = lambda level: level - fibo_level
         elif self.signal == "bear_eng":
             compare = lambda level: level < half_level
-            difference_calc = lambda level: fibo_level - level
         else:
             return None
 
@@ -65,7 +63,11 @@ class EngulfingHandler:
 
         # Find matching naked levels
         for naked_level in naked_levels:
-            difference = difference_calc(naked_level)
+            if fibo_level > naked_level: 
+                difference = fibo_level - naked_level 
+            elif fibo_level < naked_level: 
+                difference = naked_level - fibo_level
+                
             if 0 <= difference <= atr_range and compare(naked_level):
                 fib_entries.append(naked_level)
                 print(f"Found fib entry at {naked_level} on {self.df_daily.loc[self.row_index, 'time']}")
