@@ -122,7 +122,7 @@ class HammerShootingStarHandler:
                             entry_type='GWHMR',
                             price=entry_price,
                             order_time=entry_time,
-                            entry_candle_time = entry_time
+                            entry_candle_time = entry_time,
                             row_index=self.row_index,
                             order_status="PENDING"
                         )
@@ -190,7 +190,7 @@ class HammerShootingStarHandler:
                             entry_type='GWSS',
                             price=entry_price,
                             order_time=entry_time,
-                            entry_candle_time = entry_time
+                            entry_candle_time = entry_time,
                             row_index=self.row_index,
                             order_status="PENDING"
                         )
