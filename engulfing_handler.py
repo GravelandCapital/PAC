@@ -15,23 +15,11 @@ class EngulfingHandler:
         entries = []
         fib_entry = self.calculate_fib_entry()
         if fib_entry:
-            best_entry = self.select_best_entry(fib_entry)
-            return [best_entry]
+            entries.extend(fib_entry)
         lhpb_entry = self.calculate_lhpb_entry()
         if lhpb_entry:
-            best_entry = self.select_best_entry(lhpb_entry)
-            return [best_entry]
-        return []
-        
-    
-    def select_best_entry(self, entries):
-        if self.signal == "bull_eng":
-            best_entry = max(entries, key=lambda entry: entry.price)
-        elif self.signal == "bear_eng":
-            best_entry = min(entries, key=lambda entry: entry.price)
-        else: 
-            best_entry = entries[0]
-        return best_entry
+            entries.extend(lhpb_entry)
+        return entries
 
     def calculate_fib_entry(self):
         fibo_level, half_level = self.calculate_fibo()
@@ -56,23 +44,20 @@ class EngulfingHandler:
         fib_entries = []
 
         # Find matching naked levels
-        for naked_level_info in naked_levels:
-            naked_level = naked_level_info['price']
-            level_time = naked_level_info['time']
+        for naked_level in naked_levels:
             if fibo_level > naked_level: 
                 difference = fibo_level - naked_level 
             elif fibo_level < naked_level: 
                 difference = naked_level - fibo_level
 
             if 0 <= difference <= atr_range and compare(naked_level):
-                order_time = self.df_daily.loc[self.row_index, 'time']
+                entry_time = self.df_daily.loc[self.row_index, 'time']
                 entry = Entry(
                     instrument=self.instrument,
                     signal=self.signal,
                     entry_type='FIB',
                     price=naked_level,
-                    order_time=order_time,
-                    entry_candle_time=level_time,
+                    order_time=entry_time,
                     row_index=self.row_index,
                     order_status="PENDING"
                 )
@@ -81,7 +66,7 @@ class EngulfingHandler:
         if fib_entries:
             return fib_entries
         else: 
-            return [] 
+            return None 
 
     def calculate_lhpb_entry(self):
         entries = []  # Collect all valid entries
@@ -105,19 +90,18 @@ class EngulfingHandler:
                     if row['c'] > pivot_price:
                         if idx > 0:
                             last_high_pre_break = hourly_data.iloc[idx - 1]['h']
-                            entry_candle_time = hourly_data.iloc[idx - 1]['time']
+
                         else:
                             break
                         future_candles = hourly_data.iloc[idx + 1:]
                         if (future_candles['l'] > last_high_pre_break).all() and last_high_pre_break < pivot_price and last_high_pre_break > half_level:
-                            order_time = self.df_daily.loc[self.row_index, 'time']
+                            entry_time = self.df_daily.loc[self.row_index, 'time']
                             entry = Entry(
                                 instrument=self.instrument,
                                 signal=self.signal,
                                 entry_type='LHPB',
                                 price=last_high_pre_break,
-                                order_time= order_time,
-                                entry_candle_time=entry_candle_time,
+                                order_time=entry_time,
                                 row_index=self.row_index,
                                 order_status="PENDING"
                             )
@@ -135,19 +119,17 @@ class EngulfingHandler:
                     if row['c'] < pivot_price:
                         if idx > 0:
                             last_low_pre_break = hourly_data.iloc[idx - 1]['l']
-                            entry_candle_time = hourly_data.iloc[idx - 1]['time']
                         else:
                             break
                         future_candles = hourly_data.iloc[idx + 1:]
                         if (future_candles['h'] < last_low_pre_break).all() and last_low_pre_break > pivot_price and last_low_pre_break < half_level:
-                            order_time = self.df_daily.loc[self.row_index, 'time']
+                            entry_time = self.df_daily.loc[self.row_index, 'time']
                             entry = Entry(
                                 instrument=self.instrument,
                                 signal=self.signal,
                                 entry_type='LLPB',
                                 price=last_low_pre_break,
-                                order_time=order_time,
-                                entry_candle_time=entry_candle_time,
+                                order_time=entry_time,
                                 row_index=self.row_index,
                                 order_status="PENDING"
                             )
@@ -160,7 +142,7 @@ class EngulfingHandler:
             return entries 
 
         else: 
-            return [] 
+            return None 
 
 
     def calculate_fibo(self):
@@ -194,8 +176,7 @@ class EngulfingHandler:
                 if current_close > previous_high:
                     future_candles = hourly_data.iloc[i + 1:]
                     if (future_candles['l'] >= previous_high).all():
-                        level_time = prev_row["time"]
-                        naked_levels.append({'price': previous_high, 'time': level_time})
+                        naked_levels.append(previous_high)
 
             elif signal == "bear_eng":
                 previous_low = prev_row["l"]
@@ -204,8 +185,7 @@ class EngulfingHandler:
                 if current_close < previous_low:
                     future_candles = hourly_data.iloc[i + 1:]
                     if (future_candles['h'] <= previous_low).all():
-                        level_time = prev_row["time"]
-                        naked_levels.append({'price': previous_low, 'time': level_time})
+                        naked_levels.append(previous_low)
         return naked_levels
 
     def find_filtered_pivots(self):
@@ -348,9 +328,7 @@ class EngulfingHandler:
                 pivot_price = original_pivot_price
 
                 hourly_data = self.df_hourly[
-                    (self.df_hourly['time'] >= pivot['time']) & 
-                    (self.df_hourly['time'] <= end_time) &
-                    (self.df_hourly['time'] != entry_candle_time) 
+                    (self.df_hourly['time'] >= pivot['time']) & (self.df_hourly['time'] <= end_time)
                 ]
 
                 for idx in range(len(hourly_data)):
