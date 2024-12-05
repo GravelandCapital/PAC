@@ -53,7 +53,7 @@ def process_signals(df_daily, df_hourly, zigzag_df, instrument):
 
 def calculate_sl_tp(entries, df_daily, df_hourly, zigzag_df, daily_zigzag, instrument):
     final_entries = []
-    for entry in entries:
+    for entry in entries [:]:
         if entry.signal in ['bull_eng', 'bear_eng']:
             handler = EngulfingHandler(df_daily, df_hourly, entry.row_index, zigzag_df, instrument)
         elif entry.signal in ['hammer', 'shooting_star']:

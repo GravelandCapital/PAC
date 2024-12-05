@@ -15,22 +15,11 @@ class EngulfingHandler:
         entries = []
         fib_entry = self.calculate_fib_entry()
         if fib_entry:
-            entries.append(fib_entry)
+            entries.extend(fib_entry)
         lhpb_entry = self.calculate_lhpb_entry()
         if lhpb_entry:
-            entries.append(lhpb_entry)
-
-        # Select max (for bull_Eng) and min (for bear_Eng) price levels
-        if entries: 
-            if self.signal == "bull_eng":
-                best_entry = max(entries, key=lambda x: x.price)
-            elif self.signal == "bear_eng":
-                best_entry = min(entries, key=lambda x: x.price)
-            else:
-                best_entry = None
-            return [best_entry] if best_entry else []
-        else: 
-            return []
+            entries.extend(lhpb_entry)
+        return entries
 
     def calculate_fib_entry(self):
         fibo_level, half_level = self.calculate_fibo()
@@ -62,29 +51,22 @@ class EngulfingHandler:
                 difference = naked_level - fibo_level
 
             if 0 <= difference <= atr_range and compare(naked_level):
-                fib_entries.append(naked_level)
-
-        # After the loop, check if any entries were found
+                entry_time = self.df_daily.loc[self.row_index, 'time']
+                entry = Entry(
+                    instrument=self.instrument,
+                    signal=self.signal,
+                    entry_type='FIB',
+                    price=naked_level,
+                    order_time=entry_time,
+                    row_index=self.row_index,
+                    order_status="PENDING"
+                )
+                fib_entries.append(entry)
+        
         if fib_entries:
-            entry_time = self.df_daily.loc[self.row_index, 'time']
-
-            if self.signal == "bull_eng":
-                selected_entry = max(fib_entries)
-            elif self.signal == "bear_eng":
-                selected_entry = min(fib_entries)
-            else: 
-                return None 
-            return Entry(
-                instrument=self.instrument,
-                signal=self.signal,
-                entry_type='fib',
-                price=selected_entry,
-                order_time=entry_time,
-                row_index=self.row_index
-            )
-        else:
-            return None
-
+            return fib_entries
+        else: 
+            return None 
 
     def calculate_lhpb_entry(self):
         entries = []  # Collect all valid entries
@@ -114,7 +96,7 @@ class EngulfingHandler:
                         future_candles = hourly_data.iloc[idx + 1:]
                         if (future_candles['l'] > last_high_pre_break).all() and last_high_pre_break < pivot_price and last_high_pre_break > half_level:
                             entry_time = self.df_daily.loc[self.row_index, 'time']
-                            entries.append(Entry(
+                            entry = Entry(
                                 instrument=self.instrument,
                                 signal=self.signal,
                                 entry_type='LHPB',
@@ -122,7 +104,8 @@ class EngulfingHandler:
                                 order_time=entry_time,
                                 row_index=self.row_index,
                                 order_status="PENDING"
-                            ))
+                            )
+                            entries.append(entry) 
                         else: 
                             break # Stop searching if the condition is not met
 
@@ -141,7 +124,7 @@ class EngulfingHandler:
                         future_candles = hourly_data.iloc[idx + 1:]
                         if (future_candles['h'] < last_low_pre_break).all() and last_low_pre_break > pivot_price and last_low_pre_break < half_level:
                             entry_time = self.df_daily.loc[self.row_index, 'time']
-                            entries.append(Entry(
+                            entry = Entry(
                                 instrument=self.instrument,
                                 signal=self.signal,
                                 entry_type='LLPB',
@@ -149,19 +132,17 @@ class EngulfingHandler:
                                 order_time=entry_time,
                                 row_index=self.row_index,
                                 order_status="PENDING"
-                            ))
+                            )
+                            entries.append(entry)
                         else: 
                             break # Stop searching if the condition is not met
 
         # After collecting all entries, return the max for LHPB and min for LLPB
         if entries:
-            if self.signal == "bull_eng":
-                best_entry = max(entries, key=lambda x: x.price)
-            elif self.signal == "bear_eng":
-                best_entry = min(entries, key=lambda x: x.price)
-            return best_entry
+            return entries 
 
-        return None
+        else: 
+            return None 
 
 
     def calculate_fibo(self):

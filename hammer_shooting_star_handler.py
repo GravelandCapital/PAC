@@ -18,34 +18,7 @@ class HammerShootingStarHandler:
         gowith_entries = self.calculate_gowith_entry()
         entries.extend(gowith_entries)
 
-        # For PDL entries, select the max entry price
-        # For PDH entries, select the min entry price
-        if entries:
-            pdh_pdl_entries = [e for e in entries if e.entry_type in ['PDH', 'PDL']]
-            other_entries = [e for e in entries if e.entry_type not in ['PDH', 'PDL']]
-
-            # Process PDH/PDL entries
-            if pdh_pdl_entries:
-                if any(e.entry_type == 'PDL' for e in pdh_pdl_entries):
-                    # For PDL, select max price
-                    pdl_entries = [e for e in pdh_pdl_entries if e.entry_type == 'PDL']
-                    best_pdl_entry = max(pdl_entries, key=lambda x: x.price)
-                    processed_entries = [best_pdl_entry]
-                elif any(e.entry_type == 'PDH' for e in pdh_pdl_entries):
-                    # For PDH, select min price
-                    pdh_entries = [e for e in pdh_pdl_entries if e.entry_type == 'PDH']
-                    best_pdh_entry = min(pdh_entries, key=lambda x: x.price)
-                    processed_entries = [best_pdh_entry]
-                else:
-                    processed_entries = []
-            else:
-                processed_entries = []
-
-            # Add other entries (GWSS, GWHMR) without modification
-            processed_entries.extend(other_entries)
-            return processed_entries
-        else:
-            return []
+        return entries 
 
     def calculate_pdh_pdl_entry(self):
         signal = self.signal
