@@ -35,18 +35,20 @@ class HammerShootingStarHandler:
             for i in range(len(hourly_data) - 1):
                 row = hourly_data.iloc[i]
                 high = row['h']
+                entry_candle_time = row['time']
                 next_candle_close = hourly_data.iloc[i + 1]['c']
                 future_candles = hourly_data.iloc[i + 2:]
 
                 if high < pdl and next_candle_close > high and (future_candles['l'] > high).all():
-                    entry_time = self.df_daily.loc[self.row_index, 'time']
+                    order_time = self.df_daily.loc[self.row_index, 'time']
                     entry_price = high
                     entry = Entry(
                         instrument = self.instrument,
                         signal=signal,
                         entry_type='PDL',
                         price=entry_price,
-                        order_time=entry_time,
+                        order_time=order_time,
+                        entry_candle_time = entry_candle_time,
                         row_index=self.row_index,
                         order_status="PENDING"
                     )
@@ -55,18 +57,20 @@ class HammerShootingStarHandler:
             for i in range(len(hourly_data) - 1):
                 row = hourly_data.iloc[i]
                 low = row['l']
+                entry_candle_time = row['time']
                 next_candle_close = hourly_data.iloc[i + 1]['c']
                 future_candles = hourly_data.iloc[i + 2:]
 
                 if low > pdh and next_candle_close < low and (future_candles['h'] < low).all():
-                    entry_time = self.df_daily.loc[self.row_index, 'time']
+                    order_time = self.df_daily.loc[self.row_index, 'time']
                     entry_price = low
                     entry = Entry(
                         instrument=self.instrument,
                         signal=signal,
                         entry_type='PDH',
                         price=entry_price,
-                        order_time=entry_time,
+                        order_time=order_time,
+                        entry_candle_time = entry_candle_time,
                         row_index=self.row_index,
                         order_status="PENDING"
                     )
@@ -118,6 +122,7 @@ class HammerShootingStarHandler:
                             entry_type='GWHMR',
                             price=entry_price,
                             order_time=entry_time,
+                            entry_candle_time = entry_time
                             row_index=self.row_index,
                             order_status="PENDING"
                         )
@@ -185,6 +190,7 @@ class HammerShootingStarHandler:
                             entry_type='GWSS',
                             price=entry_price,
                             order_time=entry_time,
+                            entry_candle_time = entry_time
                             row_index=self.row_index,
                             order_status="PENDING"
                         )

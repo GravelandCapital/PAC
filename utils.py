@@ -52,8 +52,9 @@ def process_signals(df_daily, df_hourly, zigzag_df, instrument):
     return entries
 
 def calculate_sl_tp(entries, df_daily, df_hourly, zigzag_df, daily_zigzag, instrument):
-    final_entries = []
-    for entry in entries [:]:
+    entry_rr_list = []
+
+    for entry in entries:
         if entry.signal in ['bull_eng', 'bear_eng']:
             handler = EngulfingHandler(df_daily, df_hourly, entry.row_index, zigzag_df, instrument)
         elif entry.signal in ['hammer', 'shooting_star']:
@@ -74,10 +75,19 @@ def calculate_sl_tp(entries, df_daily, df_hourly, zigzag_df, daily_zigzag, instr
 
             # Append to final list only if R/R ratio is at least 1.5
             if rr_ratio >= 1.5:
-                final_entries.append(entry)
+                entry_rr_list.append((entry, rr_ratio))
+            
+    if not entry_rr_list: 
+        entries[:] = []  # Clear entries if no valid R/R ratios
+        return
+
+    # Select entries with highest R/R ratios
+    best_entry, best_rr = max(entry_rr_list, key=lambda x: x[1])
+
+    # Replace entries with the best entry
+    entries[:] = [best_entry]
     
-    # Replace entries with final list that meets R/R condition
-    entries[:] = final_entries
+    print(f"Selected entry with type {best_entry.entry_type}, price {best_entry.price}, RR {best_rr:.2f}")
 
 def extract_instrument_from_filename(filename):
     """Extracts the instrument name from the filename."""
