@@ -15,11 +15,19 @@ class EngulfingHandler:
         entries = []
         fib_entry = self.calculate_fib_entry()
         if fib_entry:
-            entries.extend(fib_entry)
+            best_entry = self.select_best_entry(fib_entry)
+            return best_entry
         lhpb_entry = self.calculate_lhpb_entry()
         if lhpb_entry:
-            entries.extend(lhpb_entry)
-        return entries
+            best_entry = self.select_best_entry(lhpb_entry)
+        
+    
+    def select_best_entry(self, entry, entries):
+        if entry.signal == "bull_eng":
+            best_entry = max(entries, key=lambda entry: entry.price)
+        elif entry.signal == "bear_eng":
+            best_entry = min(entries, key=lambda entry: entry.price)
+        return best_entry
 
     def calculate_fib_entry(self):
         fibo_level, half_level = self.calculate_fibo()
