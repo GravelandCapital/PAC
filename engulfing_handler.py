@@ -3,13 +3,14 @@ import pandas as pd
 
 class EngulfingHandler:
     """Handler for Engulfing signals."""
-    def __init__(self, df_daily, df_hourly, row_index, zigzag_df, instrument):
+    def __init__(self, df_daily, df_hourly, row_index, zigzag_df, instrument, daily_zigzag):
         self.df_daily = df_daily
         self.df_hourly = df_hourly
         self.row_index = row_index
         self.signal = df_daily.loc[row_index, 'signal']
         self.zigzag_df = zigzag_df
         self.instrument = instrument
+        self.daily_zigzag = daily_zigzag
 
     def calculate_entries(self):
         entries = []
@@ -331,7 +332,7 @@ class EngulfingHandler:
             signal_high = self.df_daily.loc[self.row_index, 'h']
             stop_loss = failure_point - pip_value
             original_stop_loss = stop_loss
-
+            stop_loss_list.append({'price': original_stop_loss, 'time': self.df_daily.loc[self.row_index, 'time'].iloc[-1]})
             for _, pivot in sl_pivots.iterrows():
                 original_pivot_price = pivot['price']
                 pivot_price = original_pivot_price
@@ -361,22 +362,16 @@ class EngulfingHandler:
 
                             if temp_stop_loss < original_pivot_price and stop_loss_value >= min_atr:
                                 temp_stop_loss = breakout_low - pip_value
-                                stop_loss_list.append(temp_stop_loss)
-                                break
-                            else:
+                                stop_loss_list.append({'price': temp_stop_loss, 'time': row['time']})
                                 break
 
-            if stop_loss_list:
-                max_stop_loss = max(stop_loss_list)
-                return max_stop_loss, max_stop_loss
-            else:
-                return stop_loss, stop_loss
 
         elif self.signal == "bear_eng":
             failure_point = self.df_daily.loc[self.row_index, 'h']
             signal_low = self.df_daily.loc[self.row_index, 'l']
             stop_loss = failure_point
             original_stop_loss = stop_loss
+            stop_loss_list.append({'price': original_stop_loss, 'time': self.df_daily.loc[self.row_index, 'time'].iloc[-1]})
 
             for _, pivot in sl_pivots.iterrows():
                 original_pivot_price = pivot['price']
@@ -407,19 +402,16 @@ class EngulfingHandler:
 
                             if temp_stop_loss > original_pivot_price and stop_loss_value >= min_atr:
                                 temp_stop_loss = breakout_high + pip_value
-                                stop_loss_list.append(temp_stop_loss)
-                                break
-                            else:
+                                stop_loss_list.append({'price': temp_stop_loss, 'time': row['time']})
                                 break
 
-            if stop_loss_list:
-                min_stop_loss = min(stop_loss_list)
-                return min_stop_loss, min_stop_loss
-            else:
-                stop_loss = stop_loss + pip_value
-                return stop_loss, stop_loss
 
-
+        if stop_loss_list:
+            return stop_loss_list
+        else: 
+            print ("No stop loss found")
+            return None
+            
     def sl_pivots(self, entry_price):
         entry_time = self.df_daily.loc[self.row_index, 'time']
         threshold_time = entry_time - pd.Timedelta(days=365)
@@ -478,7 +470,7 @@ class EngulfingHandler:
         sl_pivots_df = pd.DataFrame(sl_pivots)
         return sl_pivots_df
 
-    def calculate_take_profit(self, entry, daily_zigzag):
+    def calculate_take_profit(self, entry):
         entry_price = entry.price
         entry_time = self.df_daily.loc[self.row_index, 'time']
         depth = 3
@@ -489,7 +481,7 @@ class EngulfingHandler:
         adjusted_entry_time = self.df_daily.loc[confirmation_index, 'time']
 
         # Get all pivots before the entry time
-        valid_pivots = daily_zigzag[daily_zigzag['time'] < adjusted_entry_time]
+        valid_pivots = self.daily_zigzag[self.daily_zigzag['time'] < adjusted_entry_time]
 
         if self.signal == 'bull_eng':
             pivot_highs = valid_pivots[
@@ -528,3 +520,30 @@ class EngulfingHandler:
                     else:
                         continue
         return None
+    
+    def generate_valid_combinations(self, entries): 
+        valid_combinations = []
+        take_profit = self.calculate_take_profit(entries[0])
+
+        for entry in entries:
+            stop_losses = self.calculate_stop_loss(entry)
+            for sl in stop_losses: 
+                if entry.entry_candle_time != sl['time']:
+                    risk = abs(entry.price - sl['price'])
+                    reward = abs(entry.price - take_profit)
+                    rr_ratio = reward / risk if risk > 0 else 0
+                    if rr_ratio >= 1.5:
+                        valid_combinations.append({'entry': entry, 
+                                                   'stop_loss': sl,
+                                                   'stop_loss_time': sl['time'],
+                                                    'take_profit': take_profit,
+                                                    'risk_reward_ratio': rr_ratio})    
+        return valid_combinations
+
+    def select_best_trade(self, valid_combinations):
+        if not valid_combinations:
+            return None
+        best_trade = max(valid_combinations, key=lambda x: x['risk_reward_ratio'])
+        return best_trade
+                        
+                                                   

@@ -36,48 +36,37 @@ def calculate_zigzag_daily(df_daily, depth=3):
     return daily_zigzag
 
 def process_signals(df_daily, df_hourly, zigzag_df, instrument):
-    entries = []
+    final_entries = []
+    daily_zigzag = calculate_zigzag_daily(df_daily, depth=3)
     for row_index in df_daily.index:
         signal = df_daily.loc[row_index, 'signal']
         if signal == 'bull_eng' or signal == 'bear_eng':
-            handler = EngulfingHandler(df_daily, df_hourly, row_index, zigzag_df, instrument)
+            handler = EngulfingHandler(df_daily, df_hourly, row_index, zigzag_df, instrument, daily_zigzag)
         elif signal == 'hammer' or signal == 'shooting_star':
-            handler = HammerShootingStarHandler(df_daily, df_hourly, row_index, zigzag_df, instrument)
+            handler = HammerShootingStarHandler(df_daily, df_hourly, row_index, zigzag_df, instrument, daily_zigzag)
         else:
             continue  # No signal, skip
 
         # Calculate entries
-        signal_entries = handler.calculate_entries()
-        entries.extend(signal_entries)
-    return entries
-
-def calculate_sl_tp(entries, df_daily, df_hourly, zigzag_df, daily_zigzag, instrument):
-    final_entries = []
-    for entry in entries [:]:
-        if entry.signal in ['bull_eng', 'bear_eng']:
-            handler = EngulfingHandler(df_daily, df_hourly, entry.row_index, zigzag_df, instrument)
-        elif entry.signal in ['hammer', 'shooting_star']:
-            handler = HammerShootingStarHandler(df_daily, df_hourly, entry.row_index, zigzag_df, instrument)
-        else:
+        entries = handler.calculate_entries()
+        if not entries:
             continue
 
-        # Calculate stop loss and take profit
-        entry.stop_loss, entry.original_stop_loss = handler.calculate_stop_loss(entry)
-        entry.take_profit = handler.calculate_take_profit(entry, daily_zigzag)
+        valid_combinations = handler.generate_valid_combinations(entries)
+        if not valid_combinations:
+            continue
 
-        # Ensure stop loss and take profit are set
-        if entry.stop_loss and entry.take_profit:
-            # Calculate risk/reward ratio
-            risk = abs(entry.price - entry.stop_loss)
-            reward = abs(entry.take_profit - entry.price)
-            rr_ratio = reward / risk if risk > 0 else 0
+        best_trade = handler.select_best_trade(valid_combinations)
+        if best_trade:
+            # Update the entry with selected stop loss and take profit
+            entry = best_trade['entry']
+            entry.stop_loss = best_trade['stop_loss']
+            entry.take_profit = best_trade['take_profit']
+            entry.rr_ratio = best_trade['rr_ratio']
+            final_entries.append(entry)
 
-            # Append to final list only if R/R ratio is at least 1.5
-            if rr_ratio >= 1.5:
-                final_entries.append(entry)
-    
-    # Replace entries with final list that meets R/R condition
-    entries[:] = final_entries
+    return final_entries
+
 
 def extract_instrument_from_filename(filename):
     """Extracts the instrument name from the filename."""

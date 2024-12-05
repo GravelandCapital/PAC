@@ -3,13 +3,14 @@ from entry import Entry
 
 class HammerShootingStarHandler:
     """Handler for Hammer and Shooting Star signals."""
-    def __init__(self, df_daily, df_hourly, row_index, zigzag_df, instrument):
+    def __init__(self, df_daily, df_hourly, row_index, zigzag_df, instrument, daily_zigzag):
         self.df_daily = df_daily
         self.df_hourly = df_hourly
         self.row_index = row_index
         self.signal = df_daily.loc[row_index, 'signal']
         self.zigzag_df = zigzag_df
         self.instrument = instrument
+        self.daily_zigzag = daily_zigzag
 
     def calculate_entries(self):
         entries = []
@@ -231,16 +232,22 @@ class HammerShootingStarHandler:
         pip_value = self.get_pip_value(self.instrument)
         min_atr = self.df_daily.loc[self.row_index, 'atr'] * 0.4
         entry_price = entry.price
+        entry_candle_time = entry.entry_candle_time
+        
+
+        stop_loss_list = []
 
         if entry.entry_type == "PDH":
             stop_loss = self.df_daily.loc[entry.row_index, 'h'] + pip_value
-            original_stop_loss = stop_loss
-            return stop_loss, original_stop_loss
+            stop_loss_time = self.df_daily.loc[entry.row_index, 'time']
+            stop_loss_list.append({'price': stop_loss, 'time': stop_loss_time})
+            return stop_loss_list
 
         elif entry.entry_type == "PDL":
             stop_loss = self.df_daily.loc[entry.row_index, 'l'] - pip_value
-            original_stop_loss = stop_loss
-            return stop_loss, original_stop_loss
+            stop_loss_time = self.df_daily.loc[entry.row_index, 'time']
+            stop_loss_list.append({'price': stop_loss, 'time': stop_loss_time})
+            return stop_loss_list
 
         elif entry.entry_type in ["GWHMR", "GWSS"]:
             if entry.signal == "hammer":
@@ -248,7 +255,7 @@ class HammerShootingStarHandler:
                 failure_point = self.df_daily.loc[self.row_index, 'l']
                 stop_loss = failure_point - pip_value
                 original_stop_loss = stop_loss
-
+                stop_loss_list.append({'price': stop_loss, 'time': entry_candle_time})
 
                 relevant_pivots = self.zigzag_df[
                     (self.zigzag_df['time'] < entry_time) &
@@ -271,21 +278,22 @@ class HammerShootingStarHandler:
                         if future_lows is None or (future_lows > pivot_price):
                             temp_stop_loss = pivot_price - pip_value
                             stop_loss_value = entry_price - temp_stop_loss
+                            stop_loss_time = self.df_daily.loc[self.row_index, 'time'].iloc[-1]
                             if stop_loss_value >= min_atr:
-                                stop_loss = temp_stop_loss
-                                break
+                                stop_loss_list.append({'price': temp_stop_loss, 'time': stop_loss_time})
                             else:
                                 continue
                         else: 
                             continue
 
-                return stop_loss, stop_loss
+                return stop_loss_list
 
             elif entry.signal == "shooting_star":
                 entry_time = entry.order_time
                 failure_point = self.df_daily.loc[self.row_index, 'h']
                 stop_loss = failure_point + pip_value
                 original_stop_loss = stop_loss
+                stop_loss_list.append({'price': stop_loss, 'time': entry_candle_time})
 
                 relevant_pivots = self.zigzag_df[
                     (self.zigzag_df['time'] < entry_time) &
@@ -308,17 +316,17 @@ class HammerShootingStarHandler:
                         if future_highs is None or (future_highs < pivot_price):
                             temp_stop_loss = pivot_price + pip_value
                             stop_loss_value = temp_stop_loss - entry_price
+                            stop_loss_time = self.df_daily.loc[self.row_index, 'time'].iloc[-1]
                             if stop_loss_value >= min_atr:
-                                stop_loss = temp_stop_loss
-                                break
+                                stop_loss_list.append({'price': temp_stop_loss, 'time': stop_loss_time})
                             else:
                                 continue
                         else: 
                             continue
 
-                return stop_loss, stop_loss
+                return stop_loss_list
 
-    def calculate_take_profit(self, entry, daily_zigzag):
+    def calculate_take_profit(self, entry):
         entry_price = entry.price
         entry_time = self.df_daily.loc[self.row_index, 'time']
         depth = 3
@@ -329,7 +337,7 @@ class HammerShootingStarHandler:
         adjusted_entry_time = self.df_daily.loc[confirmation_index, 'time']
 
         # Get all pivots before the entry time
-        valid_pivots = daily_zigzag[daily_zigzag['time'] < adjusted_entry_time]
+        valid_pivots = self.daily_zigzag[self.daily_zigzag['time'] < adjusted_entry_time]
 
         if entry.signal == 'hammer':
             pivot_highs = valid_pivots[
@@ -368,3 +376,29 @@ class HammerShootingStarHandler:
                     else:
                         continue
         return None
+    
+    def generate_valid_combinations(self, entries):
+        valid_combinations = []
+        take_profit = self.calculate_take_profit(entries[0])
+
+        for entry in entries:
+            stop_losses = self.calculate_stop_loss(entry)
+            for sl in stop_losses:
+                risk = abs(entry.price - sl['price'])
+                reward = abs(take_profit - entry.price)
+                rr_ratio = reward / risk if risk > 0 else 0
+                if rr_ratio >= 1.5:
+                    valid_combinations.append({
+                        'entry': entry,
+                        'stop_loss': sl['price'],
+                        'stop_loss_time': sl['time'],
+                        'take_profit': take_profit,
+                        'rr_ratio': rr_ratio
+                    })
+        return valid_combinations
+    
+    def select_best_trade(self, valid_combinations):
+        if not valid_combinations:
+            return None
+        best_trade = max(valid_combinations, key=lambda x: x['rr_ratio'])
+        return best_trade

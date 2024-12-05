@@ -13,6 +13,7 @@ class Entry:
     original_stop_loss: float = None 
     stop_loss: float = None
     take_profit: float = None
+    rr_ratio: float = None
     order_status: str = "PENDING"
     filled_time: pd.Timestamp = None
     exit_time: pd.Timestamp = None
