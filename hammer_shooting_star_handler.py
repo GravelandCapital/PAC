@@ -240,13 +240,17 @@ class HammerShootingStarHandler:
         if entry.entry_type == "PDH":
             stop_loss = self.df_daily.loc[entry.row_index, 'h'] + pip_value
             stop_loss_time = self.df_daily.loc[entry.row_index, 'time']
-            stop_loss_list.append({'price': stop_loss, 'time': stop_loss_time})
+            origignal_stop_loss = stop_loss
+            entry.original_stop_loss = origignal_stop_loss
+            stop_loss_list.append(stop_loss)
             return stop_loss_list
 
         elif entry.entry_type == "PDL":
             stop_loss = self.df_daily.loc[entry.row_index, 'l'] - pip_value
             stop_loss_time = self.df_daily.loc[entry.row_index, 'time']
-            stop_loss_list.append({'price': stop_loss, 'time': stop_loss_time})
+            origignal_stop_loss = stop_loss
+            entry.original_stop_loss = origignal_stop_loss
+            stop_loss_list.append(stop_loss)
             return stop_loss_list
 
         elif entry.entry_type in ["GWHMR", "GWSS"]:
@@ -255,7 +259,8 @@ class HammerShootingStarHandler:
                 failure_point = self.df_daily.loc[self.row_index, 'l']
                 stop_loss = failure_point - pip_value
                 original_stop_loss = stop_loss
-                stop_loss_list.append({'price': stop_loss, 'time': entry_candle_time})
+                entry.original_stop_loss = original_stop_loss
+                stop_loss_list.append(original_stop_loss)
 
                 if self.row_index > 0:
                     previous_day_time = self.df_daily.loc[self.row_index - 1, 'time']
@@ -285,7 +290,7 @@ class HammerShootingStarHandler:
                             stop_loss_value = entry_price - temp_stop_loss
                             stop_loss_time = previous_day_time
                             if stop_loss_value >= min_atr:
-                                stop_loss_list.append({'price': temp_stop_loss, 'time': stop_loss_time})
+                                stop_loss_list.append(temp_stop_loss)
                             else:
                                 continue
                         else: 
@@ -298,7 +303,8 @@ class HammerShootingStarHandler:
                 failure_point = self.df_daily.loc[self.row_index, 'h']
                 stop_loss = failure_point + pip_value
                 original_stop_loss = stop_loss
-                stop_loss_list.append({'price': stop_loss, 'time': entry_candle_time})
+                entry.original_stop_loss = original_stop_loss
+                stop_loss_list.append(original_stop_loss)
 
                 if self.row_index > 0:
                     previous_day_time = self.df_daily.loc[self.row_index - 1, 'time']
@@ -328,7 +334,7 @@ class HammerShootingStarHandler:
                             stop_loss_value = temp_stop_loss - entry_price
                             stop_loss_time = previous_day_time
                             if stop_loss_value >= min_atr:
-                                stop_loss_list.append({'price': temp_stop_loss, 'time': stop_loss_time})
+                                stop_loss_list.append(temp_stop_loss)
                             else:
                                 continue
                         else: 
@@ -403,14 +409,13 @@ class HammerShootingStarHandler:
         for entry in entries:
             stop_losses = self.calculate_stop_loss(entry)
             for sl in stop_losses:
-                risk = abs(entry.price - sl['price'])
+                risk = abs(entry.price - sl)
                 reward = abs(take_profit - entry.price)
                 rr_ratio = reward / risk if risk > 0 else 0
                 if rr_ratio >= 1.5:
                     valid_combinations.append({
                         'entry': entry,
-                        'stop_loss': sl['price'],
-                        'stop_loss_time': sl['time'],
+                        'stop_loss': sl,
                         'take_profit': take_profit,
                         'rr_ratio': rr_ratio
                     })

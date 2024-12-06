@@ -42,8 +42,7 @@ class TradeManager:
         # Subset hourly data after trade is filled
         hourly_data = self.df_hourly[self.df_hourly['time'] >= start_time].reset_index(drop=True)
 
-        # Initialize variables
-        stop_loss = self.entry.stop_loss if isinstance(self.entry.stop_loss, float) else self.entry.stop_loss['price']
+        stop_loss = self.entry.stop_loss
 
         direction = 'bullish' if self.entry.signal in ['bull_eng', 'hammer'] else 'bearish'
 
@@ -270,9 +269,8 @@ class TradeManager:
 
     def check_exit_condition(self, current_row, stop_loss):
         # Determine if the trade should be exited based on stop loss being hit
-        if isinstance(stop_loss, dict):
-            stop_loss = stop_loss['price']
-            
+        stop_loss = self.entry.stop_loss 
+
         if self.entry.signal in ['bull_eng', 'hammer']:
             exit_condition = current_row['l'] <= stop_loss
             return exit_condition
