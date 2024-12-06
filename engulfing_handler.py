@@ -11,6 +11,7 @@ class EngulfingHandler:
         self.zigzag_df = zigzag_df
         self.instrument = instrument
         self.daily_zigzag = daily_zigzag
+        print (f"engulfing handler intitialized for {self.instrument} at {self.df_daily.loc[self.row_index, 'time']}")
 
     def calculate_entries(self):
         entries = []
@@ -20,6 +21,7 @@ class EngulfingHandler:
         lhpb_entry = self.calculate_lhpb_entry()
         if lhpb_entry:
             entries.extend(lhpb_entry)
+        print (f"Found {len(entries)} entries")
         return entries
 
     def calculate_fib_entry(self):
@@ -333,11 +335,7 @@ class EngulfingHandler:
             stop_loss = failure_point - pip_value
             original_stop_loss = stop_loss
             entry.original_stop_loss = original_stop_loss
-
-            if self.row_index > 0:
-                previous_day_time = self.df_daily.loc[self.row_index - 1, 'time']
-            else:
-                previous_day_time = None
+            print (f"Original stop loss: {original_stop_loss}")
 
             stop_loss_list.append(original_stop_loss)
             for _, pivot in sl_pivots.iterrows():
@@ -370,6 +368,7 @@ class EngulfingHandler:
                             if temp_stop_loss < original_pivot_price and stop_loss_value >= min_atr:
                                 temp_stop_loss = breakout_low - pip_value
                                 stop_loss_list.append(temp_stop_loss)
+                                print (f"appended temp stop loss: {temp_stop_loss}")
                                 break
 
 
@@ -379,6 +378,7 @@ class EngulfingHandler:
             stop_loss = failure_point
             original_stop_loss = stop_loss
             entry.original_stop_loss = original_stop_loss
+            print (f"Original stop loss: {original_stop_loss}")
 
             if self.row_index > 0: 
                 previous_day_time = self.df_daily.loc[self.row_index - 1, 'time']
@@ -418,11 +418,14 @@ class EngulfingHandler:
                             if temp_stop_loss > original_pivot_price and stop_loss_value >= min_atr:
                                 temp_stop_loss = breakout_high + pip_value
                                 stop_loss_list.append(temp_stop_loss)
+                                print (f"appended temp stop loss: {temp_stop_loss}")
                                 break
 
 
         if stop_loss_list:
+            print (f"Stop loss list: {stop_loss_list}")
             return stop_loss_list
+        
         else: 
             print ("No stop loss found")
             return None
@@ -513,6 +516,7 @@ class EngulfingHandler:
                     ]['h']
                     if (intermediate_highs < pivot_price).all():
                         tp_level = pivot_price
+                        print (f"Take profit level: {tp_level}")
                         return tp_level
                     else:
                         continue
@@ -520,6 +524,7 @@ class EngulfingHandler:
             # If no pivot high is found, make the take profit 2x atr 
             atr = self.df_daily.loc[self.row_index, 'atr']
             tp_level = entry_price + (atr * 2)
+            print (f"Take profit level using 2x atr: {tp_level}")
             return tp_level
 
         elif self.signal == 'bear_eng':
@@ -537,6 +542,7 @@ class EngulfingHandler:
                     ]['l']
                     if (intermediate_lows > pivot_price).all():
                         tp_level = pivot_price
+                        print (f"Take profit level: {tp_level}")
                         return tp_level
                     else:
                         continue
@@ -544,12 +550,14 @@ class EngulfingHandler:
             # If no pivot low is found, make the take profit 2x atr
             atr = self.df_daily.loc[self.row_index, 'atr']
             tp_level = entry_price - (atr * 2)
+            print (f"Take profit level using 2x atr: {tp_level}")
             return tp_level
 
     
     def generate_valid_combinations(self, entries): 
         valid_combinations = []
         take_profit = self.calculate_take_profit(entries[0])
+        print (f"Take profit: {take_profit}")
 
         for entry in entries:
             stop_losses = self.calculate_stop_loss(entry)
@@ -561,7 +569,8 @@ class EngulfingHandler:
                     valid_combinations.append({'entry': entry, 
                                                 'stop_loss': sl,
                                                 'take_profit': take_profit,
-                                                'rr_ratio': rr_ratio})    
+                                                'rr_ratio': rr_ratio})
+                    print (f"Valid combination found: entry: {entry.price}, sl: {sl}, tp: {take_profit}, rr: {rr_ratio}")    
         return valid_combinations
 
     def select_best_trade(self, valid_combinations):
@@ -571,8 +580,8 @@ class EngulfingHandler:
 
         if is_bullish:
             best_trade = max(valid_combinations, key=lambda x: x['entry'].price)
+            print (f"Best trade: {best_trade['entry'].price}, {best_trade['stop_loss']}, {best_trade['take_profit']}, {best_trade['rr_ratio']}")
         else:
             best_trade = min(valid_combinations, key=lambda x: x['entry'].price)
-        return best_trade
-                        
-                                                   
+            print (f"Best trade: {best_trade['entry'].price}, {best_trade['stop_loss']}, {best_trade['take_profit']}, {best_trade['rr_ratio']}")
+        return best_trade      
