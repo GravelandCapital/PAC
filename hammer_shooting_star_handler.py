@@ -257,6 +257,11 @@ class HammerShootingStarHandler:
                 original_stop_loss = stop_loss
                 stop_loss_list.append({'price': stop_loss, 'time': entry_candle_time})
 
+                if self.row_index > 0:
+                    previous_day_time = self.df_daily.loc[self.row_index - 1, 'time']
+                else: 
+                    previous_day_time = None
+
                 relevant_pivots = self.zigzag_df[
                     (self.zigzag_df['time'] < entry_time) &
                     (self.zigzag_df['price'] < entry.price) &
@@ -278,7 +283,7 @@ class HammerShootingStarHandler:
                         if future_lows is None or (future_lows > pivot_price):
                             temp_stop_loss = pivot_price - pip_value
                             stop_loss_value = entry_price - temp_stop_loss
-                            stop_loss_time = self.df_daily.loc[self.row_index, 'time'].iloc[-1]
+                            stop_loss_time = previous_day_time
                             if stop_loss_value >= min_atr:
                                 stop_loss_list.append({'price': temp_stop_loss, 'time': stop_loss_time})
                             else:
@@ -294,6 +299,11 @@ class HammerShootingStarHandler:
                 stop_loss = failure_point + pip_value
                 original_stop_loss = stop_loss
                 stop_loss_list.append({'price': stop_loss, 'time': entry_candle_time})
+
+                if self.row_index > 0:
+                    previous_day_time = self.df_daily.loc[self.row_index - 1, 'time']
+                else:
+                    previous_day_time = None
 
                 relevant_pivots = self.zigzag_df[
                     (self.zigzag_df['time'] < entry_time) &
@@ -316,7 +326,7 @@ class HammerShootingStarHandler:
                         if future_highs is None or (future_highs < pivot_price):
                             temp_stop_loss = pivot_price + pip_value
                             stop_loss_value = temp_stop_loss - entry_price
-                            stop_loss_time = self.df_daily.loc[self.row_index, 'time'].iloc[-1]
+                            stop_loss_time = previous_day_time
                             if stop_loss_value >= min_atr:
                                 stop_loss_list.append({'price': temp_stop_loss, 'time': stop_loss_time})
                             else:
@@ -357,6 +367,11 @@ class HammerShootingStarHandler:
                         return tp_level
                     else:
                         continue
+            atr = self.df_daily.loc[self.row_index, 'atr']
+            tp_level = entry_price + (atr * 2)
+            return tp_level
+            
+
         elif entry.signal == 'shooting_star':
             pivot_lows = valid_pivots[
                 (valid_pivots['type'] == 'l') &
@@ -375,8 +390,12 @@ class HammerShootingStarHandler:
                         return tp_level
                     else:
                         continue
-        return None
-    
+        
+            atr = self.df_daily.loc[self.row_index, 'atr']
+            tp_level = entry_price - (atr * 2)
+            return tp_level
+
+
     def generate_valid_combinations(self, entries):
         valid_combinations = []
         take_profit = self.calculate_take_profit(entries[0])

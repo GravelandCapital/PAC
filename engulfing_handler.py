@@ -332,7 +332,13 @@ class EngulfingHandler:
             signal_high = self.df_daily.loc[self.row_index, 'h']
             stop_loss = failure_point - pip_value
             original_stop_loss = stop_loss
-            stop_loss_list.append({'price': original_stop_loss, 'time': self.df_daily.loc[self.row_index, 'time'].iloc[-1]})
+
+            if self.row_index > 0:
+                previous_day_time = self.df_daily.loc[self.row_index - 1, 'time']
+            else:
+                previous_day_time = None
+
+            stop_loss_list.append({'price': original_stop_loss, 'time': previous_day_time})
             for _, pivot in sl_pivots.iterrows():
                 original_pivot_price = pivot['price']
                 pivot_price = original_pivot_price
@@ -371,7 +377,14 @@ class EngulfingHandler:
             signal_low = self.df_daily.loc[self.row_index, 'l']
             stop_loss = failure_point
             original_stop_loss = stop_loss
-            stop_loss_list.append({'price': original_stop_loss, 'time': self.df_daily.loc[self.row_index, 'time'].iloc[-1]})
+
+            if self.row_index > 0: 
+                previous_day_time = self.df_daily.loc[self.row_index - 1, 'time']
+            else: 
+                previous_day_time = None
+
+
+            stop_loss_list.append({'price': original_stop_loss, 'time': previous_day_time})
 
             for _, pivot in sl_pivots.iterrows():
                 original_pivot_price = pivot['price']
@@ -501,11 +514,11 @@ class EngulfingHandler:
                         return tp_level
                     else:
                         continue
-            else: 
-                # If no pivot high is found, make the take profit 2x atr 
-                atr = self.df_daily.loc[self.row_index, 'atr']
-                tp_level = entry_price + (atr * 2)
-                return tp_level
+        
+            # If no pivot high is found, make the take profit 2x atr 
+            atr = self.df_daily.loc[self.row_index, 'atr']
+            tp_level = entry_price + (atr * 2)
+            return tp_level
 
         elif self.signal == 'bear_eng':
             pivot_lows = valid_pivots[
@@ -525,12 +538,12 @@ class EngulfingHandler:
                         return tp_level
                     else:
                         continue
-            else:
-                # If no pivot low is found, make the take profit 2x atr
-                atr = self.df_daily.loc[self.row_index, 'atr']
-                tp_level = entry_price - (atr * 2)
-                return tp_level
-        return None
+
+            # If no pivot low is found, make the take profit 2x atr
+            atr = self.df_daily.loc[self.row_index, 'atr']
+            tp_level = entry_price - (atr * 2)
+            return tp_level
+
     
     def generate_valid_combinations(self, entries): 
         valid_combinations = []
@@ -548,13 +561,13 @@ class EngulfingHandler:
                                                    'stop_loss': sl,
                                                    'stop_loss_time': sl['time'],
                                                     'take_profit': take_profit,
-                                                    'risk_reward_ratio': rr_ratio})    
+                                                    'rr_ratio': rr_ratio})    
         return valid_combinations
 
     def select_best_trade(self, valid_combinations):
         if not valid_combinations:
             return None
-        best_trade = max(valid_combinations, key=lambda x: x['risk_reward_ratio'])
+        best_trade = max(valid_combinations, key=lambda x: x['rr_ratio'])
         return best_trade
                         
                                                    
