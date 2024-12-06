@@ -567,7 +567,12 @@ class EngulfingHandler:
     def select_best_trade(self, valid_combinations):
         if not valid_combinations:
             return None
-        best_trade = max(valid_combinations, key=lambda x: x['rr_ratio'])
+        is_bullish = self.signal in ['bull_eng', 'hammer']
+
+        if is_bullish:
+            best_trade = max(valid_combinations, key=lambda x: x['entry'].price)
+        else:
+            best_trade = min(valid_combinations, key=lambda x: x['entry'].price)
         return best_trade
                         
                                                    
