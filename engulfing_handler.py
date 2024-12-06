@@ -501,6 +501,12 @@ class EngulfingHandler:
                         return tp_level
                     else:
                         continue
+            else: 
+                # If no pivot high is found, make the take profit 2x atr 
+                atr = self.df_daily.loc[self.row_index, 'atr']
+                tp_level = entry_price + (atr * 2)
+                return tp_level
+
         elif self.signal == 'bear_eng':
             pivot_lows = valid_pivots[
                 (valid_pivots['type'] == 'l') &
@@ -519,6 +525,11 @@ class EngulfingHandler:
                         return tp_level
                     else:
                         continue
+            else:
+                # If no pivot low is found, make the take profit 2x atr
+                atr = self.df_daily.loc[self.row_index, 'atr']
+                tp_level = entry_price - (atr * 2)
+                return tp_level
         return None
     
     def generate_valid_combinations(self, entries): 
