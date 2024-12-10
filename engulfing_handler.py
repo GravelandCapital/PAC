@@ -3,15 +3,13 @@ import pandas as pd
 
 class EngulfingHandler:
     """Handler for Engulfing signals."""
-    def __init__(self, df_daily, df_hourly, row_index, zigzag_df, instrument, daily_zigzag):
+    def __init__(self, df_daily, df_hourly, row_index, zigzag_df, instrument):
         self.df_daily = df_daily
         self.df_hourly = df_hourly
         self.row_index = row_index
         self.signal = df_daily.loc[row_index, 'signal']
         self.zigzag_df = zigzag_df
         self.instrument = instrument
-        self.daily_zigzag = daily_zigzag
-        print (f"engulfing handler intitialized for {self.instrument} at {self.df_daily.loc[self.row_index, 'time']}")
 
     def calculate_entries(self):
         entries = []
@@ -21,7 +19,6 @@ class EngulfingHandler:
         lhpb_entry = self.calculate_lhpb_entry()
         if lhpb_entry:
             entries.extend(lhpb_entry)
-        print (f"Found {len(entries)} entries")
         return entries
 
     def calculate_fib_entry(self):
@@ -47,23 +44,20 @@ class EngulfingHandler:
         fib_entries = []
 
         # Find matching naked levels
-        for naked_level_info in naked_levels:
-            naked_level = naked_level_info['price']
-            naked_level_time = naked_level_info['time']
+        for naked_level in naked_levels:
             if fibo_level > naked_level: 
                 difference = fibo_level - naked_level 
             elif fibo_level < naked_level: 
                 difference = naked_level - fibo_level
 
             if 0 <= difference <= atr_range and compare(naked_level):
-                order_time = self.df_daily.loc[self.row_index, 'time']
+                entry_time = self.df_daily.loc[self.row_index, 'time']
                 entry = Entry(
                     instrument=self.instrument,
                     signal=self.signal,
                     entry_type='FIB',
                     price=naked_level,
-                    entry_candle_time = naked_level_time,
-                    order_time=order_time,
+                    order_time=entry_time,
                     row_index=self.row_index,
                     order_status="PENDING"
                 )
@@ -96,20 +90,18 @@ class EngulfingHandler:
                     if row['c'] > pivot_price:
                         if idx > 0:
                             last_high_pre_break = hourly_data.iloc[idx - 1]['h']
-                            entry_candle_time = hourly_data.iloc[idx - 1]['time']
 
                         else:
                             break
                         future_candles = hourly_data.iloc[idx + 1:]
                         if (future_candles['l'] > last_high_pre_break).all() and last_high_pre_break < pivot_price and last_high_pre_break > half_level:
-                            order_time = self.df_daily.loc[self.row_index, 'time']
+                            entry_time = self.df_daily.loc[self.row_index, 'time']
                             entry = Entry(
                                 instrument=self.instrument,
                                 signal=self.signal,
                                 entry_type='LHPB',
                                 price=last_high_pre_break,
-                                entry_candle_time=entry_candle_time,
-                                order_time=order_time,
+                                order_time=entry_time,
                                 row_index=self.row_index,
                                 order_status="PENDING"
                             )
@@ -127,19 +119,17 @@ class EngulfingHandler:
                     if row['c'] < pivot_price:
                         if idx > 0:
                             last_low_pre_break = hourly_data.iloc[idx - 1]['l']
-                            entry_candle_time = hourly_data.iloc[idx - 1]['time']
                         else:
                             break
                         future_candles = hourly_data.iloc[idx + 1:]
                         if (future_candles['h'] < last_low_pre_break).all() and last_low_pre_break > pivot_price and last_low_pre_break < half_level:
-                            order_time = self.df_daily.loc[self.row_index, 'time']
+                            entry_time = self.df_daily.loc[self.row_index, 'time']
                             entry = Entry(
                                 instrument=self.instrument,
                                 signal=self.signal,
                                 entry_type='LLPB',
                                 price=last_low_pre_break,
-                                entry_candle_time=entry_candle_time,
-                                order_time=order_time,
+                                order_time=entry_time,
                                 row_index=self.row_index,
                                 order_status="PENDING"
                             )
@@ -186,8 +176,7 @@ class EngulfingHandler:
                 if current_close > previous_high:
                     future_candles = hourly_data.iloc[i + 1:]
                     if (future_candles['l'] >= previous_high).all():
-                        naked_level_time = prev_row['time']
-                        naked_levels.append({'price': previous_high, 'time': naked_level_time})
+                        naked_levels.append(previous_high)
 
             elif signal == "bear_eng":
                 previous_low = prev_row["l"]
@@ -196,8 +185,7 @@ class EngulfingHandler:
                 if current_close < previous_low:
                     future_candles = hourly_data.iloc[i + 1:]
                     if (future_candles['h'] <= previous_low).all():
-                        naked_level_time = prev_row['time']
-                        naked_levels.append({'price': previous_low, 'time': naked_level_time})
+                        naked_levels.append(previous_low)
         return naked_levels
 
     def find_filtered_pivots(self):
@@ -334,10 +322,7 @@ class EngulfingHandler:
             signal_high = self.df_daily.loc[self.row_index, 'h']
             stop_loss = failure_point - pip_value
             original_stop_loss = stop_loss
-            entry.original_stop_loss = original_stop_loss
-            print (f"Original stop loss: {original_stop_loss}")
 
-            stop_loss_list.append(original_stop_loss)
             for _, pivot in sl_pivots.iterrows():
                 original_pivot_price = pivot['price']
                 pivot_price = original_pivot_price
@@ -368,25 +353,21 @@ class EngulfingHandler:
                             if temp_stop_loss < original_pivot_price and stop_loss_value >= min_atr:
                                 temp_stop_loss = breakout_low - pip_value
                                 stop_loss_list.append(temp_stop_loss)
-                                print (f"appended temp stop loss: {temp_stop_loss}")
+                                break
+                            else:
                                 break
 
+            if stop_loss_list:
+                max_stop_loss = max(stop_loss_list)
+                return max_stop_loss, max_stop_loss
+            else:
+                return stop_loss, stop_loss
 
         elif self.signal == "bear_eng":
             failure_point = self.df_daily.loc[self.row_index, 'h']
             signal_low = self.df_daily.loc[self.row_index, 'l']
             stop_loss = failure_point
             original_stop_loss = stop_loss
-            entry.original_stop_loss = original_stop_loss
-            print (f"Original stop loss: {original_stop_loss}")
-
-            if self.row_index > 0: 
-                previous_day_time = self.df_daily.loc[self.row_index - 1, 'time']
-            else: 
-                previous_day_time = None
-
-
-            stop_loss_list.append(original_stop_loss)
 
             for _, pivot in sl_pivots.iterrows():
                 original_pivot_price = pivot['price']
@@ -418,18 +399,18 @@ class EngulfingHandler:
                             if temp_stop_loss > original_pivot_price and stop_loss_value >= min_atr:
                                 temp_stop_loss = breakout_high + pip_value
                                 stop_loss_list.append(temp_stop_loss)
-                                print (f"appended temp stop loss: {temp_stop_loss}")
+                                break
+                            else:
                                 break
 
+            if stop_loss_list:
+                min_stop_loss = min(stop_loss_list)
+                return min_stop_loss, min_stop_loss
+            else:
+                stop_loss = stop_loss + pip_value
+                return stop_loss, stop_loss
 
-        if stop_loss_list:
-            print (f"Stop loss list: {stop_loss_list}")
-            return stop_loss_list
-        
-        else: 
-            print ("No stop loss found")
-            return None
-            
+
     def sl_pivots(self, entry_price):
         entry_time = self.df_daily.loc[self.row_index, 'time']
         threshold_time = entry_time - pd.Timedelta(days=365)
@@ -488,7 +469,7 @@ class EngulfingHandler:
         sl_pivots_df = pd.DataFrame(sl_pivots)
         return sl_pivots_df
 
-    def calculate_take_profit(self, entry):
+    def calculate_take_profit(self, entry, daily_zigzag):
         entry_price = entry.price
         entry_time = self.df_daily.loc[self.row_index, 'time']
         depth = 3
@@ -499,7 +480,7 @@ class EngulfingHandler:
         adjusted_entry_time = self.df_daily.loc[confirmation_index, 'time']
 
         # Get all pivots before the entry time
-        valid_pivots = self.daily_zigzag[self.daily_zigzag['time'] < adjusted_entry_time]
+        valid_pivots = daily_zigzag[daily_zigzag['time'] < adjusted_entry_time]
 
         if self.signal == 'bull_eng':
             pivot_highs = valid_pivots[
@@ -516,17 +497,9 @@ class EngulfingHandler:
                     ]['h']
                     if (intermediate_highs < pivot_price).all():
                         tp_level = pivot_price
-                        print (f"Take profit level: {tp_level}")
                         return tp_level
                     else:
                         continue
-        
-            # If no pivot high is found, make the take profit 2x atr 
-            atr = self.df_daily.loc[self.row_index, 'atr']
-            tp_level = entry_price + (atr * 2)
-            print (f"Take profit level using 2x atr: {tp_level}")
-            return tp_level
-
         elif self.signal == 'bear_eng':
             pivot_lows = valid_pivots[
                 (valid_pivots['type'] == 'l') &
@@ -542,46 +515,7 @@ class EngulfingHandler:
                     ]['l']
                     if (intermediate_lows > pivot_price).all():
                         tp_level = pivot_price
-                        print (f"Take profit level: {tp_level}")
                         return tp_level
                     else:
                         continue
-
-            # If no pivot low is found, make the take profit 2x atr
-            atr = self.df_daily.loc[self.row_index, 'atr']
-            tp_level = entry_price - (atr * 2)
-            print (f"Take profit level using 2x atr: {tp_level}")
-            return tp_level
-
-    
-    def generate_valid_combinations(self, entries): 
-        valid_combinations = []
-        take_profit = self.calculate_take_profit(entries[0])
-        print (f"Take profit: {take_profit}")
-
-        for entry in entries:
-            stop_losses = self.calculate_stop_loss(entry)
-            for sl in stop_losses: 
-                risk = abs(entry.price - sl)
-                reward = abs(entry.price - take_profit)
-                rr_ratio = reward / risk if risk > 0 else 0
-                if rr_ratio >= 1.5:
-                    valid_combinations.append({'entry': entry, 
-                                                'stop_loss': sl,
-                                                'take_profit': take_profit,
-                                                'rr_ratio': rr_ratio})
-                    print (f"Valid combination found: entry: {entry.price}, sl: {sl}, tp: {take_profit}, rr: {rr_ratio}")    
-        return valid_combinations
-
-    def select_best_trade(self, valid_combinations):
-        if not valid_combinations:
-            return None
-        is_bullish = self.signal in ['bull_eng', 'hammer']
-
-        if is_bullish:
-            best_trade = max(valid_combinations, key=lambda x: x['entry'].price)
-            print (f"Best trade: {best_trade['entry'].price}, {best_trade['stop_loss']}, {best_trade['take_profit']}, {best_trade['rr_ratio']}")
-        else:
-            best_trade = min(valid_combinations, key=lambda x: x['entry'].price)
-            print (f"Best trade: {best_trade['entry'].price}, {best_trade['stop_loss']}, {best_trade['take_profit']}, {best_trade['rr_ratio']}")
-        return best_trade      
+        return None

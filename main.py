@@ -5,7 +5,9 @@ from data_fetcher import DataFetcher
 from signal_calculator import SignalCalculator
 from trade_manager import TradeManager
 from utils import (
+    calculate_zigzag_daily,
     process_signals,
+    calculate_sl_tp,
     extract_instrument_from_filename,
     analyze_results
 )
@@ -45,6 +47,10 @@ def main():
 
         # Process signals and calculate entries
         entries = process_signals(df_daily, df_hourly, zigzag_df, instrument)
+
+        # Calculate stop loss and take profit
+        daily_zigzag = calculate_zigzag_daily(df_daily, depth=3)
+        calculate_sl_tp(entries, df_daily, df_hourly, zigzag_df, daily_zigzag, instrument)
 
         # Initialize lists to manage orders and trades
         open_orders = entries.copy()  # Orders that are pending execution

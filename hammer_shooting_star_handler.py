@@ -3,14 +3,13 @@ from entry import Entry
 
 class HammerShootingStarHandler:
     """Handler for Hammer and Shooting Star signals."""
-    def __init__(self, df_daily, df_hourly, row_index, zigzag_df, instrument, daily_zigzag):
+    def __init__(self, df_daily, df_hourly, row_index, zigzag_df, instrument):
         self.df_daily = df_daily
         self.df_hourly = df_hourly
         self.row_index = row_index
         self.signal = df_daily.loc[row_index, 'signal']
         self.zigzag_df = zigzag_df
         self.instrument = instrument
-        self.daily_zigzag = daily_zigzag
 
     def calculate_entries(self):
         entries = []
@@ -36,20 +35,18 @@ class HammerShootingStarHandler:
             for i in range(len(hourly_data) - 1):
                 row = hourly_data.iloc[i]
                 high = row['h']
-                entry_candle_time = row['time']
                 next_candle_close = hourly_data.iloc[i + 1]['c']
                 future_candles = hourly_data.iloc[i + 2:]
 
                 if high < pdl and next_candle_close > high and (future_candles['l'] > high).all():
-                    order_time = self.df_daily.loc[self.row_index, 'time']
+                    entry_time = self.df_daily.loc[self.row_index, 'time']
                     entry_price = high
                     entry = Entry(
                         instrument = self.instrument,
                         signal=signal,
                         entry_type='PDL',
                         price=entry_price,
-                        entry_candle_time=entry_candle_time,
-                        order_time=order_time,
+                        order_time=entry_time,
                         row_index=self.row_index,
                         order_status="PENDING"
                     )
@@ -58,7 +55,6 @@ class HammerShootingStarHandler:
             for i in range(len(hourly_data) - 1):
                 row = hourly_data.iloc[i]
                 low = row['l']
-                entry_candle_time = row['time']
                 next_candle_close = hourly_data.iloc[i + 1]['c']
                 future_candles = hourly_data.iloc[i + 2:]
 
@@ -71,7 +67,6 @@ class HammerShootingStarHandler:
                         entry_type='PDH',
                         price=entry_price,
                         order_time=entry_time,
-                        entry_candle_time=entry_candle_time,
                         row_index=self.row_index,
                         order_status="PENDING"
                     )
@@ -122,7 +117,6 @@ class HammerShootingStarHandler:
                             signal=signal,
                             entry_type='GWHMR',
                             price=entry_price,
-                            entry_candle_time = entry_time,
                             order_time=entry_time,
                             row_index=self.row_index,
                             order_status="PENDING"
@@ -190,7 +184,6 @@ class HammerShootingStarHandler:
                             signal=signal,
                             entry_type='GWSS',
                             price=entry_price,
-                            entry_candle_time=entry_time,
                             order_time=entry_time,
                             row_index=self.row_index,
                             order_status="PENDING"
@@ -232,26 +225,16 @@ class HammerShootingStarHandler:
         pip_value = self.get_pip_value(self.instrument)
         min_atr = self.df_daily.loc[self.row_index, 'atr'] * 0.4
         entry_price = entry.price
-        entry_candle_time = entry.entry_candle_time
-        
-
-        stop_loss_list = []
 
         if entry.entry_type == "PDH":
             stop_loss = self.df_daily.loc[entry.row_index, 'h'] + pip_value
-            stop_loss_time = self.df_daily.loc[entry.row_index, 'time']
-            origignal_stop_loss = stop_loss
-            entry.original_stop_loss = origignal_stop_loss
-            stop_loss_list.append(stop_loss)
-            return stop_loss_list
+            original_stop_loss = stop_loss
+            return stop_loss, original_stop_loss
 
         elif entry.entry_type == "PDL":
             stop_loss = self.df_daily.loc[entry.row_index, 'l'] - pip_value
-            stop_loss_time = self.df_daily.loc[entry.row_index, 'time']
-            origignal_stop_loss = stop_loss
-            entry.original_stop_loss = origignal_stop_loss
-            stop_loss_list.append(stop_loss)
-            return stop_loss_list
+            original_stop_loss = stop_loss
+            return stop_loss, original_stop_loss
 
         elif entry.entry_type in ["GWHMR", "GWSS"]:
             if entry.signal == "hammer":
@@ -259,13 +242,7 @@ class HammerShootingStarHandler:
                 failure_point = self.df_daily.loc[self.row_index, 'l']
                 stop_loss = failure_point - pip_value
                 original_stop_loss = stop_loss
-                entry.original_stop_loss = original_stop_loss
-                stop_loss_list.append(original_stop_loss)
 
-                if self.row_index > 0:
-                    previous_day_time = self.df_daily.loc[self.row_index - 1, 'time']
-                else: 
-                    previous_day_time = None
 
                 relevant_pivots = self.zigzag_df[
                     (self.zigzag_df['time'] < entry_time) &
@@ -288,28 +265,21 @@ class HammerShootingStarHandler:
                         if future_lows is None or (future_lows > pivot_price):
                             temp_stop_loss = pivot_price - pip_value
                             stop_loss_value = entry_price - temp_stop_loss
-                            stop_loss_time = previous_day_time
                             if stop_loss_value >= min_atr:
-                                stop_loss_list.append(temp_stop_loss)
+                                stop_loss = temp_stop_loss
+                                break
                             else:
                                 continue
                         else: 
                             continue
 
-                return stop_loss_list
+                return stop_loss, stop_loss
 
             elif entry.signal == "shooting_star":
                 entry_time = entry.order_time
                 failure_point = self.df_daily.loc[self.row_index, 'h']
                 stop_loss = failure_point + pip_value
                 original_stop_loss = stop_loss
-                entry.original_stop_loss = original_stop_loss
-                stop_loss_list.append(original_stop_loss)
-
-                if self.row_index > 0:
-                    previous_day_time = self.df_daily.loc[self.row_index - 1, 'time']
-                else:
-                    previous_day_time = None
 
                 relevant_pivots = self.zigzag_df[
                     (self.zigzag_df['time'] < entry_time) &
@@ -332,17 +302,17 @@ class HammerShootingStarHandler:
                         if future_highs is None or (future_highs < pivot_price):
                             temp_stop_loss = pivot_price + pip_value
                             stop_loss_value = temp_stop_loss - entry_price
-                            stop_loss_time = previous_day_time
                             if stop_loss_value >= min_atr:
-                                stop_loss_list.append(temp_stop_loss)
+                                stop_loss = temp_stop_loss
+                                break
                             else:
                                 continue
                         else: 
                             continue
 
-                return stop_loss_list
+                return stop_loss, stop_loss
 
-    def calculate_take_profit(self, entry):
+    def calculate_take_profit(self, entry, daily_zigzag):
         entry_price = entry.price
         entry_time = self.df_daily.loc[self.row_index, 'time']
         depth = 3
@@ -353,7 +323,7 @@ class HammerShootingStarHandler:
         adjusted_entry_time = self.df_daily.loc[confirmation_index, 'time']
 
         # Get all pivots before the entry time
-        valid_pivots = self.daily_zigzag[self.daily_zigzag['time'] < adjusted_entry_time]
+        valid_pivots = daily_zigzag[daily_zigzag['time'] < adjusted_entry_time]
 
         if entry.signal == 'hammer':
             pivot_highs = valid_pivots[
@@ -373,11 +343,6 @@ class HammerShootingStarHandler:
                         return tp_level
                     else:
                         continue
-            atr = self.df_daily.loc[self.row_index, 'atr']
-            tp_level = entry_price + (atr * 2)
-            return tp_level
-            
-
         elif entry.signal == 'shooting_star':
             pivot_lows = valid_pivots[
                 (valid_pivots['type'] == 'l') &
@@ -396,38 +361,4 @@ class HammerShootingStarHandler:
                         return tp_level
                     else:
                         continue
-        
-            atr = self.df_daily.loc[self.row_index, 'atr']
-            tp_level = entry_price - (atr * 2)
-            return tp_level
-
-
-    def generate_valid_combinations(self, entries):
-        valid_combinations = []
-        take_profit = self.calculate_take_profit(entries[0])
-
-        for entry in entries:
-            stop_losses = self.calculate_stop_loss(entry)
-            for sl in stop_losses:
-                risk = abs(entry.price - sl)
-                reward = abs(take_profit - entry.price)
-                rr_ratio = reward / risk if risk > 0 else 0
-                if rr_ratio >= 1.5:
-                    valid_combinations.append({
-                        'entry': entry,
-                        'stop_loss': sl,
-                        'take_profit': take_profit,
-                        'rr_ratio': rr_ratio
-                    })
-        return valid_combinations
-    
-    def select_best_trade(self, valid_combinations):
-        if not valid_combinations:
-            return None
-        is_bullish = self.signal in ['bull_eng', 'hammer']
-
-        if is_bullish:
-            best_trade = max(valid_combinations, key=lambda x: x['entry'].price)
-        else:
-            best_trade = min(valid_combinations, key=lambda x: x['entry'].price)
-        return best_trade
+        return None
