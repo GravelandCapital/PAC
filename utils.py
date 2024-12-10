@@ -62,22 +62,61 @@ def calculate_sl_tp(entries, df_daily, df_hourly, zigzag_df, daily_zigzag, instr
             continue
 
         # Calculate stop loss and take profit
-        entry.stop_loss, entry.original_stop_loss = handler.calculate_stop_loss(entry)
+        stop_loss_list = handler.calculate_stop_loss(entry)
         entry.take_profit = handler.calculate_take_profit(entry, daily_zigzag)
+
+        if entry.take_profit is None or not stop_loss_list:
+            continue    
+
+        valid_combos = generate_valid_combinations(stop_loss_list, entry)
+
+        if not valid_combos:
+            continue  # Skip to the next entry if no valid combinations
+
+        select_best_trade(valid_combos, entry)
 
         # Ensure stop loss and take profit are set
         if entry.stop_loss and entry.take_profit:
-            # Calculate risk/reward ratio
-            risk = abs(entry.price - entry.stop_loss)
-            reward = abs(entry.take_profit - entry.price)
-            rr_ratio = reward / risk if risk > 0 else 0
-
-            # Append to final list only if R/R ratio is at least 1.5
-            if rr_ratio >= 1.5:
-                final_entries.append(entry)
+            final_entries.append(entry)
     
     # Replace entries with final list that meets R/R condition
     entries[:] = final_entries
+
+def generate_valid_combinations(stop_loss_list, entry):
+    valid_combos = []
+    for stop_loss in stop_loss_list:
+        entry.stop_loss = stop_loss
+        take_profit = entry.take_profit
+        entry_price = entry.price
+        if entry.signal in ['bull_eng', 'hammer']:
+            rr_ratio = (take_profit - entry_price) / (entry_price - stop_loss)
+        elif entry.signal in ['bear_eng', 'shooting_star']:
+            rr_ratio = (entry_price - take_profit) / (stop_loss - entry_price)
+        
+        if rr_ratio >= 1.5:
+            valid_combos.append({'entry_price': entry_price, 'stop_loss': stop_loss, 'take_profit': take_profit})
+        else: 
+            continue
+
+    return valid_combos
+
+def select_best_trade(valid_combos, entry):
+    is_bullish = entry.signal in ['bull_eng', 'hammer']
+
+    if is_bullish:
+        max_entry_price = max(combination['entry_price'] for combination in valid_combos)
+        max_entry_combinations = [comb for comb in valid_combos if comb['entry_price'] == max_entry_price]
+        best_trade = max(max_entry_combinations, key=lambda x: x['stop_loss'])
+    else:
+        min_entry_price = min(combination['entry_price'] for combination in valid_combos)
+        min_entry_combinations = [comb for comb in valid_combos if comb['entry_price'] == min_entry_price]
+        best_trade = min(min_entry_combinations, key=lambda x: x['stop_loss'])
+
+    entry.price = best_trade['entry_price']
+    entry.stop_loss = best_trade['stop_loss']
+    entry.original_stop_loss = best_trade['stop_loss']
+
+    return best_trade
 
 def extract_instrument_from_filename(filename):
     """Extracts the instrument name from the filename."""
