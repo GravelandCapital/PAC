@@ -367,7 +367,7 @@ class EngulfingHandler:
         elif self.signal == "bear_eng":
             failure_point = self.df_daily.loc[self.row_index, 'h']
             signal_low = self.df_daily.loc[self.row_index, 'l']
-            stop_loss = failure_point
+            stop_loss = failure_point + pip_value
             original_stop_loss = stop_loss
             stop_loss_list.append(original_stop_loss)
 

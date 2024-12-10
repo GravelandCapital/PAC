@@ -83,6 +83,8 @@ class TradeManager:
             current_low = current_row['l']
             self.current_open = current_open  # Set current_open for use in get_latest_pivot
 
+            print(f"Current Time: {current_time}, Open: {current_open}, Close: {current_close}, High: {current_high}, Low: {current_low}")
+
             #  Logic for exit on close of the exit pivot 
             if exit_pivot_price is not None:
                 confirmation_time = exit_pivot_time + pd.Timedelta(hours=4)
@@ -227,6 +229,7 @@ class TradeManager:
         depth_timedelta = depth * pd.Timedelta(hours=1)
         confirmed_pivots = self.zigzag_df.copy()
         confirmed_pivots['confirmation_time'] = confirmed_pivots['time'] + depth_timedelta
+        filled_time = filled_time - pd.Timedelta(hours=4)
 
         confirmed_pivots = confirmed_pivots [(confirmed_pivots['confirmation_time'] <= current_time) & (confirmed_pivots['time'] > filled_time)]
        
