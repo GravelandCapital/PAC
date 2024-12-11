@@ -54,14 +54,12 @@ class TradeManager:
 
         print (f"Managing trade for {self.entry.instrument}, Date: {start_time}, Signal: {self.entry.signal}, Entry Price: {self.entry.price}, Stop Loss: {stop_loss}")
 
-        pivot = self.get_latest_pivot(start_time, direction)
+        pivot = self.pre_fill_pivot(start_time, direction)
 
-        if pivot is not None: 
+        if pivot is not None:
             pivot_price = pivot['price']
             pivot_time = pivot['time']
-            print (f"nearest pivot: {pivot_price} at {pivot_time}")
-        else: 
-            pivot_price = None
+            print (f"nearest pivot before fill: {pivot_price} at {pivot_time}")
 
         first_pivot = self.find_first_pivot_after_entry(start_time, direction)
 
@@ -223,6 +221,59 @@ class TradeManager:
                             pivot_price = wicked_bars['l']
                     pivot['price'] = pivot_price
                     return pivot
+                
+    def pre_fill_pivot(self, pre_fill_time, direction): 
+        time_interval = pd.Timedelta(hours=1)
+        depth_timedelta = 3 * time_interval
+
+        pre_fill_time = pre_fill_time - pd.Timedelta(hours=1)
+
+        confirmed_pivots = self.zigzag_df.copy()
+
+        confirmed_pivots['confirmation_time'] = confirmed_pivots['time'] + depth_timedelta
+
+        confirmed_pivots = confirmed_pivots[confirmed_pivots['confirmation_time'] <= pre_fill_time]
+
+        if direction == 'bullish':
+            pivot_highs = confirmed_pivots[confirmed_pivots['type'] == 'h']
+            pivot_highs = pivot_highs.sort_values('confirmation_time', ascending=False)
+
+            for _, pivot in pivot_highs.iterrows():
+                pivot_time = pivot['time']
+                pivot_price = pivot['price']
+
+                hourly_data = self.df_hourly[(self.df_hourly['time'] > pivot_time) & (self.df_hourly['time'] <= pre_fill_time)]
+
+                if (hourly_data['c'] < pivot_price).all() and hourly_data['h'].max() < pivot_price:
+                    return pivot
+                elif (hourly_data['c'] < pivot_price).all():
+                    wicked_bars = hourly_data[(hourly_data['h'] > pivot_price) & (hourly_data['c'] < pivot_price)]
+                    for _, wicked_bars in wicked_bars.iterrows():
+                        if wicked_bars['h'] > pivot_price:
+                            pivot_price = wicked_bars['h']
+                    pivot['price'] = pivot_price
+                    return pivot
+                
+        elif direction == 'bearish':
+            pivot_lows = confirmed_pivots[confirmed_pivots['type'] == 'l']
+            pivot_lows = pivot_lows.sort_values('confirmation_time', ascending=False)
+
+            for _, pivot in pivot_lows.iterrows():
+                pivot_time = pivot['time']
+                pivot_price = pivot['price']
+                
+                hourly_data = self.df_hourly[(self.df_hourly['time'] > pivot_time) & (self.df_hourly['time'] <= pre_fill_time)]
+
+                if (hourly_data['c'] > pivot_price).all() and hourly_data['l'].min() > pivot_price:
+                    return pivot
+            
+                elif (hourly_data['c'] > pivot_price).all(): 
+                    wicked_bars = hourly_data[(hourly_data['l'] < pivot_price) & (hourly_data['c'] > pivot_price)]
+                    for _, wicked_bars in wicked_bars.iterrows():
+                        if wicked_bars['l'] < pivot_price:
+                            pivot_price = wicked_bars['l']
+                    pivot['price'] = pivot_price
+                    return pivot
 
     def check_for_new_pivot(self, last_pivot_price, filled_time, current_time, direction): 
         depth = 4
@@ -233,7 +284,6 @@ class TradeManager:
 
         confirmed_pivots = confirmed_pivots [(confirmed_pivots['confirmation_time'] <= current_time) & (confirmed_pivots['time'] > filled_time)]
        
-
         if direction == 'bullish':
             new_pivots = confirmed_pivots[(confirmed_pivots['type'] == 'h') & 
             (confirmed_pivots['time'] > filled_time) & 
@@ -243,6 +293,15 @@ class TradeManager:
                 return None
 
             newest_pivot = new_pivots.sort_values('price', ascending=False).iloc[0]
+
+            hourly_data = self.df_hourly[(self.df_hourly['time'] > newest_pivot['time']) & (self.df_hourly['time'] <= current_time)]
+
+            max_high = hourly_data['h'].max()
+
+            if max_high < newest_pivot['price']:
+                return newest_pivot
+            else: 
+                return None
         
         elif direction == 'bearish':
             new_pivots = confirmed_pivots[(confirmed_pivots['type'] == 'l') & 
@@ -253,10 +312,15 @@ class TradeManager:
                 return None
 
             newest_pivot = new_pivots.sort_values('price', ascending=True).iloc[0]
-        
-        return newest_pivot
 
+            hourly_data = self.df_hourly[(self.df_hourly['time'] > newest_pivot['time']) & (self.df_hourly['time'] <= current_time)]
 
+            min_low = hourly_data['l'].min()
+
+            if min_low > newest_pivot['price']:
+                return newest_pivot
+            else:
+                return None
                 
     def find_first_pivot_after_entry(self, start_time, direction):
         depth = 4
