@@ -6,6 +6,8 @@ from entry import Entry
 from engulfing_handler import EngulfingHandler
 from hammer_shooting_star_handler import HammerShootingStarHandler
 import logging
+import matplotlib.pyplot as plt
+import seaborn as sns
 
 # Configure logging
 logging.basicConfig(
@@ -81,7 +83,6 @@ def calculate_sl_tp(entries, df_daily, df_hourly, zigzag_df, daily_zigzag, instr
     Calculates Stop Loss and Take Profit for each entry.
     Groups entries appropriately to prevent duplicates and selects the best trade per group.
     """
-    logging.info("Starting calculate_sl_tp")
 
     processed_entries = []
     for entry in entries:
@@ -90,7 +91,6 @@ def calculate_sl_tp(entries, df_daily, df_hourly, zigzag_df, daily_zigzag, instr
         elif entry.signal in ['hammer', 'shooting_star']:
             handler = HammerShootingStarHandler(df_daily, df_hourly, entry.row_index, zigzag_df, instrument)
         else:
-            logging.warning(f"Unknown signal {entry.signal} at row {entry.row_index}, skipping")
             continue
 
         # Calculate stop loss and take profit
@@ -98,18 +98,14 @@ def calculate_sl_tp(entries, df_daily, df_hourly, zigzag_df, daily_zigzag, instr
             stop_loss_list = handler.calculate_stop_loss(entry)
             entry.take_profit = handler.calculate_take_profit(entry, daily_zigzag)
         except Exception as e:
-            logging.error(f"Error calculating SL/TP for Entry at row {entry.row_index}: {e}")
             continue
 
         if entry.take_profit is None or not stop_loss_list:
-            logging.warning(f"Invalid TP or empty SL list for Entry at row {entry.row_index}, skipping")
             continue    
 
         valid_combos = generate_valid_combinations(stop_loss_list, entry)
-        logging.info(f"Valid combos for Entry at row {entry.row_index}: {valid_combos}")
 
         if not valid_combos:
-            logging.warning(f"No valid combos for Entry at row {entry.row_index}, skipping")
             continue  # Skip to the next entry if no valid combinations
 
         best_trade = select_best_trade(valid_combos, entry)
@@ -120,37 +116,29 @@ def calculate_sl_tp(entries, df_daily, df_hourly, zigzag_df, daily_zigzag, instr
             entry.original_stop_loss = best_trade['stop_loss']
             entry.take_profit = best_trade['take_profit']
             processed_entries.append(entry)
-            logging.info(f"Processed Entry at row {entry.row_index}: {entry}")
-        else:
-            logging.warning(f"No best trade found for Entry at row {entry.row_index}, skipping")
-
+  
     # Now, group the processed entries
     grouped_entries = defaultdict(list)
     for entry in processed_entries:
         key = get_group_key(entry)
         if key:
             grouped_entries[key].append(entry)
-            logging.info(f"Grouped Entry at row {entry.row_index} under key {key}")
 
     final_entries = []
     for key, group in grouped_entries.items():
-        logging.info(f"Processing group {key} with {len(group)} entries")
         is_bullish = group[0].signal in ['bull_eng', 'hammer']
 
         if is_bullish:
             # Select the entry with the highest entry_price
             best_entry = max(group, key=lambda x: x.price)
-            logging.info(f"Selected best bullish Entry from group {key}: {best_entry}")
         else:
             # Select the entry with the lowest entry_price
             best_entry = min(group, key=lambda x: x.price)
-            logging.info(f"Selected best bearish Entry from group {key}: {best_entry}")
 
         final_entries.append(best_entry)
 
     # Replace entries with final list that meets R/R condition
     entries[:] = final_entries
-    logging.info(f"Final entries count after SL and TP calculations: {len(final_entries)}")
 
 def generate_valid_combinations(stop_loss_list, entry):
     """
@@ -168,13 +156,10 @@ def generate_valid_combinations(stop_loss_list, entry):
         else:
             rr_ratio = 0  # Undefined signal type
 
-        logging.debug(f"Entry at row {entry.row_index}: SL={stop_loss}, TP={take_profit}, R:R={rr_ratio}")
 
         if rr_ratio >= 1.5:
             valid_combos.append({'entry_price': entry_price, 'stop_loss': stop_loss, 'take_profit': take_profit})
-            logging.info(f"Valid combo added for Entry at row {entry.row_index}: {valid_combos[-1]}")
-        else: 
-            logging.info(f"Combo with SL={stop_loss} and TP={take_profit} discarded due to low R:R ratio")
+
 
     return valid_combos
 
@@ -189,13 +174,11 @@ def select_best_trade(valid_combos, entry):
         max_entry_price = max(comb['entry_price'] for comb in valid_combos)
         max_entry_combinations = [comb for comb in valid_combos if comb['entry_price'] == max_entry_price]
         best_trade = max(max_entry_combinations, key=lambda x: x['stop_loss'])
-        logging.info(f"Best bullish trade for Entry at row {entry.row_index}: {best_trade}")
     else:
         # Select the combo with the lowest entry_price
         min_entry_price = min(comb['entry_price'] for comb in valid_combos)
         min_entry_combinations = [comb for comb in valid_combos if comb['entry_price'] == min_entry_price]
         best_trade = min(min_entry_combinations, key=lambda x: x['stop_loss'])
-        logging.info(f"Best bearish trade for Entry at row {entry.row_index}: {best_trade}")
 
     return best_trade
 
@@ -204,36 +187,115 @@ def extract_instrument_from_filename(filename):
     return filename.split('_')[0] + '_' + filename.split('_')[1]
 
 def analyze_results(trade_results):
-    total_r = 0  # Initialize total R
-    logging.info("\nTrade Analysis:\n")
-    
+    """
+    Analyzes trade results by creating a DataFrame, calculating basic statistics,
+    and plotting a simple equity curve.
+
+    Parameters:
+    - trade_results: List of Entry objects representing closed trades.
+    """
+    if not trade_results:
+        print("No closed trades to analyze.")
+        return
+
+    # 1. Create DataFrame from trade results
+    data_list = []
     for trade in trade_results:
-        # Determine risk and reward based on signal type
-        if trade.signal in ['bull_eng', 'hammer']:
-            risk = trade.price - trade.original_stop_loss
-            reward = trade.exit_price - trade.price
-        elif trade.signal in ['bear_eng', 'shooting_star']:
-            risk = trade.original_stop_loss - trade.price
-            reward = trade.price - trade.exit_price
-        else:
-            risk = 0
-            reward = 0
+        trade_data = {
+            'Date': trade.exit_time,
+            'Instrument': trade.instrument,
+            'Signal': trade.signal,
+            'Type': trade.entry_type,
+            'Entry Price': trade.price,
+            'Stop Loss': trade.original_stop_loss,
+            'Take Profit': trade.take_profit,
+            'Filled Time': trade.filled_time,
+            'Exit Time': trade.exit_time,
+            'Exit Price': trade.exit_price
+        }
+        data_list.append(trade_data)
+    df = pd.DataFrame(data_list)
 
-        # Calculate R with safeguard against divide-by-zero
-        if risk > 0:
-            r = reward / risk
-        else:
-            r = 0  # Set R to 0 if risk is zero
+    # Log the first few rows to verify DataFrame creation
 
-        # Accumulate total R
-        total_r += r
+    # Ensure Date is datetime
+    df['Date'] = pd.to_datetime(df['Date'])
 
-        # Log trade details
-        logging.info(f"Trade Signal: {trade.signal}, filled: {trade.filled_time}")
-        logging.info(f"Entry price: {trade.price}, Stop: {trade.original_stop_loss}, Take Profit: {trade.take_profit}")
-        logging.info(f"Exit price: {trade.exit_price}, Exit time: {trade.exit_time}")
-        logging.info(f"Risk: {risk:.2f}, Reward: {reward:.2f}, R: {r:.2f}\n")
+    # 2. Calculate Basic Statistics
 
-    logging.info(f"Total R for all trades: {total_r:.2f}")
-    logging.info(f"Number of trades: {len(trade_results)}")
-    return total_r
+    # Calculate Risk
+    df['Risk'] = df.apply(
+        lambda row: row['Entry Price'] - row['Stop Loss'] if row['Signal'] in ['bull_eng', 'hammer']
+        else row['Stop Loss'] - row['Entry Price'], axis=1
+    )
+    # Log Risk statistics
+    risk_min = df['Risk'].min()
+    risk_max = df['Risk'].max()
+    risk_mean = df['Risk'].mean()
+    risk_sum = df['Risk'].sum()
+
+    # Calculate Reward based on Exit Price
+    df['Reward'] = df.apply(
+        lambda row: row['Exit Price'] - row['Entry Price'] if row['Signal'] in ['bull_eng', 'hammer']
+        else row['Entry Price'] - row['Exit Price'], axis=1
+    )
+    # Log Reward statistics
+    reward_min = df['Reward'].min()
+    reward_max = df['Reward'].max()
+    reward_mean = df['Reward'].mean()
+    reward_sum = df['Reward'].sum()
+
+    # Calculate R:R Ratio
+    df['R_Ratio'] = df.apply(
+        lambda row: row['Reward'] / row['Risk'] if row['Risk'] != 0 else 0, axis=1
+    )
+    # Log R_Ratio statistics
+    rr_min = df['R_Ratio'].min()
+    rr_max = df['R_Ratio'].max()
+    rr_mean = df['R_Ratio'].mean()
+    rr_sum = df['R_Ratio'].sum()
+
+    # Calculate Metrics
+    total_trades = len(df)
+    total_r = df['R_Ratio'].sum()
+    average_r = df['R_Ratio'].mean()
+
+    # Prepare Stats Dictionary
+    stats = {
+        'Total Trades': total_trades,
+        'Total R': round(total_r, 2),
+        'Average R per Trade': round(average_r, 2)
+    }
+
+    # Log Metrics
+    for key, value in stats.items():
+        logging.info(f"{key}: {value}")
+
+    # 3. Print Basic Statistics
+    for key, value in stats.items():
+        print(f"{key}: {value}")
+
+    # 4. Plot Equity Curve
+    df_sorted = df.sort_values('Exit Time').reset_index(drop=True)
+    df_sorted['Cumulative R'] = df_sorted['R_Ratio'].cumsum()
+
+    # Log Cumulative R statistics
+    cum_r_min = df_sorted['Cumulative R'].min()
+    cum_r_max = df_sorted['Cumulative R'].max()
+    cum_r_mean = df_sorted['Cumulative R'].mean()
+    cum_r_sum = df_sorted['Cumulative R'].sum()
+    logging.debug(f"Cumulative R - Min: {cum_r_min}, Max: {cum_r_max}, Mean: {cum_r_mean}, Sum: {cum_r_sum}")
+
+    plt.figure(figsize=(10, 6))
+    sns.lineplot(data=df_sorted, x='Exit Time', y='Cumulative R', marker='o')
+    plt.title('Equity Curve')
+    plt.xlabel('Exit Time')
+    plt.ylabel('Cumulative R')
+    plt.xticks(rotation=45)
+    plt.tight_layout()
+    plt.savefig('equity_curve.png')  # Save the plot as an image file
+    plt.show()
+
+    # Optional: Save the DataFrame with Metrics
+    df.to_csv('trade_results_with_metrics.csv', index=False)
+    logging.info("Trade analysis completed and results saved to 'trade_results_with_metrics.csv'.")
