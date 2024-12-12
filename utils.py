@@ -2,6 +2,7 @@ import pandas as pd
 from entry import Entry
 from engulfing_handler import EngulfingHandler
 from hammer_shooting_star_handler import HammerShootingStarHandler
+from collections import defaultdict
 
 def calculate_zigzag_daily(df_daily, depth=3):
     """Calculates ZigZag pivots for the provided depth in the daily data."""
@@ -51,8 +52,16 @@ def process_signals(df_daily, df_hourly, zigzag_df, instrument):
         entries.extend(signal_entries)
     return entries
 
+def get_group_key(entry):
+    if entry.signal in ['bull_eng', 'bear_eng']:
+        return (entry.signal, entry.row_index)
+    elif entry.signal in ['hammer', 'shooting_star']:
+        return (entry.signal, entry.row_index, entry.entry_type)
+    else:
+        return None  # For signals that don't require grouping
+
 def calculate_sl_tp(entries, df_daily, df_hourly, zigzag_df, daily_zigzag, instrument):
-    final_entries = []
+    processed_entries = []
     for entry in entries [:]:
         if entry.signal in ['bull_eng', 'bear_eng']:
             handler = EngulfingHandler(df_daily, df_hourly, entry.row_index, zigzag_df, instrument)
@@ -73,14 +82,34 @@ def calculate_sl_tp(entries, df_daily, df_hourly, zigzag_df, daily_zigzag, instr
         if not valid_combos:
             continue  # Skip to the next entry if no valid combinations
 
-        select_best_trade(valid_combos, entry)
+        best_trade = select_best_trade(valid_combos, entry)
+        if best_trade:
+            entry.price = best_trade['entry_price']
+            entry.stop_loss = best_trade['stop_loss']
+            entry.take_profit = best_trade['take_profit']
+            entry.original_stop_loss = best_trade['stop_loss']
+            processed_entries.append(entry)
 
-        # Ensure stop loss and take profit are set
-        if entry.stop_loss and entry.take_profit:
-            final_entries.append(entry)
+    grouped_entries = defaultdict(list)
+
+    for entry in processed_entries:
+        key = get_group_key(entry)
+        if key: 
+            grouped_entries[key].append(entry)
     
-    # Replace entries with final list that meets R/R condition
+    final_entries = []
+    for key, group in grouped_entries.items():
+        is_bullish = group[0].signal in ['bull_eng', 'hammer']
+
+        if is_bullish:
+            best_entry = max(group, key=lambda x: x.price)
+        else: 
+            best_entry = min(group, key=lambda x: x.price)
+
+        final_entries.append(best_entry)
+
     entries[:] = final_entries
+    
 
 def generate_valid_combinations(stop_loss_list, entry):
     valid_combos = []
