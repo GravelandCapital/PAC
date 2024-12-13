@@ -33,8 +33,8 @@ if not os.path.exists(output_dir):
     os.makedirs(output_dir)
 
 for instrument in instruments:
-    df_daily = fetch_data(instrument, "D", "2016-01-01" , "2023-12-31")
-    df_hourly = fetch_data(instrument, "H1", "2016-01-01", "2023-12-31")
+    df_daily = fetch_data(instrument, "D", "2014-01-01" , "2023-12-31")
+    df_hourly = fetch_data(instrument, "H1", "2014-01-01", "2023-12-31")
 
     save_to_excel(df_daily, instrument, "D", output_dir)
     save_to_excel(df_hourly, instrument, "H1", output_dir)

@@ -8,6 +8,7 @@ from hammer_shooting_star_handler import HammerShootingStarHandler
 import logging
 import matplotlib.pyplot as plt
 import seaborn as sns
+import os
 
 # Configure logging
 logging.basicConfig(
@@ -58,6 +59,37 @@ def calculate_zigzag_daily(df_daily, depth=3):
     daily_zigzag = pd.DataFrame(pivots, columns=['index', 'time', 'price', 'type'])
     daily_zigzag['time'] = pd.to_datetime(daily_zigzag['time'])
     return daily_zigzag
+
+def calculate_zigzag(df_hourly, depth=4):
+        pivots = []
+
+        # Ensure row_index is within valid bounds
+        for row_index in range(depth, len(df_hourly) - depth):
+            pivot_high = True  # Assume it's a pivot high
+            pivot_low = True   # Assume it's a pivot low
+            
+            # Get current candle details (from row_index)
+            current_time = df_hourly.iloc[row_index]['time']
+            current_low = df_hourly.iloc[row_index]['l']
+            current_high = df_hourly.iloc[row_index]['h']
+
+            # Loop over neighboring candles (from row_index - depth to row_index + depth)
+            for i in range(row_index - depth, row_index + depth + 1):
+                if df_hourly.iloc[row_index]['l'] > df_hourly.iloc[i]['l']:
+                    pivot_low = False  # Disqualify as a pivot low
+                if df_hourly.iloc[row_index]['h'] < df_hourly.iloc[i]['h']:
+                    pivot_high = False  # Disqualify as a pivot high
+
+            if pivot_high:
+                pivots.append([row_index, current_time, current_high, 'h'])
+
+            if pivot_low:
+                pivots.append([row_index, current_time, current_low, 'l'])
+
+        zigzag_df = pd.DataFrame(pivots, columns=['index', 'time', 'price', 'type'])
+        zigzag_df['time'] = pd.to_datetime(zigzag_df['time'])
+
+        return zigzag_df
 
 def process_signals(df_daily, df_hourly, zigzag_df, instrument):
     """
@@ -186,16 +218,18 @@ def extract_instrument_from_filename(filename):
     """Extracts the instrument name from the filename."""
     return filename.split('_')[0] + '_' + filename.split('_')[1]
 
-def analyze_results(trade_results):
+def analyze_results(trade_results, name="Combined", results_path=r"C:\Users\grave\OneDrive\Coding\Coding\results"):
     """
     Analyzes trade results by creating a DataFrame, calculating basic statistics,
     and plotting a simple equity curve.
 
     Parameters:
     - trade_results: List of Entry objects representing closed trades.
+    - name: Identifier for the analysis (e.g., instrument name or "Combined").
+    - results_path: Directory where output files (CSV and plots) will be stored.
     """
     if not trade_results:
-        print("No closed trades to analyze.")
+        print(f"No closed trades to analyze for {name}.")
         return
 
     # 1. Create DataFrame from trade results
@@ -216,62 +250,34 @@ def analyze_results(trade_results):
         data_list.append(trade_data)
     df = pd.DataFrame(data_list)
 
-    # Log the first few rows to verify DataFrame creation
-
     # Ensure Date is datetime
     df['Date'] = pd.to_datetime(df['Date'])
 
     # 2. Calculate Basic Statistics
-
-    # Calculate Risk
     df['Risk'] = df.apply(
         lambda row: row['Entry Price'] - row['Stop Loss'] if row['Signal'] in ['bull_eng', 'hammer']
         else row['Stop Loss'] - row['Entry Price'], axis=1
     )
-    # Log Risk statistics
-    risk_min = df['Risk'].min()
-    risk_max = df['Risk'].max()
-    risk_mean = df['Risk'].mean()
-    risk_sum = df['Risk'].sum()
-
-    # Calculate Reward based on Exit Price
     df['Reward'] = df.apply(
         lambda row: row['Exit Price'] - row['Entry Price'] if row['Signal'] in ['bull_eng', 'hammer']
         else row['Entry Price'] - row['Exit Price'], axis=1
     )
-    # Log Reward statistics
-    reward_min = df['Reward'].min()
-    reward_max = df['Reward'].max()
-    reward_mean = df['Reward'].mean()
-    reward_sum = df['Reward'].sum()
-
-    # Calculate R:R Ratio
     df['R_Ratio'] = df.apply(
         lambda row: row['Reward'] / row['Risk'] if row['Risk'] != 0 else 0, axis=1
     )
-    # Log R_Ratio statistics
-    rr_min = df['R_Ratio'].min()
-    rr_max = df['R_Ratio'].max()
-    rr_mean = df['R_Ratio'].mean()
-    rr_sum = df['R_Ratio'].sum()
 
-    # Calculate Metrics
     total_trades = len(df)
     total_r = df['R_Ratio'].sum()
     average_r = df['R_Ratio'].mean()
 
-    # Prepare Stats Dictionary
     stats = {
         'Total Trades': total_trades,
         'Total R': round(total_r, 2),
         'Average R per Trade': round(average_r, 2)
     }
 
-    # Log Metrics
-    for key, value in stats.items():
-        logging.info(f"{key}: {value}")
-
     # 3. Print Basic Statistics
+    print(f"\n--- Basic Trade Statistics for {name} ---")
     for key, value in stats.items():
         print(f"{key}: {value}")
 
@@ -279,23 +285,33 @@ def analyze_results(trade_results):
     df_sorted = df.sort_values('Exit Time').reset_index(drop=True)
     df_sorted['Cumulative R'] = df_sorted['R_Ratio'].cumsum()
 
-    # Log Cumulative R statistics
-    cum_r_min = df_sorted['Cumulative R'].min()
-    cum_r_max = df_sorted['Cumulative R'].max()
-    cum_r_mean = df_sorted['Cumulative R'].mean()
-    cum_r_sum = df_sorted['Cumulative R'].sum()
-    logging.debug(f"Cumulative R - Min: {cum_r_min}, Max: {cum_r_max}, Mean: {cum_r_mean}, Sum: {cum_r_sum}")
-
     plt.figure(figsize=(10, 6))
     sns.lineplot(data=df_sorted, x='Exit Time', y='Cumulative R', marker='o')
-    plt.title('Equity Curve')
+    plt.title(f'Equity Curve for {name}')
     plt.xlabel('Exit Time')
     plt.ylabel('Cumulative R')
     plt.xticks(rotation=45)
     plt.tight_layout()
-    plt.savefig('equity_curve.png')  # Save the plot as an image file
-    plt.show()
 
-    # Optional: Save the DataFrame with Metrics
-    df.to_csv('trade_results_with_metrics.csv', index=False)
-    logging.info("Trade analysis completed and results saved to 'trade_results_with_metrics.csv'.")
+    # Define output directories
+    csv_output_dir = os.path.join(results_path, 'csv', name)
+    plots_output_dir = os.path.join(results_path, 'plots', name)
+
+    # Ensure directories exist
+    os.makedirs(csv_output_dir, exist_ok=True)
+    os.makedirs(plots_output_dir, exist_ok=True)
+
+    # Save Equity Curve Plot
+    equity_curve_filename = f'equity_curve_{name}.png'
+    equity_curve_path = os.path.join(plots_output_dir, equity_curve_filename)
+    plt.savefig(equity_curve_path)  # Save the plot as an image file
+    plt.close()  # Close the plot to free memory
+    logging.info(f"Equity curve saved as {equity_curve_path}.")
+
+    # Save Trade Results CSV
+    trade_results_filename = f'trade_results_with_metrics_{name}.csv'
+    trade_results_path = os.path.join(csv_output_dir, trade_results_filename)
+    df.to_csv(trade_results_path, index=False)
+    logging.info(f"Trade analysis completed and results saved to '{trade_results_path}'.")
+
+

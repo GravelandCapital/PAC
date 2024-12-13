@@ -4379,3 +4379,1160 @@ Trade Analysis:
 2024-12-12 13:35:43,794 - INFO - Total R: 9.82
 2024-12-12 13:35:43,794 - INFO - Average R per Trade: 0.13
 2024-12-12 13:35:43,795 - INFO - Plotting equity curve.
+2024-12-12 15:03:56,247 - INFO - Total Trades: 76
+2024-12-12 15:03:56,248 - INFO - Total R: 9.82
+2024-12-12 15:03:56,248 - INFO - Average R per Trade: 0.13
+2024-12-12 15:04:06,388 - INFO - Trade analysis completed and results saved to 'trade_results_with_metrics.csv'.
+2024-12-13 09:30:40,042 - INFO - Total Trades: 76
+2024-12-13 09:30:40,043 - INFO - Total R: 9.82
+2024-12-13 09:30:40,043 - INFO - Average R per Trade: 0.13
+2024-12-13 09:35:51,721 - INFO - Trade analysis completed and results saved to 'trade_results_with_metrics.csv'.
+2024-12-13 09:44:56,782 - INFO - Creating DataFrame from trade results for EUR_USD.
+2024-12-13 09:44:56,793 - INFO - Calculating basic trading statistics for EUR_USD.
+2024-12-13 09:44:56,794 - INFO - Calculating Risk for each trade in EUR_USD.
+2024-12-13 09:44:56,795 - INFO - Calculating Reward for each trade based on Exit Price in EUR_USD.
+2024-12-13 09:44:56,797 - INFO - Calculating R:R Ratio for each trade in EUR_USD.
+2024-12-13 09:44:56,799 - INFO - Trade Metrics Calculated for EUR_USD:
+2024-12-13 09:44:56,799 - INFO - Total Trades: 76 for EUR_USD
+2024-12-13 09:44:56,799 - INFO - Total R: 9.82 for EUR_USD
+2024-12-13 09:44:56,799 - INFO - Average R per Trade: 0.13 for EUR_USD
+2024-12-13 09:44:56,800 - INFO - Plotting equity curve for EUR_USD.
+2024-12-13 09:48:09,088 - INFO - Creating DataFrame from trade results for EUR_USD.
+2024-12-13 09:48:09,097 - INFO - Calculating basic trading statistics for EUR_USD.
+2024-12-13 09:48:09,097 - INFO - Calculating Risk for each trade in EUR_USD.
+2024-12-13 09:48:09,098 - INFO - Calculating Reward for each trade based on Exit Price in EUR_USD.
+2024-12-13 09:48:09,100 - INFO - Calculating R:R Ratio for each trade in EUR_USD.
+2024-12-13 09:48:09,101 - INFO - Trade Metrics Calculated for EUR_USD:
+2024-12-13 09:48:09,101 - INFO - Total Trades: 76 for EUR_USD
+2024-12-13 09:48:09,102 - INFO - Total R: 9.82 for EUR_USD
+2024-12-13 09:48:09,102 - INFO - Average R per Trade: 0.13 for EUR_USD
+2024-12-13 09:48:09,103 - INFO - Plotting equity curve for EUR_USD.
+2024-12-13 09:52:33,480 - INFO - Equity curve saved as equity_curve_EUR_USD.png.
+2024-12-13 09:52:33,490 - INFO - Trade analysis completed and results saved to 'trade_results_with_metrics_EUR_USD.csv'.
+2024-12-13 09:54:11,903 - INFO - Processing Instrument: EUR_USD
+2024-12-13 09:54:14,770 - INFO - Fetched daily data: C:\Users\grave\OneDrive\Coding\PAC\fxdata\EUR_USD_D.xlsx
+2024-12-13 09:54:14,771 - INFO - Fetched hourly data: C:\Users\grave\OneDrive\Coding\PAC\fxdata\EUR_USD_H1.xlsx
+2024-12-13 09:54:15,129 - INFO - Calculated signals and ATR.
+2024-12-13 09:56:00,530 - INFO - Loaded and calculated zigzag data.
+2024-12-13 09:56:02,975 - INFO - Processed signals and generated 298 entries for EUR_USD.
+2024-12-13 09:56:19,128 - INFO - Calculated Stop Loss and Take Profit for entries.
+2024-12-13 09:56:19,130 - INFO - Sorted hourly data by time.
+2024-12-13 09:56:19,148 - INFO - Order cancelled for EUR_USD at row 39.
+2024-12-13 09:56:19,150 - INFO - Order cancelled for EUR_USD at row 42.
+2024-12-13 09:56:19,152 - INFO - Order filled for EUR_USD at row 46 at 2016-03-09 03:00:00.
+2024-12-13 09:56:19,193 - INFO - Trade closed for EUR_USD at row 46 at 2016-03-10 08:00:00.
+2024-12-13 09:56:19,195 - INFO - Order filled for EUR_USD at row 48 at 2016-03-10 22:00:00.
+2024-12-13 09:56:19,281 - INFO - Trade closed for EUR_USD at row 48 at 2016-03-15 09:00:00.
+2024-12-13 09:56:19,288 - INFO - Order filled for EUR_USD at row 58 at 2016-03-28 15:00:00.
+2024-12-13 09:56:19,449 - INFO - Trade closed for EUR_USD at row 58 at 2016-03-30 15:00:00.
+2024-12-13 09:56:19,456 - INFO - Order filled for EUR_USD at row 77 at 2016-04-20 21:00:00.
+2024-12-13 09:56:19,466 - INFO - Trade closed for EUR_USD at row 77 at 2016-04-21 12:00:00.
+2024-12-13 09:56:19,471 - INFO - Order cancelled for EUR_USD at row 86.
+2024-12-13 09:56:19,472 - INFO - Order filled for EUR_USD at row 86 at 2016-05-04 03:00:00.
+2024-12-13 09:56:19,626 - INFO - Trade closed for EUR_USD at row 86 at 2016-05-06 12:00:00.
+2024-12-13 09:56:19,634 - INFO - Order filled for EUR_USD at row 106 at 2016-05-31 21:00:00.
+2024-12-13 09:56:19,651 - INFO - Trade closed for EUR_USD at row 106 at 2016-06-01 11:00:00.
+2024-12-13 09:56:19,653 - INFO - Order cancelled for EUR_USD at row 109.
+2024-12-13 09:56:19,656 - INFO - Order cancelled for EUR_USD at row 113.
+2024-12-13 09:56:19,664 - INFO - Order filled for EUR_USD at row 131 at 2016-07-05 21:00:00.
+2024-12-13 09:56:19,698 - INFO - Trade closed for EUR_USD at row 131 at 2016-07-07 08:00:00.
+2024-12-13 09:56:19,703 - INFO - Order filled for EUR_USD at row 142 at 2016-07-21 05:00:00.
+2024-12-13 09:56:19,726 - INFO - Trade closed for EUR_USD at row 142 at 2016-07-21 14:00:00.
+2024-12-13 09:56:19,729 - INFO - Order filled for EUR_USD at row 146 at 2016-07-26 21:00:00.
+2024-12-13 09:56:19,738 - INFO - Trade closed for EUR_USD at row 146 at 2016-07-27 19:00:00.
+2024-12-13 09:56:19,740 - INFO - Order cancelled for EUR_USD at row 147.
+2024-12-13 09:56:19,743 - INFO - Order cancelled for EUR_USD at row 154.
+2024-12-13 09:56:19,748 - INFO - Order cancelled for EUR_USD at row 166.
+2024-12-13 09:56:19,750 - INFO - Order cancelled for EUR_USD at row 169.
+2024-12-13 09:56:19,757 - INFO - Order cancelled for EUR_USD at row 178.
+2024-12-13 09:56:19,775 - INFO - Order filled for EUR_USD at row 240 at 2016-12-05 22:00:00.
+2024-12-13 09:56:19,881 - INFO - Trade closed for EUR_USD at row 240 at 2016-12-08 07:00:00.
+2024-12-13 09:56:19,884 - INFO - Order filled for EUR_USD at row 245 at 2016-12-12 22:00:00.
+2024-12-13 09:56:19,968 - INFO - Trade closed for EUR_USD at row 245 at 2016-12-14 19:00:00.
+2024-12-13 09:56:19,997 - INFO - Order cancelled for EUR_USD at row 336.
+2024-12-13 09:56:19,998 - INFO - Order filled for EUR_USD at row 336 at 2017-04-21 11:00:00.
+2024-12-13 09:56:20,023 - INFO - Trade closed for EUR_USD at row 336 at 2017-04-23 21:00:00.
+2024-12-13 09:56:20,027 - INFO - Order filled for EUR_USD at row 346 at 2017-05-04 21:00:00.
+2024-12-13 09:56:20,384 - INFO - Trade closed for EUR_USD at row 346 at 2017-05-07 22:00:00.
+2024-12-13 09:56:20,393 - INFO - Order cancelled for EUR_USD at row 375.
+2024-12-13 09:56:20,411 - INFO - Order cancelled for EUR_USD at row 429.
+2024-12-13 09:56:20,413 - INFO - Order cancelled for EUR_USD at row 429.
+2024-12-13 09:56:20,418 - INFO - Order cancelled for EUR_USD at row 447.
+2024-12-13 09:56:20,426 - INFO - Order cancelled for EUR_USD at row 473.
+2024-12-13 09:56:20,429 - INFO - Order cancelled for EUR_USD at row 487.
+2024-12-13 09:56:20,431 - INFO - Order filled for EUR_USD at row 487 at 2017-11-16 00:00:00.
+2024-12-13 09:56:20,470 - INFO - Trade closed for EUR_USD at row 487 at 2017-11-16 13:00:00.
+2024-12-13 09:56:20,475 - INFO - Order cancelled for EUR_USD at row 504.
+2024-12-13 09:56:20,477 - INFO - Order filled for EUR_USD at row 505 at 2017-12-11 22:00:00.
+2024-12-13 09:56:20,534 - INFO - Trade closed for EUR_USD at row 505 at 2017-12-12 20:00:00.
+2024-12-13 09:56:20,535 - INFO - Order filled for EUR_USD at row 505 at 2017-12-12 15:00:00.
+2024-12-13 09:56:20,553 - INFO - Trade closed for EUR_USD at row 505 at 2017-12-13 18:00:00.
+2024-12-13 09:56:20,561 - INFO - Order filled for EUR_USD at row 525 at 2018-01-10 22:00:00.
+2024-12-13 09:56:20,575 - INFO - Trade closed for EUR_USD at row 525 at 2018-01-11 13:00:00.
+2024-12-13 09:56:20,578 - INFO - Order filled for EUR_USD at row 530 at 2018-01-17 22:00:00.
+2024-12-13 09:56:20,619 - INFO - Trade closed for EUR_USD at row 530 at 2018-01-19 03:00:00.
+2024-12-13 09:56:20,622 - INFO - Order filled for EUR_USD at row 536 at 2018-01-25 22:00:00.
+2024-12-13 09:56:20,677 - INFO - Trade closed for EUR_USD at row 536 at 2018-01-29 06:00:00.
+2024-12-13 09:56:20,684 - INFO - Order cancelled for EUR_USD at row 561.
+2024-12-13 09:56:20,687 - INFO - Order cancelled for EUR_USD at row 566.
+2024-12-13 09:56:20,698 - INFO - Order cancelled for EUR_USD at row 613.
+2024-12-13 09:56:20,700 - INFO - Order filled for EUR_USD at row 613 at 2018-05-15 06:00:00.
+2024-12-13 09:56:20,759 - INFO - Trade closed for EUR_USD at row 613 at 2018-05-15 14:00:00.
+2024-12-13 09:56:20,762 - INFO - Order cancelled for EUR_USD at row 618.
+2024-12-13 09:56:20,763 - INFO - Order filled for EUR_USD at row 618 at 2018-05-22 09:00:00.
+2024-12-13 09:56:20,792 - INFO - Trade closed for EUR_USD at row 618 at 2018-05-23 01:00:00.
+2024-12-13 09:56:20,798 - INFO - Order filled for EUR_USD at row 633 at 2018-06-12 02:00:00.
+2024-12-13 09:56:20,922 - INFO - Trade closed for EUR_USD at row 633 at 2018-06-14 06:00:00.
+2024-12-13 09:56:20,925 - INFO - Order filled for EUR_USD at row 636 at 2018-06-14 21:00:00.
+2024-12-13 09:56:20,979 - INFO - Trade closed for EUR_USD at row 636 at 2018-06-18 09:00:00.
+2024-12-13 09:56:20,984 - INFO - Order cancelled for EUR_USD at row 653.
+2024-12-13 09:56:20,986 - INFO - Order filled for EUR_USD at row 653 at 2018-07-10 10:00:00.
+2024-12-13 09:56:21,025 - INFO - Trade closed for EUR_USD at row 653 at 2018-07-11 12:00:00.
+2024-12-13 09:56:21,027 - INFO - Order cancelled for EUR_USD at row 657.
+2024-12-13 09:56:21,029 - INFO - Order cancelled for EUR_USD at row 659.
+2024-12-13 09:56:21,034 - INFO - Order cancelled for EUR_USD at row 680.
+2024-12-13 09:56:21,036 - INFO - Order filled for EUR_USD at row 680 at 2018-08-16 03:00:00.
+2024-12-13 09:56:21,080 - INFO - Trade closed for EUR_USD at row 680 at 2018-08-17 09:00:00.
+2024-12-13 09:56:21,089 - INFO - Order filled for EUR_USD at row 715 at 2018-10-03 21:00:00.
+2024-12-13 09:56:21,144 - INFO - Trade closed for EUR_USD at row 715 at 2018-10-05 11:00:00.
+2024-12-13 09:56:21,145 - INFO - Order cancelled for EUR_USD at row 719.
+2024-12-13 09:56:21,149 - INFO - Order filled for EUR_USD at row 724 at 2018-10-17 04:00:00.
+2024-12-13 09:56:21,259 - INFO - Trade closed for EUR_USD at row 724 at 2018-10-18 09:00:00.
+2024-12-13 09:56:21,265 - INFO - Order filled for EUR_USD at row 740 at 2018-11-07 22:00:00.
+2024-12-13 09:56:21,423 - INFO - Trade closed for EUR_USD at row 740 at 2018-11-09 14:00:00.
+2024-12-13 09:56:21,428 - INFO - Order filled for EUR_USD at row 763 at 2018-12-10 22:00:00.
+2024-12-13 09:56:21,477 - INFO - Trade closed for EUR_USD at row 763 at 2018-12-12 00:00:00.
+2024-12-13 09:56:21,480 - INFO - Order filled for EUR_USD at row 770 at 2018-12-19 22:00:00.
+2024-12-13 09:56:21,491 - INFO - Trade closed for EUR_USD at row 770 at 2018-12-20 09:00:00.
+2024-12-13 09:56:21,494 - INFO - Order filled for EUR_USD at row 778 at 2019-01-02 22:00:00.
+2024-12-13 09:56:21,548 - INFO - Trade closed for EUR_USD at row 778 at 2019-01-04 15:00:00.
+2024-12-13 09:56:21,550 - INFO - Order cancelled for EUR_USD at row 787.
+2024-12-13 09:56:21,552 - INFO - Order cancelled for EUR_USD at row 790.
+2024-12-13 09:56:21,556 - INFO - Order filled for EUR_USD at row 810 at 2019-02-18 03:00:00.
+2024-12-13 09:56:21,586 - INFO - Trade closed for EUR_USD at row 810 at 2019-02-18 15:00:00.
+2024-12-13 09:56:21,607 - INFO - Order filled for EUR_USD at row 871 at 2019-05-14 14:00:00.
+2024-12-13 09:56:21,680 - INFO - Trade closed for EUR_USD at row 871 at 2019-05-16 16:00:00.
+2024-12-13 09:56:21,683 - INFO - Order cancelled for EUR_USD at row 879.
+2024-12-13 09:56:21,686 - INFO - Order filled for EUR_USD at row 888 at 2019-06-05 21:00:00.
+2024-12-13 09:56:21,712 - INFO - Trade closed for EUR_USD at row 888 at 2019-06-06 11:00:00.
+2024-12-13 09:56:21,714 - INFO - Order filled for EUR_USD at row 893 at 2019-06-12 21:00:00.
+2024-12-13 09:56:21,792 - INFO - Trade closed for EUR_USD at row 893 at 2019-06-14 06:00:00.
+2024-12-13 09:56:21,800 - INFO - Order cancelled for EUR_USD at row 929.
+2024-12-13 09:56:21,802 - INFO - Order filled for EUR_USD at row 929 at 2019-08-05 02:00:00.
+2024-12-13 09:56:21,931 - INFO - Trade closed for EUR_USD at row 929 at 2019-08-06 03:00:00.
+2024-12-13 09:56:21,935 - INFO - Order filled for EUR_USD at row 944 at 2019-08-22 21:00:00.
+2024-12-13 09:56:21,994 - INFO - Trade closed for EUR_USD at row 944 at 2019-08-23 12:00:00.
+2024-12-13 09:56:21,995 - INFO - Order cancelled for EUR_USD at row 945.
+2024-12-13 09:56:21,997 - INFO - Order cancelled for EUR_USD at row 952.
+2024-12-13 09:56:21,998 - INFO - Order cancelled for EUR_USD at row 952.
+2024-12-13 09:56:21,999 - INFO - Order cancelled for EUR_USD at row 954.
+2024-12-13 09:56:22,001 - INFO - Order filled for EUR_USD at row 954 at 2019-09-11 12:00:00.
+2024-12-13 09:56:22,038 - INFO - Trade closed for EUR_USD at row 954 at 2019-09-12 15:00:00.
+2024-12-13 09:56:22,043 - INFO - Order filled for EUR_USD at row 990 at 2019-10-24 21:00:00.
+2024-12-13 09:56:22,159 - INFO - Trade closed for EUR_USD at row 990 at 2019-10-28 08:00:00.
+2024-12-13 09:56:22,161 - INFO - Order filled for EUR_USD at row 993 at 2019-10-29 21:00:00.
+2024-12-13 09:56:22,220 - INFO - Trade closed for EUR_USD at row 993 at 2019-10-31 06:00:00.
+2024-12-13 09:56:22,224 - INFO - Order filled for EUR_USD at row 1009 at 2019-11-21 10:00:00.
+2024-12-13 09:56:22,256 - INFO - Trade closed for EUR_USD at row 1009 at 2019-11-21 13:00:00.
+2024-12-13 09:56:22,258 - INFO - Order filled for EUR_USD at row 1019 at 2019-12-04 22:00:00.
+2024-12-13 09:56:22,391 - INFO - Trade closed for EUR_USD at row 1019 at 2019-12-10 11:00:00.
+2024-12-13 09:56:22,393 - INFO - Order cancelled for EUR_USD at row 1019.
+2024-12-13 09:56:22,394 - INFO - Order cancelled for EUR_USD at row 1021.
+2024-12-13 09:56:22,399 - INFO - Order filled for EUR_USD at row 1053 at 2020-01-23 22:00:00.
+2024-12-13 09:56:22,517 - INFO - Trade closed for EUR_USD at row 1053 at 2020-01-27 10:00:00.
+2024-12-13 09:56:22,528 - INFO - Order filled for EUR_USD at row 1110 at 2020-04-13 21:00:00.
+2024-12-13 09:56:22,556 - INFO - Trade closed for EUR_USD at row 1110 at 2020-04-14 11:00:00.
+2024-12-13 09:56:22,562 - INFO - Order filled for EUR_USD at row 1136 at 2020-05-19 21:00:00.
+2024-12-13 09:56:22,591 - INFO - Trade closed for EUR_USD at row 1136 at 2020-05-20 13:00:00.
+2024-12-13 09:56:22,594 - INFO - Order cancelled for EUR_USD at row 1151.
+2024-12-13 09:56:22,605 - INFO - Order cancelled for EUR_USD at row 1211.
+2024-12-13 09:56:22,607 - INFO - Order cancelled for EUR_USD at row 1211.
+2024-12-13 09:56:22,609 - INFO - Order filled for EUR_USD at row 1218 at 2020-09-10 21:00:00.
+2024-12-13 09:56:22,723 - INFO - Trade closed for EUR_USD at row 1218 at 2020-09-15 03:00:00.
+2024-12-13 09:56:22,724 - INFO - Order cancelled for EUR_USD at row 1223.
+2024-12-13 09:56:22,736 - INFO - Order filled for EUR_USD at row 1282 at 2020-12-09 22:00:00.
+2024-12-13 09:56:22,751 - INFO - Trade closed for EUR_USD at row 1282 at 2020-12-10 09:00:00.
+2024-12-13 09:56:22,754 - INFO - Order filled for EUR_USD at row 1290 at 2020-12-21 22:00:00.
+2024-12-13 09:56:22,779 - INFO - Trade closed for EUR_USD at row 1290 at 2020-12-22 15:00:00.
+2024-12-13 09:56:22,782 - INFO - Order cancelled for EUR_USD at row 1308.
+2024-12-13 09:56:22,786 - INFO - Order filled for EUR_USD at row 1325 at 2021-02-10 22:00:00.
+2024-12-13 09:56:22,810 - INFO - Trade closed for EUR_USD at row 1325 at 2021-02-11 13:00:00.
+2024-12-13 09:56:22,811 - INFO - Order cancelled for EUR_USD at row 1327.
+2024-12-13 09:56:22,813 - INFO - Order cancelled for EUR_USD at row 1336.
+2024-12-13 09:56:22,817 - INFO - Order cancelled for EUR_USD at row 1363.
+2024-12-13 09:56:22,819 - INFO - Order filled for EUR_USD at row 1365 at 2021-04-07 21:00:00.
+2024-12-13 09:56:22,838 - INFO - Trade closed for EUR_USD at row 1365 at 2021-04-08 13:00:00.
+2024-12-13 09:56:22,841 - INFO - Order cancelled for EUR_USD at row 1374.
+2024-12-13 09:56:22,842 - INFO - Order filled for EUR_USD at row 1374 at 2021-04-21 09:00:00.
+2024-12-13 09:56:22,922 - INFO - Trade closed for EUR_USD at row 1374 at 2021-04-22 01:00:00.
+2024-12-13 09:56:22,924 - INFO - Order filled for EUR_USD at row 1375 at 2021-04-21 21:00:00.
+2024-12-13 09:56:22,942 - INFO - Trade closed for EUR_USD at row 1375 at 2021-04-22 18:00:00.
+2024-12-13 09:56:22,946 - INFO - Order cancelled for EUR_USD at row 1402.
+2024-12-13 09:56:22,947 - INFO - Order cancelled for EUR_USD at row 1402.
+2024-12-13 09:56:22,949 - INFO - Order filled for EUR_USD at row 1410 at 2021-06-09 21:00:00.
+2024-12-13 09:56:22,951 - INFO - Order filled for EUR_USD at row 1410 at 2021-06-10 03:00:00.
+2024-12-13 09:56:22,972 - INFO - Trade closed for EUR_USD at row 1410 at 2021-06-10 11:00:00.
+2024-12-13 09:56:23,121 - INFO - Trade closed for EUR_USD at row 1410 at 2021-06-14 07:00:00.
+2024-12-13 09:56:23,124 - INFO - Order cancelled for EUR_USD at row 1422.
+2024-12-13 09:56:23,125 - INFO - Order filled for EUR_USD at row 1422 at 2021-06-28 03:00:00.
+2024-12-13 09:56:23,427 - INFO - Trade closed for EUR_USD at row 1422 at 2021-07-01 06:00:00.
+2024-12-13 09:56:23,433 - INFO - Order filled for EUR_USD at row 1469 at 2021-08-31 21:00:00.
+2024-12-13 09:56:23,457 - INFO - Trade closed for EUR_USD at row 1469 at 2021-09-01 13:00:00.
+2024-12-13 09:56:23,459 - INFO - Order filled for EUR_USD at row 1478 at 2021-09-13 21:00:00.
+2024-12-13 09:56:23,488 - INFO - Trade closed for EUR_USD at row 1478 at 2021-09-14 06:00:00.
+2024-12-13 09:56:23,489 - INFO - Order filled for EUR_USD at row 1478 at 2021-09-14 09:00:00.
+2024-12-13 09:56:23,531 - INFO - Trade closed for EUR_USD at row 1478 at 2021-09-14 19:00:00.
+2024-12-13 09:56:23,532 - INFO - Order filled for EUR_USD at row 1479 at 2021-09-14 21:00:00.
+2024-12-13 09:56:23,698 - INFO - Trade closed for EUR_USD at row 1479 at 2021-09-16 19:00:00.
+2024-12-13 09:56:23,699 - INFO - Order cancelled for EUR_USD at row 1479.
+2024-12-13 09:56:23,701 - INFO - Order filled for EUR_USD at row 1483 at 2021-09-20 21:00:00.
+2024-12-13 09:56:23,725 - INFO - Trade closed for EUR_USD at row 1483 at 2021-09-21 13:00:00.
+2024-12-13 09:56:23,727 - INFO - Order filled for EUR_USD at row 1501 at 2021-10-18 05:00:00.
+2024-12-13 09:56:23,756 - INFO - Trade closed for EUR_USD at row 1501 at 2021-10-18 16:00:00.
+2024-12-13 09:56:23,758 - INFO - Order filled for EUR_USD at row 1508 at 2021-10-25 21:00:00.
+2024-12-13 09:56:23,810 - INFO - Trade closed for EUR_USD at row 1508 at 2021-10-26 18:00:00.
+2024-12-13 09:56:23,812 - INFO - Order filled for EUR_USD at row 1511 at 2021-10-28 21:00:00.
+2024-12-13 09:56:23,834 - INFO - Trade closed for EUR_USD at row 1511 at 2021-10-29 14:00:00.
+2024-12-13 09:56:23,836 - INFO - Order filled for EUR_USD at row 1523 at 2021-11-15 22:00:00.
+2024-12-13 09:56:25,426 - INFO - Trade closed for EUR_USD at row 1523 at 2021-11-17 11:00:00.
+2024-12-13 09:56:25,428 - INFO - Order filled for EUR_USD at row 1534 at 2021-11-30 22:00:00.
+2024-12-13 09:56:25,448 - INFO - Trade closed for EUR_USD at row 1534 at 2021-12-01 08:00:00.
+2024-12-13 09:56:25,453 - INFO - Order cancelled for EUR_USD at row 1567.
+2024-12-13 09:56:25,455 - INFO - Order filled for EUR_USD at row 1571 at 2022-01-20 22:00:00.
+2024-12-13 09:56:25,493 - INFO - Trade closed for EUR_USD at row 1571 at 2022-01-21 13:00:00.
+2024-12-13 09:56:25,498 - INFO - Order filled for EUR_USD at row 1617 at 2022-03-28 02:00:00.
+2024-12-13 09:56:25,551 - INFO - Trade closed for EUR_USD at row 1617 at 2022-03-29 06:00:00.
+2024-12-13 09:56:25,552 - INFO - Order cancelled for EUR_USD at row 1618.
+2024-12-13 09:56:25,554 - INFO - Order cancelled for EUR_USD at row 1621.
+2024-12-13 09:56:25,556 - INFO - Order cancelled for EUR_USD at row 1627.
+2024-12-13 09:56:25,558 - INFO - Order cancelled for EUR_USD at row 1636.
+2024-12-13 09:56:25,618 - INFO - Order filled for EUR_USD at row 1669 at 2022-06-07 21:00:00.
+2024-12-13 09:56:25,675 - INFO - Trade closed for EUR_USD at row 1669 at 2022-06-09 07:00:00.
+2024-12-13 09:56:25,677 - INFO - Order filled for EUR_USD at row 1669 at 2022-06-08 12:00:00.
+2024-12-13 09:56:25,695 - INFO - Trade closed for EUR_USD at row 1669 at 2022-06-09 00:00:00.
+2024-12-13 09:56:25,696 - INFO - Order cancelled for EUR_USD at row 1671.
+2024-12-13 09:56:25,702 - INFO - Order filled for EUR_USD at row 1750 at 2022-09-28 21:00:00.
+2024-12-13 09:56:25,786 - INFO - Trade closed for EUR_USD at row 1750 at 2022-09-30 10:00:00.
+2024-12-13 09:56:25,787 - INFO - Order filled for EUR_USD at row 1761 at 2022-10-13 21:00:00.
+2024-12-13 09:56:25,929 - INFO - Trade closed for EUR_USD at row 1761 at 2022-10-18 07:00:00.
+2024-12-13 09:56:25,931 - INFO - Order cancelled for EUR_USD at row 1767.
+2024-12-13 09:56:25,932 - INFO - Order cancelled for EUR_USD at row 1775.
+2024-12-13 09:56:25,934 - INFO - Order filled for EUR_USD at row 1793 at 2022-11-28 22:00:00.
+2024-12-13 09:56:26,027 - INFO - Trade closed for EUR_USD at row 1793 at 2022-11-30 13:00:00.
+2024-12-13 09:56:26,029 - INFO - Order cancelled for EUR_USD at row 1795.
+2024-12-13 09:56:26,032 - INFO - Order cancelled for EUR_USD at row 1851.
+2024-12-13 09:56:26,034 - INFO - Order cancelled for EUR_USD at row 1875.
+2024-12-13 09:56:26,037 - INFO - Order filled for EUR_USD at row 1927 at 2023-06-05 21:00:00.
+2024-12-13 09:56:26,055 - INFO - Trade closed for EUR_USD at row 1927 at 2023-06-06 12:00:00.
+2024-12-13 09:56:26,059 - INFO - Order filled for EUR_USD at row 1962 at 2023-07-24 21:00:00.
+2024-12-13 09:56:26,209 - INFO - Trade closed for EUR_USD at row 1962 at 2023-07-26 06:00:00.
+2024-12-13 09:56:26,211 - INFO - Order filled for EUR_USD at row 1965 at 2023-07-27 21:00:00.
+2024-12-13 09:56:26,275 - INFO - Trade closed for EUR_USD at row 1965 at 2023-07-31 07:00:00.
+2024-12-13 09:56:26,277 - INFO - Order cancelled for EUR_USD at row 1975.
+2024-12-13 09:56:26,278 - INFO - Order filled for EUR_USD at row 1983 at 2023-08-22 21:00:00.
+2024-12-13 09:56:26,431 - INFO - Trade closed for EUR_USD at row 1983 at 2023-08-23 13:00:00.
+2024-12-13 09:56:26,433 - INFO - Order cancelled for EUR_USD at row 2011.
+2024-12-13 09:56:26,434 - INFO - Order cancelled for EUR_USD at row 2020.
+2024-12-13 09:56:26,435 - INFO - Order cancelled for EUR_USD at row 2034.
+2024-12-13 09:56:26,436 - INFO - Order cancelled for EUR_USD at row 2034.
+2024-12-13 09:56:26,437 - INFO - Order cancelled for EUR_USD at row 2037.
+2024-12-13 09:56:26,438 - ERROR - Error analyzing results for EUR_USD: analyze_results() got an unexpected keyword argument 'base_path'
+2024-12-13 09:56:26,438 - INFO - Processing Instrument: GBP_USD
+2024-12-13 09:56:29,146 - INFO - Fetched daily data: C:\Users\grave\OneDrive\Coding\PAC\fxdata\GBP_USD_D.xlsx
+2024-12-13 09:56:29,146 - INFO - Fetched hourly data: C:\Users\grave\OneDrive\Coding\PAC\fxdata\GBP_USD_H1.xlsx
+2024-12-13 09:56:29,539 - INFO - Calculated signals and ATR.
+2024-12-13 09:58:14,064 - INFO - Loaded and calculated zigzag data.
+2024-12-13 09:58:16,465 - INFO - Processed signals and generated 266 entries for GBP_USD.
+2024-12-13 09:58:31,553 - INFO - Calculated Stop Loss and Take Profit for entries.
+2024-12-13 09:58:31,555 - INFO - Sorted hourly data by time.
+2024-12-13 09:58:31,573 - INFO - Order cancelled for GBP_USD at row 34.
+2024-12-13 09:58:31,581 - INFO - Order cancelled for GBP_USD at row 48.
+2024-12-13 09:58:31,586 - INFO - Order filled for GBP_USD at row 62 at 2016-03-30 21:00:00.
+2024-12-13 09:58:31,588 - INFO - Order filled for GBP_USD at row 62 at 2016-03-31 03:00:00.
+2024-12-13 09:58:31,638 - INFO - Trade closed for GBP_USD at row 62 at 2016-04-01 05:00:00.
+2024-12-13 09:58:31,684 - INFO - Trade closed for GBP_USD at row 62 at 2016-04-01 05:00:00.
+2024-12-13 09:58:31,687 - INFO - Order filled for GBP_USD at row 67 at 2016-04-06 21:00:00.
+2024-12-13 09:58:31,784 - INFO - Trade closed for GBP_USD at row 67 at 2016-04-11 05:00:00.
+2024-12-13 09:58:31,786 - INFO - Order cancelled for GBP_USD at row 67.
+2024-12-13 09:58:31,788 - INFO - Order cancelled for GBP_USD at row 75.
+2024-12-13 09:58:31,792 - INFO - Order cancelled for GBP_USD at row 86.
+2024-12-13 09:58:31,800 - INFO - Order cancelled for GBP_USD at row 110.
+2024-12-13 09:58:31,811 - INFO - Order filled for GBP_USD at row 138 at 2016-07-14 21:00:00.
+2024-12-13 09:58:31,881 - INFO - Trade closed for GBP_USD at row 138 at 2016-07-18 09:00:00.
+2024-12-13 09:58:31,884 - INFO - Order cancelled for GBP_USD at row 144.
+2024-12-13 09:58:31,890 - INFO - Order cancelled for GBP_USD at row 157.
+2024-12-13 09:58:31,892 - INFO - Order filled for GBP_USD at row 157 at 2016-08-11 09:00:00.
+2024-12-13 09:58:31,976 - INFO - Trade closed for GBP_USD at row 157 at 2016-08-12 12:00:00.
+2024-12-13 09:58:31,978 - INFO - Order cancelled for GBP_USD at row 159.
+2024-12-13 09:58:31,982 - INFO - Order cancelled for GBP_USD at row 169.
+2024-12-13 09:58:32,002 - INFO - Order cancelled for GBP_USD at row 254.
+2024-12-13 09:58:32,004 - INFO - Order filled for GBP_USD at row 256 at 2016-12-28 22:00:00.
+2024-12-13 09:58:32,041 - INFO - Trade closed for GBP_USD at row 256 at 2016-12-29 23:00:00.
+2024-12-13 09:58:32,045 - INFO - Order filled for GBP_USD at row 265 at 2017-01-11 22:00:00.
+2024-12-13 09:58:32,074 - INFO - Trade closed for GBP_USD at row 265 at 2017-01-12 10:00:00.
+2024-12-13 09:58:32,081 - INFO - Order cancelled for GBP_USD at row 290.
+2024-12-13 09:58:32,094 - INFO - Order filled for GBP_USD at row 334 at 2017-04-18 21:00:00.
+2024-12-13 09:58:32,372 - INFO - Trade closed for GBP_USD at row 334 at 2017-04-26 17:00:00.
+2024-12-13 09:58:32,377 - INFO - Order cancelled for GBP_USD at row 350.
+2024-12-13 09:58:32,378 - INFO - Order cancelled for GBP_USD at row 350.
+2024-12-13 09:58:32,380 - INFO - Order filled for GBP_USD at row 353 at 2017-05-15 21:00:00.
+2024-12-13 09:58:32,393 - INFO - Trade closed for GBP_USD at row 353 at 2017-05-16 06:00:00.
+2024-12-13 09:58:32,397 - INFO - Order filled for GBP_USD at row 365 at 2017-05-31 21:00:00.
+2024-12-13 09:58:32,427 - INFO - Trade closed for GBP_USD at row 365 at 2017-06-01 16:00:00.
+2024-12-13 09:58:32,440 - INFO - Order filled for GBP_USD at row 394 at 2017-07-11 21:00:00.
+2024-12-13 09:58:32,483 - INFO - Trade closed for GBP_USD at row 394 at 2017-07-13 06:00:00.
+2024-12-13 09:58:32,487 - INFO - Order filled for GBP_USD at row 404 at 2017-07-25 21:00:00.
+2024-12-13 09:58:32,500 - INFO - Trade closed for GBP_USD at row 404 at 2017-07-26 18:00:00.
+2024-12-13 09:58:32,515 - INFO - Order cancelled for GBP_USD at row 429.
+2024-12-13 09:58:32,517 - INFO - Order filled for GBP_USD at row 431 at 2017-09-01 14:00:00.
+2024-12-13 09:58:32,546 - INFO - Trade closed for GBP_USD at row 431 at 2017-09-04 07:00:00.
+2024-12-13 09:58:32,549 - INFO - Order filled for GBP_USD at row 434 at 2017-09-05 21:00:00.
+2024-12-13 09:58:32,606 - INFO - Trade closed for GBP_USD at row 434 at 2017-09-06 18:00:00.
+2024-12-13 09:58:32,622 - INFO - Order filled for GBP_USD at row 495 at 2017-11-27 22:00:00.
+2024-12-13 09:58:32,639 - INFO - Trade closed for GBP_USD at row 495 at 2017-11-28 19:00:00.
+2024-12-13 09:58:32,642 - INFO - Order filled for GBP_USD at row 503 at 2017-12-07 22:00:00.
+2024-12-13 09:58:32,656 - INFO - Trade closed for GBP_USD at row 503 at 2017-12-08 15:00:00.
+2024-12-13 09:58:32,660 - INFO - Order filled for GBP_USD at row 513 at 2017-12-21 22:00:00.
+2024-12-13 09:58:32,698 - INFO - Trade closed for GBP_USD at row 513 at 2017-12-22 21:00:00.
+2024-12-13 09:58:32,717 - INFO - Order filled for GBP_USD at row 586 at 2018-04-05 21:00:00.
+2024-12-13 09:58:32,743 - INFO - Trade closed for GBP_USD at row 586 at 2018-04-06 12:00:00.
+2024-12-13 09:58:32,746 - INFO - Order cancelled for GBP_USD at row 592.
+2024-12-13 09:58:32,753 - INFO - Order filled for GBP_USD at row 619 at 2018-05-23 08:00:00.
+2024-12-13 09:58:32,825 - INFO - Trade closed for GBP_USD at row 619 at 2018-05-25 08:00:00.
+2024-12-13 09:58:32,828 - INFO - Order filled for GBP_USD at row 626 at 2018-06-01 04:00:00.
+2024-12-13 09:58:32,853 - INFO - Trade closed for GBP_USD at row 626 at 2018-06-01 15:00:00.
+2024-12-13 09:58:32,859 - INFO - Order filled for GBP_USD at row 651 at 2018-07-05 21:00:00.
+2024-12-13 09:58:32,871 - INFO - Trade closed for GBP_USD at row 651 at 2018-07-06 13:00:00.
+2024-12-13 09:58:32,874 - INFO - Order cancelled for GBP_USD at row 657.
+2024-12-13 09:58:32,875 - INFO - Order filled for GBP_USD at row 658 at 2018-07-16 21:00:00.
+2024-12-13 09:58:33,657 - INFO - Trade closed for GBP_USD at row 658 at 2018-07-19 13:00:00.
+2024-12-13 09:58:33,659 - INFO - Order cancelled for GBP_USD at row 658.
+2024-12-13 09:58:33,664 - INFO - Order cancelled for GBP_USD at row 679.
+2024-12-13 09:58:33,667 - INFO - Order cancelled for GBP_USD at row 690.
+2024-12-13 09:58:33,669 - INFO - Order filled for GBP_USD at row 694 at 2018-09-04 21:00:00.
+2024-12-13 09:58:33,681 - INFO - Trade closed for GBP_USD at row 694 at 2018-09-05 08:00:00.
+2024-12-13 09:58:33,687 - INFO - Order filled for GBP_USD at row 713 at 2018-10-02 08:00:00.
+2024-12-13 09:58:33,770 - INFO - Trade closed for GBP_USD at row 713 at 2018-10-04 08:00:00.
+2024-12-13 09:58:33,783 - INFO - Order filled for GBP_USD at row 769 at 2018-12-18 22:00:00.
+2024-12-13 09:58:33,837 - INFO - Trade closed for GBP_USD at row 769 at 2018-12-20 09:00:00.
+2024-12-13 09:58:33,841 - INFO - Order cancelled for GBP_USD at row 779.
+2024-12-13 09:58:33,842 - INFO - Order filled for GBP_USD at row 779 at 2019-01-04 09:00:00.
+2024-12-13 09:58:33,909 - INFO - Trade closed for GBP_USD at row 779 at 2019-01-07 07:00:00.
+2024-12-13 09:58:33,911 - INFO - Order cancelled for GBP_USD at row 787.
+2024-12-13 09:58:33,913 - INFO - Order filled for GBP_USD at row 787 at 2019-01-17 18:00:00.
+2024-12-13 09:58:33,949 - INFO - Trade closed for GBP_USD at row 787 at 2019-01-21 09:00:00.
+2024-12-13 09:58:33,952 - INFO - Order filled for GBP_USD at row 799 at 2019-02-01 11:00:00.
+2024-12-13 09:58:34,011 - INFO - Trade closed for GBP_USD at row 799 at 2019-02-04 15:00:00.
+2024-12-13 09:58:34,016 - INFO - Order filled for GBP_USD at row 822 at 2019-03-05 22:00:00.
+2024-12-13 09:58:34,066 - INFO - Trade closed for GBP_USD at row 822 at 2019-03-06 21:00:00.
+2024-12-13 09:58:34,068 - INFO - Order filled for GBP_USD at row 824 at 2019-03-07 22:00:00.
+2024-12-13 09:58:34,135 - INFO - Trade closed for GBP_USD at row 824 at 2019-03-10 22:00:00.
+2024-12-13 09:58:34,136 - INFO - Order filled for GBP_USD at row 826 at 2019-03-11 21:00:00.
+2024-12-13 09:58:34,249 - INFO - Trade closed for GBP_USD at row 826 at 2019-03-14 03:00:00.
+2024-12-13 09:58:34,268 - INFO - Order cancelled for GBP_USD at row 880.
+2024-12-13 09:58:34,274 - INFO - Order cancelled for GBP_USD at row 904.
+2024-12-13 09:58:34,288 - INFO - Order cancelled for GBP_USD at row 956.
+2024-12-13 09:58:34,301 - INFO - Order cancelled for GBP_USD at row 1018.
+2024-12-13 09:58:34,307 - INFO - Order cancelled for GBP_USD at row 1053.
+2024-12-13 09:58:34,309 - INFO - Order cancelled for GBP_USD at row 1058.
+2024-12-13 09:58:34,313 - INFO - Order filled for GBP_USD at row 1071 at 2020-02-12 22:00:00.
+2024-12-13 09:58:34,334 - INFO - Trade closed for GBP_USD at row 1071 at 2020-02-13 12:00:00.
+2024-12-13 09:58:34,343 - INFO - Order cancelled for GBP_USD at row 1123.
+2024-12-13 09:58:34,345 - INFO - Order filled for GBP_USD at row 1125 at 2020-04-28 21:00:00.
+2024-12-13 09:58:34,376 - INFO - Trade closed for GBP_USD at row 1125 at 2020-04-29 12:00:00.
+2024-12-13 09:58:34,378 - INFO - Order filled for GBP_USD at row 1125 at 2020-04-29 12:00:00.
+2024-12-13 09:58:34,420 - INFO - Trade closed for GBP_USD at row 1125 at 2020-04-30 09:00:00.
+2024-12-13 09:58:34,424 - INFO - Order filled for GBP_USD at row 1137 at 2020-05-14 21:00:00.
+2024-12-13 09:58:34,440 - INFO - Trade closed for GBP_USD at row 1137 at 2020-05-15 11:00:00.
+2024-12-13 09:58:34,446 - INFO - Order filled for GBP_USD at row 1164 at 2020-06-22 21:00:00.
+2024-12-13 09:58:34,530 - INFO - Trade closed for GBP_USD at row 1164 at 2020-06-24 07:00:00.
+2024-12-13 09:58:34,532 - INFO - Order filled for GBP_USD at row 1166 at 2020-06-24 21:00:00.
+2024-12-13 09:58:34,605 - INFO - Trade closed for GBP_USD at row 1166 at 2020-06-26 11:00:00.
+2024-12-13 09:58:34,607 - INFO - Order filled for GBP_USD at row 1177 at 2020-07-09 21:00:00.
+2024-12-13 09:58:34,663 - INFO - Trade closed for GBP_USD at row 1177 at 2020-07-13 13:00:00.
+2024-12-13 09:58:34,664 - INFO - Order cancelled for GBP_USD at row 1179.
+2024-12-13 09:58:34,665 - INFO - Order cancelled for GBP_USD at row 1180.
+2024-12-13 09:58:34,666 - INFO - Order filled for GBP_USD at row 1180 at 2020-07-15 00:00:00.
+2024-12-13 09:58:34,729 - INFO - Trade closed for GBP_USD at row 1180 at 2020-07-16 00:00:00.
+2024-12-13 09:58:34,731 - INFO - Order cancelled for GBP_USD at row 1183.
+2024-12-13 09:58:34,733 - INFO - Order filled for GBP_USD at row 1193 at 2020-08-03 11:00:00.
+2024-12-13 09:58:34,757 - INFO - Trade closed for GBP_USD at row 1193 at 2020-08-04 02:00:00.
+2024-12-13 09:58:34,760 - INFO - Order cancelled for GBP_USD at row 1215.
+2024-12-13 09:58:34,761 - INFO - Order filled for GBP_USD at row 1215 at 2020-09-02 09:00:00.
+2024-12-13 09:58:34,860 - INFO - Trade closed for GBP_USD at row 1215 at 2020-09-02 23:00:00.
+2024-12-13 09:58:34,862 - INFO - Order cancelled for GBP_USD at row 1218.
+2024-12-13 09:58:34,864 - INFO - Order filled for GBP_USD at row 1222 at 2020-09-10 21:00:00.
+2024-12-13 09:58:34,913 - INFO - Trade closed for GBP_USD at row 1222 at 2020-09-14 10:00:00.
+2024-12-13 09:58:34,925 - INFO - Order filled for GBP_USD at row 1259 at 2020-11-03 11:00:00.
+2024-12-13 09:58:35,081 - INFO - Trade closed for GBP_USD at row 1259 at 2020-11-06 14:00:00.
+2024-12-13 09:58:35,084 - INFO - Order cancelled for GBP_USD at row 1272.
+2024-12-13 09:58:35,090 - INFO - Order filled for GBP_USD at row 1302 at 2021-01-04 22:00:00.
+2024-12-13 09:58:35,116 - INFO - Trade closed for GBP_USD at row 1302 at 2021-01-05 16:00:00.
+2024-12-13 09:58:35,117 - INFO - Order cancelled for GBP_USD at row 1306.
+2024-12-13 09:58:35,119 - INFO - Order cancelled for GBP_USD at row 1312.
+2024-12-13 09:58:35,120 - INFO - Order filled for GBP_USD at row 1318 at 2021-01-26 22:00:00.
+2024-12-13 09:58:35,161 - INFO - Trade closed for GBP_USD at row 1318 at 2021-01-28 08:00:00.
+2024-12-13 09:58:35,165 - INFO - Order cancelled for GBP_USD at row 1345.
+2024-12-13 09:58:35,167 - INFO - Order cancelled for GBP_USD at row 1353.
+2024-12-13 09:58:35,171 - INFO - Order cancelled for GBP_USD at row 1376.
+2024-12-13 09:58:35,172 - INFO - Order filled for GBP_USD at row 1379 at 2021-04-21 21:00:00.
+2024-12-13 09:58:35,193 - INFO - Trade closed for GBP_USD at row 1379 at 2021-04-22 12:00:00.
+2024-12-13 09:58:35,195 - INFO - Order cancelled for GBP_USD at row 1385.
+2024-12-13 09:58:35,198 - INFO - Order filled for GBP_USD at row 1402 at 2021-05-24 21:00:00.
+2024-12-13 09:58:35,244 - INFO - Trade closed for GBP_USD at row 1402 at 2021-05-26 06:00:00.
+2024-12-13 09:58:35,247 - INFO - Order filled for GBP_USD at row 1414 at 2021-06-09 21:00:00.
+2024-12-13 09:58:35,270 - INFO - Trade closed for GBP_USD at row 1414 at 2021-06-10 20:00:00.
+2024-12-13 09:58:35,273 - INFO - Order filled for GBP_USD at row 1433 at 2021-07-06 21:00:00.
+2024-12-13 09:58:35,305 - INFO - Trade closed for GBP_USD at row 1433 at 2021-07-07 18:00:00.
+2024-12-13 09:58:35,306 - INFO - Order cancelled for GBP_USD at row 1435.
+2024-12-13 09:58:35,310 - INFO - Order filled for GBP_USD at row 1473 at 2021-09-01 02:00:00.
+2024-12-13 09:58:35,327 - INFO - Trade closed for GBP_USD at row 1473 at 2021-09-01 12:00:00.
+2024-12-13 09:58:35,328 - INFO - Order cancelled for GBP_USD at row 1479.
+2024-12-13 09:58:35,330 - INFO - Order cancelled for GBP_USD at row 1481.
+2024-12-13 09:58:35,332 - INFO - Order filled for GBP_USD at row 1481 at 2021-09-13 06:00:00.
+2024-12-13 09:58:35,407 - INFO - Trade closed for GBP_USD at row 1481 at 2021-09-14 06:00:00.
+2024-12-13 09:58:35,408 - INFO - Order cancelled for GBP_USD at row 1483.
+2024-12-13 09:58:35,413 - INFO - Order filled for GBP_USD at row 1529 at 2021-11-17 22:00:00.
+2024-12-13 09:58:35,458 - INFO - Trade closed for GBP_USD at row 1529 at 2021-11-19 08:00:00.
+2024-12-13 09:58:35,461 - INFO - Order filled for GBP_USD at row 1549 at 2021-12-15 22:00:00.
+2024-12-13 09:58:35,504 - INFO - Trade closed for GBP_USD at row 1549 at 2021-12-16 11:00:00.
+2024-12-13 09:58:35,507 - INFO - Order filled for GBP_USD at row 1570 at 2022-01-13 22:00:00.
+2024-12-13 09:58:35,890 - INFO - Trade closed for GBP_USD at row 1570 at 2022-01-19 10:00:00.
+2024-12-13 09:58:35,894 - INFO - Order filled for GBP_USD at row 1589 at 2022-02-09 22:00:00.
+2024-12-13 09:58:35,915 - INFO - Trade closed for GBP_USD at row 1589 at 2022-02-10 15:00:00.
+2024-12-13 09:58:35,918 - INFO - Order filled for GBP_USD at row 1598 at 2022-02-22 22:00:00.
+2024-12-13 09:58:35,935 - INFO - Trade closed for GBP_USD at row 1598 at 2022-02-23 19:00:00.
+2024-12-13 09:58:35,937 - INFO - Order filled for GBP_USD at row 1610 at 2022-03-10 22:00:00.
+2024-12-13 09:58:36,484 - INFO - Trade closed for GBP_USD at row 1610 at 2022-03-11 02:00:00.
+2024-12-13 09:58:36,485 - INFO - Order filled for GBP_USD at row 1618 at 2022-03-22 21:00:00.
+2024-12-13 09:58:36,502 - INFO - Trade closed for GBP_USD at row 1618 at 2022-03-23 13:00:00.
+2024-12-13 09:58:36,506 - INFO - Order filled for GBP_USD at row 1634 at 2022-04-13 21:00:00.
+2024-12-13 09:58:36,524 - INFO - Trade closed for GBP_USD at row 1634 at 2022-04-14 14:00:00.
+2024-12-13 09:58:36,527 - INFO - Order cancelled for GBP_USD at row 1656.
+2024-12-13 09:58:36,541 - INFO - Order filled for GBP_USD at row 1705 at 2022-07-22 15:00:00.
+2024-12-13 09:58:36,571 - INFO - Trade closed for GBP_USD at row 1705 at 2022-07-25 00:00:00.
+2024-12-13 09:58:36,573 - INFO - Order cancelled for GBP_USD at row 1731.
+2024-12-13 09:58:36,575 - INFO - Order cancelled for GBP_USD at row 1738.
+2024-12-13 09:58:36,576 - INFO - Order filled for GBP_USD at row 1739 at 2022-09-07 21:00:00.
+2024-12-13 09:58:36,659 - INFO - Trade closed for GBP_USD at row 1739 at 2022-09-08 12:00:00.
+2024-12-13 09:58:36,662 - INFO - Order filled for GBP_USD at row 1754 at 2022-09-28 21:00:00.
+2024-12-13 09:58:36,744 - INFO - Trade closed for GBP_USD at row 1754 at 2022-09-30 09:00:00.
+2024-12-13 09:58:36,746 - INFO - Order filled for GBP_USD at row 1763 at 2022-10-11 21:00:00.
+2024-12-13 09:58:36,819 - INFO - Trade closed for GBP_USD at row 1763 at 2022-10-13 09:00:00.
+2024-12-13 09:58:36,824 - INFO - Order filled for GBP_USD at row 1812 at 2022-12-21 18:00:00.
+2024-12-13 09:58:36,976 - INFO - Trade closed for GBP_USD at row 1812 at 2022-12-23 11:00:00.
+2024-12-13 09:58:36,977 - INFO - Order cancelled for GBP_USD at row 1820.
+2024-12-13 09:58:36,978 - INFO - Order cancelled for GBP_USD at row 1825.
+2024-12-13 09:58:36,980 - INFO - Order filled for GBP_USD at row 1829 at 2023-01-12 22:00:00.
+2024-12-13 09:58:37,008 - INFO - Trade closed for GBP_USD at row 1829 at 2023-01-13 11:00:00.
+2024-12-13 09:58:37,011 - INFO - Order filled for GBP_USD at row 1862 at 2023-02-28 22:00:00.
+2024-12-13 09:58:37,141 - INFO - Trade closed for GBP_USD at row 1862 at 2023-03-03 08:00:00.
+2024-12-13 09:58:37,143 - INFO - Order filled for GBP_USD at row 1867 at 2023-03-07 22:00:00.
+2024-12-13 09:58:37,187 - INFO - Trade closed for GBP_USD at row 1867 at 2023-03-09 08:00:00.
+2024-12-13 09:58:37,188 - INFO - Order cancelled for GBP_USD at row 1879.
+2024-12-13 09:58:37,190 - INFO - Order cancelled for GBP_USD at row 1895.
+2024-12-13 09:58:37,192 - INFO - Order filled for GBP_USD at row 1913 at 2023-05-11 08:00:00.
+2024-12-13 09:58:37,412 - INFO - Trade closed for GBP_USD at row 1913 at 2023-05-15 07:00:00.
+2024-12-13 09:58:37,414 - INFO - Order filled for GBP_USD at row 1927 at 2023-05-30 21:00:00.
+2024-12-13 09:58:37,441 - INFO - Trade closed for GBP_USD at row 1927 at 2023-05-31 07:00:00.
+2024-12-13 09:58:37,443 - INFO - Order filled for GBP_USD at row 1954 at 2023-07-06 21:00:00.
+2024-12-13 09:58:37,959 - INFO - Trade closed for GBP_USD at row 1954 at 2023-07-07 19:00:00.
+2024-12-13 09:58:37,961 - INFO - Order cancelled for GBP_USD at row 1962.
+2024-12-13 09:58:37,962 - INFO - Order filled for GBP_USD at row 1969 at 2023-07-27 21:00:00.
+2024-12-13 09:58:38,038 - INFO - Trade closed for GBP_USD at row 1969 at 2023-07-28 06:00:00.
+2024-12-13 09:58:38,039 - INFO - Order cancelled for GBP_USD at row 1974.
+2024-12-13 09:58:38,040 - INFO - Order filled for GBP_USD at row 1974 at 2023-08-04 03:00:00.
+2024-12-13 09:58:38,302 - INFO - Trade closed for GBP_USD at row 1974 at 2023-08-10 17:00:00.
+2024-12-13 09:58:38,304 - INFO - Order filled for GBP_USD at row 1988 at 2023-08-23 21:00:00.
+2024-12-13 09:58:38,380 - INFO - Trade closed for GBP_USD at row 1988 at 2023-08-24 17:00:00.
+2024-12-13 09:58:38,382 - INFO - Order cancelled for GBP_USD at row 2015.
+2024-12-13 09:58:38,383 - INFO - Order cancelled for GBP_USD at row 2015.
+2024-12-13 09:58:38,384 - INFO - Order cancelled for GBP_USD at row 2045.
+2024-12-13 09:58:38,385 - INFO - Order cancelled for GBP_USD at row 2050.
+2024-12-13 09:58:38,386 - ERROR - Error analyzing results for GBP_USD: analyze_results() got an unexpected keyword argument 'base_path'
+2024-12-13 09:58:38,387 - INFO - Processing Instrument: EUR_USD
+2024-12-13 09:58:40,958 - INFO - Fetched daily data: C:\Users\grave\OneDrive\Coding\PAC\fxdata\EUR_USD_D.xlsx
+2024-12-13 09:58:40,958 - INFO - Fetched hourly data: C:\Users\grave\OneDrive\Coding\PAC\fxdata\EUR_USD_H1.xlsx
+2024-12-13 09:58:41,309 - INFO - Calculated signals and ATR.
+2024-12-13 10:10:53,360 - INFO - Processing Instrument: EUR_USD
+2024-12-13 10:10:56,569 - INFO - Fetched daily data: C:\Users\grave\OneDrive\Coding\PAC\fxdata\EUR_USD_D.xlsx
+2024-12-13 10:10:56,569 - INFO - Fetched hourly data: C:\Users\grave\OneDrive\Coding\PAC\fxdata\EUR_USD_H1.xlsx
+2024-12-13 10:10:56,949 - INFO - Calculated signals and ATR.
+2024-12-13 10:12:42,142 - INFO - Loaded and calculated zigzag data.
+2024-12-13 10:12:44,559 - INFO - Processed signals and generated 298 entries for EUR_USD.
+2024-12-13 10:13:01,062 - INFO - Calculated Stop Loss and Take Profit for entries.
+2024-12-13 10:13:01,064 - INFO - Sorted hourly data by time.
+2024-12-13 10:13:01,080 - INFO - Order cancelled for EUR_USD at row 39.
+2024-12-13 10:13:01,082 - INFO - Order cancelled for EUR_USD at row 42.
+2024-12-13 10:13:01,084 - INFO - Order filled for EUR_USD at row 46 at 2016-03-09 03:00:00.
+2024-12-13 10:13:01,126 - INFO - Trade closed for EUR_USD at row 46 at 2016-03-10 08:00:00.
+2024-12-13 10:13:01,128 - INFO - Order filled for EUR_USD at row 48 at 2016-03-10 22:00:00.
+2024-12-13 10:13:01,219 - INFO - Trade closed for EUR_USD at row 48 at 2016-03-15 09:00:00.
+2024-12-13 10:13:01,226 - INFO - Order filled for EUR_USD at row 58 at 2016-03-28 15:00:00.
+2024-12-13 10:13:01,388 - INFO - Trade closed for EUR_USD at row 58 at 2016-03-30 15:00:00.
+2024-12-13 10:13:01,394 - INFO - Order filled for EUR_USD at row 77 at 2016-04-20 21:00:00.
+2024-12-13 10:13:01,404 - INFO - Trade closed for EUR_USD at row 77 at 2016-04-21 12:00:00.
+2024-12-13 10:13:01,408 - INFO - Order cancelled for EUR_USD at row 86.
+2024-12-13 10:13:01,409 - INFO - Order filled for EUR_USD at row 86 at 2016-05-04 03:00:00.
+2024-12-13 10:13:01,568 - INFO - Trade closed for EUR_USD at row 86 at 2016-05-06 12:00:00.
+2024-12-13 10:13:01,577 - INFO - Order filled for EUR_USD at row 106 at 2016-05-31 21:00:00.
+2024-12-13 10:13:01,593 - INFO - Trade closed for EUR_USD at row 106 at 2016-06-01 11:00:00.
+2024-12-13 10:13:01,595 - INFO - Order cancelled for EUR_USD at row 109.
+2024-12-13 10:13:01,597 - INFO - Order cancelled for EUR_USD at row 113.
+2024-12-13 10:13:01,605 - INFO - Order filled for EUR_USD at row 131 at 2016-07-05 21:00:00.
+2024-12-13 10:13:01,642 - INFO - Trade closed for EUR_USD at row 131 at 2016-07-07 08:00:00.
+2024-12-13 10:13:01,649 - INFO - Order filled for EUR_USD at row 142 at 2016-07-21 05:00:00.
+2024-12-13 10:13:01,674 - INFO - Trade closed for EUR_USD at row 142 at 2016-07-21 14:00:00.
+2024-12-13 10:13:01,676 - INFO - Order filled for EUR_USD at row 146 at 2016-07-26 21:00:00.
+2024-12-13 10:13:01,685 - INFO - Trade closed for EUR_USD at row 146 at 2016-07-27 19:00:00.
+2024-12-13 10:13:01,687 - INFO - Order cancelled for EUR_USD at row 147.
+2024-12-13 10:13:01,690 - INFO - Order cancelled for EUR_USD at row 154.
+2024-12-13 10:13:01,695 - INFO - Order cancelled for EUR_USD at row 166.
+2024-12-13 10:13:01,699 - INFO - Order cancelled for EUR_USD at row 169.
+2024-12-13 10:13:01,706 - INFO - Order cancelled for EUR_USD at row 178.
+2024-12-13 10:13:01,726 - INFO - Order filled for EUR_USD at row 240 at 2016-12-05 22:00:00.
+2024-12-13 10:13:01,841 - INFO - Trade closed for EUR_USD at row 240 at 2016-12-08 07:00:00.
+2024-12-13 10:13:01,843 - INFO - Order filled for EUR_USD at row 245 at 2016-12-12 22:00:00.
+2024-12-13 10:13:01,929 - INFO - Trade closed for EUR_USD at row 245 at 2016-12-14 19:00:00.
+2024-12-13 10:13:01,956 - INFO - Order cancelled for EUR_USD at row 336.
+2024-12-13 10:13:01,957 - INFO - Order filled for EUR_USD at row 336 at 2017-04-21 11:00:00.
+2024-12-13 10:13:01,985 - INFO - Trade closed for EUR_USD at row 336 at 2017-04-23 21:00:00.
+2024-12-13 10:13:01,989 - INFO - Order filled for EUR_USD at row 346 at 2017-05-04 21:00:00.
+2024-12-13 10:13:02,392 - INFO - Trade closed for EUR_USD at row 346 at 2017-05-07 22:00:00.
+2024-12-13 10:13:02,404 - INFO - Order cancelled for EUR_USD at row 375.
+2024-12-13 10:13:02,429 - INFO - Order cancelled for EUR_USD at row 429.
+2024-12-13 10:13:02,431 - INFO - Order cancelled for EUR_USD at row 429.
+2024-12-13 10:13:02,438 - INFO - Order cancelled for EUR_USD at row 447.
+2024-12-13 10:13:02,447 - INFO - Order cancelled for EUR_USD at row 473.
+2024-12-13 10:13:02,452 - INFO - Order cancelled for EUR_USD at row 487.
+2024-12-13 10:13:02,455 - INFO - Order filled for EUR_USD at row 487 at 2017-11-16 00:00:00.
+2024-12-13 10:13:02,498 - INFO - Trade closed for EUR_USD at row 487 at 2017-11-16 13:00:00.
+2024-12-13 10:13:02,506 - INFO - Order cancelled for EUR_USD at row 504.
+2024-12-13 10:13:02,507 - INFO - Order filled for EUR_USD at row 505 at 2017-12-11 22:00:00.
+2024-12-13 10:13:02,572 - INFO - Trade closed for EUR_USD at row 505 at 2017-12-12 20:00:00.
+2024-12-13 10:13:02,573 - INFO - Order filled for EUR_USD at row 505 at 2017-12-12 15:00:00.
+2024-12-13 10:13:02,589 - INFO - Trade closed for EUR_USD at row 505 at 2017-12-13 18:00:00.
+2024-12-13 10:13:02,596 - INFO - Order filled for EUR_USD at row 525 at 2018-01-10 22:00:00.
+2024-12-13 10:13:02,608 - INFO - Trade closed for EUR_USD at row 525 at 2018-01-11 13:00:00.
+2024-12-13 10:13:02,611 - INFO - Order filled for EUR_USD at row 530 at 2018-01-17 22:00:00.
+2024-12-13 10:13:02,654 - INFO - Trade closed for EUR_USD at row 530 at 2018-01-19 03:00:00.
+2024-12-13 10:13:02,657 - INFO - Order filled for EUR_USD at row 536 at 2018-01-25 22:00:00.
+2024-12-13 10:13:02,714 - INFO - Trade closed for EUR_USD at row 536 at 2018-01-29 06:00:00.
+2024-12-13 10:13:02,721 - INFO - Order cancelled for EUR_USD at row 561.
+2024-12-13 10:13:02,724 - INFO - Order cancelled for EUR_USD at row 566.
+2024-12-13 10:13:02,738 - INFO - Order cancelled for EUR_USD at row 613.
+2024-12-13 10:13:02,739 - INFO - Order filled for EUR_USD at row 613 at 2018-05-15 06:00:00.
+2024-12-13 10:13:02,792 - INFO - Trade closed for EUR_USD at row 613 at 2018-05-15 14:00:00.
+2024-12-13 10:13:02,794 - INFO - Order cancelled for EUR_USD at row 618.
+2024-12-13 10:13:02,795 - INFO - Order filled for EUR_USD at row 618 at 2018-05-22 09:00:00.
+2024-12-13 10:13:02,826 - INFO - Trade closed for EUR_USD at row 618 at 2018-05-23 01:00:00.
+2024-12-13 10:13:02,831 - INFO - Order filled for EUR_USD at row 633 at 2018-06-12 02:00:00.
+2024-12-13 10:13:02,951 - INFO - Trade closed for EUR_USD at row 633 at 2018-06-14 06:00:00.
+2024-12-13 10:13:02,953 - INFO - Order filled for EUR_USD at row 636 at 2018-06-14 21:00:00.
+2024-12-13 10:13:03,014 - INFO - Trade closed for EUR_USD at row 636 at 2018-06-18 09:00:00.
+2024-12-13 10:13:03,019 - INFO - Order cancelled for EUR_USD at row 653.
+2024-12-13 10:13:03,020 - INFO - Order filled for EUR_USD at row 653 at 2018-07-10 10:00:00.
+2024-12-13 10:13:03,062 - INFO - Trade closed for EUR_USD at row 653 at 2018-07-11 12:00:00.
+2024-12-13 10:13:03,064 - INFO - Order cancelled for EUR_USD at row 657.
+2024-12-13 10:13:03,066 - INFO - Order cancelled for EUR_USD at row 659.
+2024-12-13 10:13:03,072 - INFO - Order cancelled for EUR_USD at row 680.
+2024-12-13 10:13:03,073 - INFO - Order filled for EUR_USD at row 680 at 2018-08-16 03:00:00.
+2024-12-13 10:13:03,119 - INFO - Trade closed for EUR_USD at row 680 at 2018-08-17 09:00:00.
+2024-12-13 10:13:03,129 - INFO - Order filled for EUR_USD at row 715 at 2018-10-03 21:00:00.
+2024-12-13 10:13:03,188 - INFO - Trade closed for EUR_USD at row 715 at 2018-10-05 11:00:00.
+2024-12-13 10:13:03,190 - INFO - Order cancelled for EUR_USD at row 719.
+2024-12-13 10:13:03,193 - INFO - Order filled for EUR_USD at row 724 at 2018-10-17 04:00:00.
+2024-12-13 10:13:03,314 - INFO - Trade closed for EUR_USD at row 724 at 2018-10-18 09:00:00.
+2024-12-13 10:13:03,320 - INFO - Order filled for EUR_USD at row 740 at 2018-11-07 22:00:00.
+2024-12-13 10:13:03,480 - INFO - Trade closed for EUR_USD at row 740 at 2018-11-09 14:00:00.
+2024-12-13 10:13:03,487 - INFO - Order filled for EUR_USD at row 763 at 2018-12-10 22:00:00.
+2024-12-13 10:13:03,538 - INFO - Trade closed for EUR_USD at row 763 at 2018-12-12 00:00:00.
+2024-12-13 10:13:03,541 - INFO - Order filled for EUR_USD at row 770 at 2018-12-19 22:00:00.
+2024-12-13 10:13:03,554 - INFO - Trade closed for EUR_USD at row 770 at 2018-12-20 09:00:00.
+2024-12-13 10:13:03,557 - INFO - Order filled for EUR_USD at row 778 at 2019-01-02 22:00:00.
+2024-12-13 10:13:03,615 - INFO - Trade closed for EUR_USD at row 778 at 2019-01-04 15:00:00.
+2024-12-13 10:13:03,618 - INFO - Order cancelled for EUR_USD at row 787.
+2024-12-13 10:13:03,620 - INFO - Order cancelled for EUR_USD at row 790.
+2024-12-13 10:13:03,625 - INFO - Order filled for EUR_USD at row 810 at 2019-02-18 03:00:00.
+2024-12-13 10:13:03,656 - INFO - Trade closed for EUR_USD at row 810 at 2019-02-18 15:00:00.
+2024-12-13 10:13:03,677 - INFO - Order filled for EUR_USD at row 871 at 2019-05-14 14:00:00.
+2024-12-13 10:13:03,756 - INFO - Trade closed for EUR_USD at row 871 at 2019-05-16 16:00:00.
+2024-12-13 10:13:03,759 - INFO - Order cancelled for EUR_USD at row 879.
+2024-12-13 10:13:03,762 - INFO - Order filled for EUR_USD at row 888 at 2019-06-05 21:00:00.
+2024-12-13 10:13:03,790 - INFO - Trade closed for EUR_USD at row 888 at 2019-06-06 11:00:00.
+2024-12-13 10:13:03,792 - INFO - Order filled for EUR_USD at row 893 at 2019-06-12 21:00:00.
+2024-12-13 10:13:03,872 - INFO - Trade closed for EUR_USD at row 893 at 2019-06-14 06:00:00.
+2024-12-13 10:13:03,879 - INFO - Order cancelled for EUR_USD at row 929.
+2024-12-13 10:13:03,881 - INFO - Order filled for EUR_USD at row 929 at 2019-08-05 02:00:00.
+2024-12-13 10:13:04,018 - INFO - Trade closed for EUR_USD at row 929 at 2019-08-06 03:00:00.
+2024-12-13 10:13:04,022 - INFO - Order filled for EUR_USD at row 944 at 2019-08-22 21:00:00.
+2024-12-13 10:13:04,085 - INFO - Trade closed for EUR_USD at row 944 at 2019-08-23 12:00:00.
+2024-12-13 10:13:04,086 - INFO - Order cancelled for EUR_USD at row 945.
+2024-12-13 10:13:04,089 - INFO - Order cancelled for EUR_USD at row 952.
+2024-12-13 10:13:04,090 - INFO - Order cancelled for EUR_USD at row 952.
+2024-12-13 10:13:04,091 - INFO - Order cancelled for EUR_USD at row 954.
+2024-12-13 10:13:04,094 - INFO - Order filled for EUR_USD at row 954 at 2019-09-11 12:00:00.
+2024-12-13 10:13:04,132 - INFO - Trade closed for EUR_USD at row 954 at 2019-09-12 15:00:00.
+2024-12-13 10:13:04,139 - INFO - Order filled for EUR_USD at row 990 at 2019-10-24 21:00:00.
+2024-12-13 10:13:04,253 - INFO - Trade closed for EUR_USD at row 990 at 2019-10-28 08:00:00.
+2024-12-13 10:13:04,255 - INFO - Order filled for EUR_USD at row 993 at 2019-10-29 21:00:00.
+2024-12-13 10:13:04,332 - INFO - Trade closed for EUR_USD at row 993 at 2019-10-31 06:00:00.
+2024-12-13 10:13:04,336 - INFO - Order filled for EUR_USD at row 1009 at 2019-11-21 10:00:00.
+2024-12-13 10:13:04,372 - INFO - Trade closed for EUR_USD at row 1009 at 2019-11-21 13:00:00.
+2024-12-13 10:13:04,376 - INFO - Order filled for EUR_USD at row 1019 at 2019-12-04 22:00:00.
+2024-12-13 10:13:04,508 - INFO - Trade closed for EUR_USD at row 1019 at 2019-12-10 11:00:00.
+2024-12-13 10:13:04,510 - INFO - Order cancelled for EUR_USD at row 1019.
+2024-12-13 10:13:04,511 - INFO - Order cancelled for EUR_USD at row 1021.
+2024-12-13 10:13:04,518 - INFO - Order filled for EUR_USD at row 1053 at 2020-01-23 22:00:00.
+2024-12-13 10:13:04,627 - INFO - Trade closed for EUR_USD at row 1053 at 2020-01-27 10:00:00.
+2024-12-13 10:13:04,637 - INFO - Order filled for EUR_USD at row 1110 at 2020-04-13 21:00:00.
+2024-12-13 10:13:04,665 - INFO - Trade closed for EUR_USD at row 1110 at 2020-04-14 11:00:00.
+2024-12-13 10:13:04,671 - INFO - Order filled for EUR_USD at row 1136 at 2020-05-19 21:00:00.
+2024-12-13 10:13:04,700 - INFO - Trade closed for EUR_USD at row 1136 at 2020-05-20 13:00:00.
+2024-12-13 10:13:04,704 - INFO - Order cancelled for EUR_USD at row 1151.
+2024-12-13 10:13:04,714 - INFO - Order cancelled for EUR_USD at row 1211.
+2024-12-13 10:13:04,714 - INFO - Order cancelled for EUR_USD at row 1211.
+2024-12-13 10:13:04,718 - INFO - Order filled for EUR_USD at row 1218 at 2020-09-10 21:00:00.
+2024-12-13 10:13:04,838 - INFO - Trade closed for EUR_USD at row 1218 at 2020-09-15 03:00:00.
+2024-12-13 10:13:04,840 - INFO - Order cancelled for EUR_USD at row 1223.
+2024-12-13 10:13:04,858 - INFO - Order filled for EUR_USD at row 1282 at 2020-12-09 22:00:00.
+2024-12-13 10:13:04,875 - INFO - Trade closed for EUR_USD at row 1282 at 2020-12-10 09:00:00.
+2024-12-13 10:13:04,877 - INFO - Order filled for EUR_USD at row 1290 at 2020-12-21 22:00:00.
+2024-12-13 10:13:04,904 - INFO - Trade closed for EUR_USD at row 1290 at 2020-12-22 15:00:00.
+2024-12-13 10:13:04,907 - INFO - Order cancelled for EUR_USD at row 1308.
+2024-12-13 10:13:04,910 - INFO - Order filled for EUR_USD at row 1325 at 2021-02-10 22:00:00.
+2024-12-13 10:13:04,935 - INFO - Trade closed for EUR_USD at row 1325 at 2021-02-11 13:00:00.
+2024-12-13 10:13:04,936 - INFO - Order cancelled for EUR_USD at row 1327.
+2024-12-13 10:13:04,938 - INFO - Order cancelled for EUR_USD at row 1336.
+2024-12-13 10:13:04,942 - INFO - Order cancelled for EUR_USD at row 1363.
+2024-12-13 10:13:04,945 - INFO - Order filled for EUR_USD at row 1365 at 2021-04-07 21:00:00.
+2024-12-13 10:13:04,966 - INFO - Trade closed for EUR_USD at row 1365 at 2021-04-08 13:00:00.
+2024-12-13 10:13:04,969 - INFO - Order cancelled for EUR_USD at row 1374.
+2024-12-13 10:13:04,970 - INFO - Order filled for EUR_USD at row 1374 at 2021-04-21 09:00:00.
+2024-12-13 10:13:05,048 - INFO - Trade closed for EUR_USD at row 1374 at 2021-04-22 01:00:00.
+2024-12-13 10:13:05,050 - INFO - Order filled for EUR_USD at row 1375 at 2021-04-21 21:00:00.
+2024-12-13 10:13:05,069 - INFO - Trade closed for EUR_USD at row 1375 at 2021-04-22 18:00:00.
+2024-12-13 10:13:05,074 - INFO - Order cancelled for EUR_USD at row 1402.
+2024-12-13 10:13:05,074 - INFO - Order cancelled for EUR_USD at row 1402.
+2024-12-13 10:13:05,077 - INFO - Order filled for EUR_USD at row 1410 at 2021-06-09 21:00:00.
+2024-12-13 10:13:05,078 - INFO - Order filled for EUR_USD at row 1410 at 2021-06-10 03:00:00.
+2024-12-13 10:13:05,098 - INFO - Trade closed for EUR_USD at row 1410 at 2021-06-10 11:00:00.
+2024-12-13 10:13:05,252 - INFO - Trade closed for EUR_USD at row 1410 at 2021-06-14 07:00:00.
+2024-12-13 10:13:05,254 - INFO - Order cancelled for EUR_USD at row 1422.
+2024-12-13 10:13:05,255 - INFO - Order filled for EUR_USD at row 1422 at 2021-06-28 03:00:00.
+2024-12-13 10:13:05,573 - INFO - Trade closed for EUR_USD at row 1422 at 2021-07-01 06:00:00.
+2024-12-13 10:13:05,579 - INFO - Order filled for EUR_USD at row 1469 at 2021-08-31 21:00:00.
+2024-12-13 10:13:05,598 - INFO - Trade closed for EUR_USD at row 1469 at 2021-09-01 13:00:00.
+2024-12-13 10:13:05,600 - INFO - Order filled for EUR_USD at row 1478 at 2021-09-13 21:00:00.
+2024-12-13 10:13:05,628 - INFO - Trade closed for EUR_USD at row 1478 at 2021-09-14 06:00:00.
+2024-12-13 10:13:05,629 - INFO - Order filled for EUR_USD at row 1478 at 2021-09-14 09:00:00.
+2024-12-13 10:13:05,669 - INFO - Trade closed for EUR_USD at row 1478 at 2021-09-14 19:00:00.
+2024-12-13 10:13:05,671 - INFO - Order filled for EUR_USD at row 1479 at 2021-09-14 21:00:00.
+2024-12-13 10:13:05,839 - INFO - Trade closed for EUR_USD at row 1479 at 2021-09-16 19:00:00.
+2024-12-13 10:13:05,841 - INFO - Order cancelled for EUR_USD at row 1479.
+2024-12-13 10:13:05,842 - INFO - Order filled for EUR_USD at row 1483 at 2021-09-20 21:00:00.
+2024-12-13 10:13:05,870 - INFO - Trade closed for EUR_USD at row 1483 at 2021-09-21 13:00:00.
+2024-12-13 10:13:05,872 - INFO - Order filled for EUR_USD at row 1501 at 2021-10-18 05:00:00.
+2024-12-13 10:13:05,900 - INFO - Trade closed for EUR_USD at row 1501 at 2021-10-18 16:00:00.
+2024-12-13 10:13:05,901 - INFO - Order filled for EUR_USD at row 1508 at 2021-10-25 21:00:00.
+2024-12-13 10:13:05,951 - INFO - Trade closed for EUR_USD at row 1508 at 2021-10-26 18:00:00.
+2024-12-13 10:13:05,952 - INFO - Order filled for EUR_USD at row 1511 at 2021-10-28 21:00:00.
+2024-12-13 10:13:05,974 - INFO - Trade closed for EUR_USD at row 1511 at 2021-10-29 14:00:00.
+2024-12-13 10:13:05,977 - INFO - Order filled for EUR_USD at row 1523 at 2021-11-15 22:00:00.
+2024-12-13 10:13:07,535 - INFO - Trade closed for EUR_USD at row 1523 at 2021-11-17 11:00:00.
+2024-12-13 10:13:07,537 - INFO - Order filled for EUR_USD at row 1534 at 2021-11-30 22:00:00.
+2024-12-13 10:13:07,556 - INFO - Trade closed for EUR_USD at row 1534 at 2021-12-01 08:00:00.
+2024-12-13 10:13:07,560 - INFO - Order cancelled for EUR_USD at row 1567.
+2024-12-13 10:13:07,562 - INFO - Order filled for EUR_USD at row 1571 at 2022-01-20 22:00:00.
+2024-12-13 10:13:07,602 - INFO - Trade closed for EUR_USD at row 1571 at 2022-01-21 13:00:00.
+2024-12-13 10:13:07,608 - INFO - Order filled for EUR_USD at row 1617 at 2022-03-28 02:00:00.
+2024-12-13 10:13:07,666 - INFO - Trade closed for EUR_USD at row 1617 at 2022-03-29 06:00:00.
+2024-12-13 10:13:07,667 - INFO - Order cancelled for EUR_USD at row 1618.
+2024-12-13 10:13:07,668 - INFO - Order cancelled for EUR_USD at row 1621.
+2024-12-13 10:13:07,670 - INFO - Order cancelled for EUR_USD at row 1627.
+2024-12-13 10:13:07,671 - INFO - Order cancelled for EUR_USD at row 1636.
+2024-12-13 10:13:07,731 - INFO - Order filled for EUR_USD at row 1669 at 2022-06-07 21:00:00.
+2024-12-13 10:13:07,783 - INFO - Trade closed for EUR_USD at row 1669 at 2022-06-09 07:00:00.
+2024-12-13 10:13:07,785 - INFO - Order filled for EUR_USD at row 1669 at 2022-06-08 12:00:00.
+2024-12-13 10:13:07,804 - INFO - Trade closed for EUR_USD at row 1669 at 2022-06-09 00:00:00.
+2024-12-13 10:13:07,806 - INFO - Order cancelled for EUR_USD at row 1671.
+2024-12-13 10:13:07,812 - INFO - Order filled for EUR_USD at row 1750 at 2022-09-28 21:00:00.
+2024-12-13 10:13:07,902 - INFO - Trade closed for EUR_USD at row 1750 at 2022-09-30 10:00:00.
+2024-12-13 10:13:07,905 - INFO - Order filled for EUR_USD at row 1761 at 2022-10-13 21:00:00.
+2024-12-13 10:13:08,040 - INFO - Trade closed for EUR_USD at row 1761 at 2022-10-18 07:00:00.
+2024-12-13 10:13:08,042 - INFO - Order cancelled for EUR_USD at row 1767.
+2024-12-13 10:13:08,042 - INFO - Order cancelled for EUR_USD at row 1775.
+2024-12-13 10:13:08,044 - INFO - Order filled for EUR_USD at row 1793 at 2022-11-28 22:00:00.
+2024-12-13 10:13:08,137 - INFO - Trade closed for EUR_USD at row 1793 at 2022-11-30 13:00:00.
+2024-12-13 10:13:08,138 - INFO - Order cancelled for EUR_USD at row 1795.
+2024-12-13 10:13:08,142 - INFO - Order cancelled for EUR_USD at row 1851.
+2024-12-13 10:13:08,144 - INFO - Order cancelled for EUR_USD at row 1875.
+2024-12-13 10:13:08,148 - INFO - Order filled for EUR_USD at row 1927 at 2023-06-05 21:00:00.
+2024-12-13 10:13:08,166 - INFO - Trade closed for EUR_USD at row 1927 at 2023-06-06 12:00:00.
+2024-12-13 10:13:08,168 - INFO - Order filled for EUR_USD at row 1962 at 2023-07-24 21:00:00.
+2024-12-13 10:13:08,322 - INFO - Trade closed for EUR_USD at row 1962 at 2023-07-26 06:00:00.
+2024-12-13 10:13:08,323 - INFO - Order filled for EUR_USD at row 1965 at 2023-07-27 21:00:00.
+2024-12-13 10:13:08,389 - INFO - Trade closed for EUR_USD at row 1965 at 2023-07-31 07:00:00.
+2024-12-13 10:13:08,390 - INFO - Order cancelled for EUR_USD at row 1975.
+2024-12-13 10:13:08,392 - INFO - Order filled for EUR_USD at row 1983 at 2023-08-22 21:00:00.
+2024-12-13 10:13:08,558 - INFO - Trade closed for EUR_USD at row 1983 at 2023-08-23 13:00:00.
+2024-12-13 10:13:08,560 - INFO - Order cancelled for EUR_USD at row 2011.
+2024-12-13 10:13:08,561 - INFO - Order cancelled for EUR_USD at row 2020.
+2024-12-13 10:13:08,562 - INFO - Order cancelled for EUR_USD at row 2034.
+2024-12-13 10:13:08,563 - INFO - Order cancelled for EUR_USD at row 2034.
+2024-12-13 10:13:08,564 - INFO - Order cancelled for EUR_USD at row 2037.
+2024-12-13 10:13:08,565 - ERROR - Error analyzing results for EUR_USD: analyze_results() got an unexpected keyword argument 'result_path'
+2024-12-13 10:13:08,565 - INFO - Processing Instrument: GBP_USD
+2024-12-13 10:13:11,079 - INFO - Fetched daily data: C:\Users\grave\OneDrive\Coding\PAC\fxdata\GBP_USD_D.xlsx
+2024-12-13 10:13:11,079 - INFO - Fetched hourly data: C:\Users\grave\OneDrive\Coding\PAC\fxdata\GBP_USD_H1.xlsx
+2024-12-13 10:13:11,438 - INFO - Calculated signals and ATR.
+2024-12-13 10:14:26,720 - INFO - Processing Instrument: EUR_USD
+2024-12-13 10:14:29,475 - INFO - Fetched daily data: C:\Users\grave\OneDrive\Coding\PAC\fxdata\EUR_USD_D.xlsx
+2024-12-13 10:14:29,475 - INFO - Fetched hourly data: C:\Users\grave\OneDrive\Coding\PAC\fxdata\EUR_USD_H1.xlsx
+2024-12-13 10:14:29,821 - INFO - Calculated signals and ATR.
+2024-12-13 10:16:11,552 - INFO - Loaded and calculated zigzag data.
+2024-12-13 10:16:13,962 - INFO - Processed signals and generated 298 entries for EUR_USD.
+2024-12-13 10:16:29,856 - INFO - Calculated Stop Loss and Take Profit for entries.
+2024-12-13 10:16:29,858 - INFO - Sorted hourly data by time.
+2024-12-13 10:16:29,874 - INFO - Order cancelled for EUR_USD at row 39.
+2024-12-13 10:16:29,877 - INFO - Order cancelled for EUR_USD at row 42.
+2024-12-13 10:16:29,879 - INFO - Order filled for EUR_USD at row 46 at 2016-03-09 03:00:00.
+2024-12-13 10:16:29,920 - INFO - Trade closed for EUR_USD at row 46 at 2016-03-10 08:00:00.
+2024-12-13 10:16:29,922 - INFO - Order filled for EUR_USD at row 48 at 2016-03-10 22:00:00.
+2024-12-13 10:16:30,010 - INFO - Trade closed for EUR_USD at row 48 at 2016-03-15 09:00:00.
+2024-12-13 10:16:30,016 - INFO - Order filled for EUR_USD at row 58 at 2016-03-28 15:00:00.
+2024-12-13 10:16:30,180 - INFO - Trade closed for EUR_USD at row 58 at 2016-03-30 15:00:00.
+2024-12-13 10:16:30,187 - INFO - Order filled for EUR_USD at row 77 at 2016-04-20 21:00:00.
+2024-12-13 10:16:30,197 - INFO - Trade closed for EUR_USD at row 77 at 2016-04-21 12:00:00.
+2024-12-13 10:16:30,202 - INFO - Order cancelled for EUR_USD at row 86.
+2024-12-13 10:16:30,203 - INFO - Order filled for EUR_USD at row 86 at 2016-05-04 03:00:00.
+2024-12-13 10:16:30,370 - INFO - Trade closed for EUR_USD at row 86 at 2016-05-06 12:00:00.
+2024-12-13 10:16:30,379 - INFO - Order filled for EUR_USD at row 106 at 2016-05-31 21:00:00.
+2024-12-13 10:16:30,396 - INFO - Trade closed for EUR_USD at row 106 at 2016-06-01 11:00:00.
+2024-12-13 10:16:30,398 - INFO - Order cancelled for EUR_USD at row 109.
+2024-12-13 10:16:30,401 - INFO - Order cancelled for EUR_USD at row 113.
+2024-12-13 10:16:30,408 - INFO - Order filled for EUR_USD at row 131 at 2016-07-05 21:00:00.
+2024-12-13 10:16:30,444 - INFO - Trade closed for EUR_USD at row 131 at 2016-07-07 08:00:00.
+2024-12-13 10:16:30,449 - INFO - Order filled for EUR_USD at row 142 at 2016-07-21 05:00:00.
+2024-12-13 10:16:30,472 - INFO - Trade closed for EUR_USD at row 142 at 2016-07-21 14:00:00.
+2024-12-13 10:16:30,476 - INFO - Order filled for EUR_USD at row 146 at 2016-07-26 21:00:00.
+2024-12-13 10:16:30,486 - INFO - Trade closed for EUR_USD at row 146 at 2016-07-27 19:00:00.
+2024-12-13 10:16:30,487 - INFO - Order cancelled for EUR_USD at row 147.
+2024-12-13 10:16:30,491 - INFO - Order cancelled for EUR_USD at row 154.
+2024-12-13 10:16:30,496 - INFO - Order cancelled for EUR_USD at row 166.
+2024-12-13 10:16:30,498 - INFO - Order cancelled for EUR_USD at row 169.
+2024-12-13 10:16:30,503 - INFO - Order cancelled for EUR_USD at row 178.
+2024-12-13 10:16:30,523 - INFO - Order filled for EUR_USD at row 240 at 2016-12-05 22:00:00.
+2024-12-13 10:16:30,634 - INFO - Trade closed for EUR_USD at row 240 at 2016-12-08 07:00:00.
+2024-12-13 10:16:30,638 - INFO - Order filled for EUR_USD at row 245 at 2016-12-12 22:00:00.
+2024-12-13 10:16:30,721 - INFO - Trade closed for EUR_USD at row 245 at 2016-12-14 19:00:00.
+2024-12-13 10:16:30,748 - INFO - Order cancelled for EUR_USD at row 336.
+2024-12-13 10:16:30,750 - INFO - Order filled for EUR_USD at row 336 at 2017-04-21 11:00:00.
+2024-12-13 10:16:30,772 - INFO - Trade closed for EUR_USD at row 336 at 2017-04-23 21:00:00.
+2024-12-13 10:16:30,776 - INFO - Order filled for EUR_USD at row 346 at 2017-05-04 21:00:00.
+2024-12-13 10:16:31,139 - INFO - Trade closed for EUR_USD at row 346 at 2017-05-07 22:00:00.
+2024-12-13 10:16:31,150 - INFO - Order cancelled for EUR_USD at row 375.
+2024-12-13 10:16:31,171 - INFO - Order cancelled for EUR_USD at row 429.
+2024-12-13 10:16:31,172 - INFO - Order cancelled for EUR_USD at row 429.
+2024-12-13 10:16:31,178 - INFO - Order cancelled for EUR_USD at row 447.
+2024-12-13 10:16:31,185 - INFO - Order cancelled for EUR_USD at row 473.
+2024-12-13 10:16:31,191 - INFO - Order cancelled for EUR_USD at row 487.
+2024-12-13 10:16:31,192 - INFO - Order filled for EUR_USD at row 487 at 2017-11-16 00:00:00.
+2024-12-13 10:16:31,230 - INFO - Trade closed for EUR_USD at row 487 at 2017-11-16 13:00:00.
+2024-12-13 10:16:31,236 - INFO - Order cancelled for EUR_USD at row 504.
+2024-12-13 10:16:31,239 - INFO - Order filled for EUR_USD at row 505 at 2017-12-11 22:00:00.
+2024-12-13 10:16:31,296 - INFO - Trade closed for EUR_USD at row 505 at 2017-12-12 20:00:00.
+2024-12-13 10:16:31,298 - INFO - Order filled for EUR_USD at row 505 at 2017-12-12 15:00:00.
+2024-12-13 10:16:31,312 - INFO - Trade closed for EUR_USD at row 505 at 2017-12-13 18:00:00.
+2024-12-13 10:16:31,319 - INFO - Order filled for EUR_USD at row 525 at 2018-01-10 22:00:00.
+2024-12-13 10:16:31,329 - INFO - Trade closed for EUR_USD at row 525 at 2018-01-11 13:00:00.
+2024-12-13 10:16:31,331 - INFO - Order filled for EUR_USD at row 530 at 2018-01-17 22:00:00.
+2024-12-13 10:16:31,375 - INFO - Trade closed for EUR_USD at row 530 at 2018-01-19 03:00:00.
+2024-12-13 10:16:31,380 - INFO - Order filled for EUR_USD at row 536 at 2018-01-25 22:00:00.
+2024-12-13 10:16:31,436 - INFO - Trade closed for EUR_USD at row 536 at 2018-01-29 06:00:00.
+2024-12-13 10:16:31,442 - INFO - Order cancelled for EUR_USD at row 561.
+2024-12-13 10:16:31,445 - INFO - Order cancelled for EUR_USD at row 566.
+2024-12-13 10:16:31,457 - INFO - Order cancelled for EUR_USD at row 613.
+2024-12-13 10:16:31,459 - INFO - Order filled for EUR_USD at row 613 at 2018-05-15 06:00:00.
+2024-12-13 10:16:31,509 - INFO - Trade closed for EUR_USD at row 613 at 2018-05-15 14:00:00.
+2024-12-13 10:16:31,511 - INFO - Order cancelled for EUR_USD at row 618.
+2024-12-13 10:16:31,513 - INFO - Order filled for EUR_USD at row 618 at 2018-05-22 09:00:00.
+2024-12-13 10:16:31,540 - INFO - Trade closed for EUR_USD at row 618 at 2018-05-23 01:00:00.
+2024-12-13 10:16:31,546 - INFO - Order filled for EUR_USD at row 633 at 2018-06-12 02:00:00.
+2024-12-13 10:16:31,662 - INFO - Trade closed for EUR_USD at row 633 at 2018-06-14 06:00:00.
+2024-12-13 10:16:31,664 - INFO - Order filled for EUR_USD at row 636 at 2018-06-14 21:00:00.
+2024-12-13 10:16:31,719 - INFO - Trade closed for EUR_USD at row 636 at 2018-06-18 09:00:00.
+2024-12-13 10:16:31,724 - INFO - Order cancelled for EUR_USD at row 653.
+2024-12-13 10:16:31,725 - INFO - Order filled for EUR_USD at row 653 at 2018-07-10 10:00:00.
+2024-12-13 10:16:31,765 - INFO - Trade closed for EUR_USD at row 653 at 2018-07-11 12:00:00.
+2024-12-13 10:16:31,767 - INFO - Order cancelled for EUR_USD at row 657.
+2024-12-13 10:16:31,768 - INFO - Order cancelled for EUR_USD at row 659.
+2024-12-13 10:16:31,773 - INFO - Order cancelled for EUR_USD at row 680.
+2024-12-13 10:16:31,774 - INFO - Order filled for EUR_USD at row 680 at 2018-08-16 03:00:00.
+2024-12-13 10:16:31,815 - INFO - Trade closed for EUR_USD at row 680 at 2018-08-17 09:00:00.
+2024-12-13 10:16:31,824 - INFO - Order filled for EUR_USD at row 715 at 2018-10-03 21:00:00.
+2024-12-13 10:16:31,878 - INFO - Trade closed for EUR_USD at row 715 at 2018-10-05 11:00:00.
+2024-12-13 10:16:31,880 - INFO - Order cancelled for EUR_USD at row 719.
+2024-12-13 10:16:31,882 - INFO - Order filled for EUR_USD at row 724 at 2018-10-17 04:00:00.
+2024-12-13 10:16:31,991 - INFO - Trade closed for EUR_USD at row 724 at 2018-10-18 09:00:00.
+2024-12-13 10:16:31,996 - INFO - Order filled for EUR_USD at row 740 at 2018-11-07 22:00:00.
+2024-12-13 10:16:32,143 - INFO - Trade closed for EUR_USD at row 740 at 2018-11-09 14:00:00.
+2024-12-13 10:16:32,152 - INFO - Order filled for EUR_USD at row 763 at 2018-12-10 22:00:00.
+2024-12-13 10:16:32,198 - INFO - Trade closed for EUR_USD at row 763 at 2018-12-12 00:00:00.
+2024-12-13 10:16:32,200 - INFO - Order filled for EUR_USD at row 770 at 2018-12-19 22:00:00.
+2024-12-13 10:16:32,212 - INFO - Trade closed for EUR_USD at row 770 at 2018-12-20 09:00:00.
+2024-12-13 10:16:32,214 - INFO - Order filled for EUR_USD at row 778 at 2019-01-02 22:00:00.
+2024-12-13 10:16:32,267 - INFO - Trade closed for EUR_USD at row 778 at 2019-01-04 15:00:00.
+2024-12-13 10:16:32,269 - INFO - Order cancelled for EUR_USD at row 787.
+2024-12-13 10:16:32,271 - INFO - Order cancelled for EUR_USD at row 790.
+2024-12-13 10:16:32,276 - INFO - Order filled for EUR_USD at row 810 at 2019-02-18 03:00:00.
+2024-12-13 10:16:32,306 - INFO - Trade closed for EUR_USD at row 810 at 2019-02-18 15:00:00.
+2024-12-13 10:16:32,323 - INFO - Order filled for EUR_USD at row 871 at 2019-05-14 14:00:00.
+2024-12-13 10:16:32,399 - INFO - Trade closed for EUR_USD at row 871 at 2019-05-16 16:00:00.
+2024-12-13 10:16:32,402 - INFO - Order cancelled for EUR_USD at row 879.
+2024-12-13 10:16:32,405 - INFO - Order filled for EUR_USD at row 888 at 2019-06-05 21:00:00.
+2024-12-13 10:16:32,432 - INFO - Trade closed for EUR_USD at row 888 at 2019-06-06 11:00:00.
+2024-12-13 10:16:32,435 - INFO - Order filled for EUR_USD at row 893 at 2019-06-12 21:00:00.
+2024-12-13 10:16:32,511 - INFO - Trade closed for EUR_USD at row 893 at 2019-06-14 06:00:00.
+2024-12-13 10:16:32,519 - INFO - Order cancelled for EUR_USD at row 929.
+2024-12-13 10:16:32,521 - INFO - Order filled for EUR_USD at row 929 at 2019-08-05 02:00:00.
+2024-12-13 10:16:32,647 - INFO - Trade closed for EUR_USD at row 929 at 2019-08-06 03:00:00.
+2024-12-13 10:16:32,652 - INFO - Order filled for EUR_USD at row 944 at 2019-08-22 21:00:00.
+2024-12-13 10:16:32,712 - INFO - Trade closed for EUR_USD at row 944 at 2019-08-23 12:00:00.
+2024-12-13 10:16:32,714 - INFO - Order cancelled for EUR_USD at row 945.
+2024-12-13 10:16:32,716 - INFO - Order cancelled for EUR_USD at row 952.
+2024-12-13 10:16:32,717 - INFO - Order cancelled for EUR_USD at row 952.
+2024-12-13 10:16:32,718 - INFO - Order cancelled for EUR_USD at row 954.
+2024-12-13 10:16:32,720 - INFO - Order filled for EUR_USD at row 954 at 2019-09-11 12:00:00.
+2024-12-13 10:16:32,755 - INFO - Trade closed for EUR_USD at row 954 at 2019-09-12 15:00:00.
+2024-12-13 10:16:32,762 - INFO - Order filled for EUR_USD at row 990 at 2019-10-24 21:00:00.
+2024-12-13 10:16:32,878 - INFO - Trade closed for EUR_USD at row 990 at 2019-10-28 08:00:00.
+2024-12-13 10:16:32,880 - INFO - Order filled for EUR_USD at row 993 at 2019-10-29 21:00:00.
+2024-12-13 10:16:32,942 - INFO - Trade closed for EUR_USD at row 993 at 2019-10-31 06:00:00.
+2024-12-13 10:16:32,946 - INFO - Order filled for EUR_USD at row 1009 at 2019-11-21 10:00:00.
+2024-12-13 10:16:32,981 - INFO - Trade closed for EUR_USD at row 1009 at 2019-11-21 13:00:00.
+2024-12-13 10:16:32,984 - INFO - Order filled for EUR_USD at row 1019 at 2019-12-04 22:00:00.
+2024-12-13 10:16:33,116 - INFO - Trade closed for EUR_USD at row 1019 at 2019-12-10 11:00:00.
+2024-12-13 10:16:33,118 - INFO - Order cancelled for EUR_USD at row 1019.
+2024-12-13 10:16:33,119 - INFO - Order cancelled for EUR_USD at row 1021.
+2024-12-13 10:16:33,126 - INFO - Order filled for EUR_USD at row 1053 at 2020-01-23 22:00:00.
+2024-12-13 10:16:33,234 - INFO - Trade closed for EUR_USD at row 1053 at 2020-01-27 10:00:00.
+2024-12-13 10:16:33,244 - INFO - Order filled for EUR_USD at row 1110 at 2020-04-13 21:00:00.
+2024-12-13 10:16:33,271 - INFO - Trade closed for EUR_USD at row 1110 at 2020-04-14 11:00:00.
+2024-12-13 10:16:33,276 - INFO - Order filled for EUR_USD at row 1136 at 2020-05-19 21:00:00.
+2024-12-13 10:16:33,303 - INFO - Trade closed for EUR_USD at row 1136 at 2020-05-20 13:00:00.
+2024-12-13 10:16:33,306 - INFO - Order cancelled for EUR_USD at row 1151.
+2024-12-13 10:16:33,315 - INFO - Order cancelled for EUR_USD at row 1211.
+2024-12-13 10:16:33,316 - INFO - Order cancelled for EUR_USD at row 1211.
+2024-12-13 10:16:33,318 - INFO - Order filled for EUR_USD at row 1218 at 2020-09-10 21:00:00.
+2024-12-13 10:16:33,422 - INFO - Trade closed for EUR_USD at row 1218 at 2020-09-15 03:00:00.
+2024-12-13 10:16:33,424 - INFO - Order cancelled for EUR_USD at row 1223.
+2024-12-13 10:16:33,436 - INFO - Order filled for EUR_USD at row 1282 at 2020-12-09 22:00:00.
+2024-12-13 10:16:33,453 - INFO - Trade closed for EUR_USD at row 1282 at 2020-12-10 09:00:00.
+2024-12-13 10:16:33,456 - INFO - Order filled for EUR_USD at row 1290 at 2020-12-21 22:00:00.
+2024-12-13 10:16:33,479 - INFO - Trade closed for EUR_USD at row 1290 at 2020-12-22 15:00:00.
+2024-12-13 10:16:33,483 - INFO - Order cancelled for EUR_USD at row 1308.
+2024-12-13 10:16:33,486 - INFO - Order filled for EUR_USD at row 1325 at 2021-02-10 22:00:00.
+2024-12-13 10:16:33,510 - INFO - Trade closed for EUR_USD at row 1325 at 2021-02-11 13:00:00.
+2024-12-13 10:16:33,511 - INFO - Order cancelled for EUR_USD at row 1327.
+2024-12-13 10:16:33,514 - INFO - Order cancelled for EUR_USD at row 1336.
+2024-12-13 10:16:33,519 - INFO - Order cancelled for EUR_USD at row 1363.
+2024-12-13 10:16:33,520 - INFO - Order filled for EUR_USD at row 1365 at 2021-04-07 21:00:00.
+2024-12-13 10:16:33,541 - INFO - Trade closed for EUR_USD at row 1365 at 2021-04-08 13:00:00.
+2024-12-13 10:16:33,543 - INFO - Order cancelled for EUR_USD at row 1374.
+2024-12-13 10:16:33,544 - INFO - Order filled for EUR_USD at row 1374 at 2021-04-21 09:00:00.
+2024-12-13 10:16:33,621 - INFO - Trade closed for EUR_USD at row 1374 at 2021-04-22 01:00:00.
+2024-12-13 10:16:33,623 - INFO - Order filled for EUR_USD at row 1375 at 2021-04-21 21:00:00.
+2024-12-13 10:16:33,640 - INFO - Trade closed for EUR_USD at row 1375 at 2021-04-22 18:00:00.
+2024-12-13 10:16:33,645 - INFO - Order cancelled for EUR_USD at row 1402.
+2024-12-13 10:16:33,646 - INFO - Order cancelled for EUR_USD at row 1402.
+2024-12-13 10:16:33,647 - INFO - Order filled for EUR_USD at row 1410 at 2021-06-09 21:00:00.
+2024-12-13 10:16:33,649 - INFO - Order filled for EUR_USD at row 1410 at 2021-06-10 03:00:00.
+2024-12-13 10:16:33,667 - INFO - Trade closed for EUR_USD at row 1410 at 2021-06-10 11:00:00.
+2024-12-13 10:16:33,807 - INFO - Trade closed for EUR_USD at row 1410 at 2021-06-14 07:00:00.
+2024-12-13 10:16:33,809 - INFO - Order cancelled for EUR_USD at row 1422.
+2024-12-13 10:16:33,810 - INFO - Order filled for EUR_USD at row 1422 at 2021-06-28 03:00:00.
+2024-12-13 10:16:34,112 - INFO - Trade closed for EUR_USD at row 1422 at 2021-07-01 06:00:00.
+2024-12-13 10:16:34,119 - INFO - Order filled for EUR_USD at row 1469 at 2021-08-31 21:00:00.
+2024-12-13 10:16:34,136 - INFO - Trade closed for EUR_USD at row 1469 at 2021-09-01 13:00:00.
+2024-12-13 10:16:34,138 - INFO - Order filled for EUR_USD at row 1478 at 2021-09-13 21:00:00.
+2024-12-13 10:16:34,163 - INFO - Trade closed for EUR_USD at row 1478 at 2021-09-14 06:00:00.
+2024-12-13 10:16:34,165 - INFO - Order filled for EUR_USD at row 1478 at 2021-09-14 09:00:00.
+2024-12-13 10:16:34,204 - INFO - Trade closed for EUR_USD at row 1478 at 2021-09-14 19:00:00.
+2024-12-13 10:16:34,205 - INFO - Order filled for EUR_USD at row 1479 at 2021-09-14 21:00:00.
+2024-12-13 10:16:34,375 - INFO - Trade closed for EUR_USD at row 1479 at 2021-09-16 19:00:00.
+2024-12-13 10:16:34,376 - INFO - Order cancelled for EUR_USD at row 1479.
+2024-12-13 10:16:34,378 - INFO - Order filled for EUR_USD at row 1483 at 2021-09-20 21:00:00.
+2024-12-13 10:16:34,407 - INFO - Trade closed for EUR_USD at row 1483 at 2021-09-21 13:00:00.
+2024-12-13 10:16:34,410 - INFO - Order filled for EUR_USD at row 1501 at 2021-10-18 05:00:00.
+2024-12-13 10:16:34,436 - INFO - Trade closed for EUR_USD at row 1501 at 2021-10-18 16:00:00.
+2024-12-13 10:16:34,438 - INFO - Order filled for EUR_USD at row 1508 at 2021-10-25 21:00:00.
+2024-12-13 10:16:34,485 - INFO - Trade closed for EUR_USD at row 1508 at 2021-10-26 18:00:00.
+2024-12-13 10:16:34,487 - INFO - Order filled for EUR_USD at row 1511 at 2021-10-28 21:00:00.
+2024-12-13 10:16:34,511 - INFO - Trade closed for EUR_USD at row 1511 at 2021-10-29 14:00:00.
+2024-12-13 10:16:34,514 - INFO - Order filled for EUR_USD at row 1523 at 2021-11-15 22:00:00.
+2024-12-13 10:16:36,098 - INFO - Trade closed for EUR_USD at row 1523 at 2021-11-17 11:00:00.
+2024-12-13 10:16:36,101 - INFO - Order filled for EUR_USD at row 1534 at 2021-11-30 22:00:00.
+2024-12-13 10:16:36,121 - INFO - Trade closed for EUR_USD at row 1534 at 2021-12-01 08:00:00.
+2024-12-13 10:16:36,124 - INFO - Order cancelled for EUR_USD at row 1567.
+2024-12-13 10:16:36,126 - INFO - Order filled for EUR_USD at row 1571 at 2022-01-20 22:00:00.
+2024-12-13 10:16:36,161 - INFO - Trade closed for EUR_USD at row 1571 at 2022-01-21 13:00:00.
+2024-12-13 10:16:36,167 - INFO - Order filled for EUR_USD at row 1617 at 2022-03-28 02:00:00.
+2024-12-13 10:16:36,222 - INFO - Trade closed for EUR_USD at row 1617 at 2022-03-29 06:00:00.
+2024-12-13 10:16:36,224 - INFO - Order cancelled for EUR_USD at row 1618.
+2024-12-13 10:16:36,225 - INFO - Order cancelled for EUR_USD at row 1621.
+2024-12-13 10:16:36,226 - INFO - Order cancelled for EUR_USD at row 1627.
+2024-12-13 10:16:36,228 - INFO - Order cancelled for EUR_USD at row 1636.
+2024-12-13 10:16:36,286 - INFO - Order filled for EUR_USD at row 1669 at 2022-06-07 21:00:00.
+2024-12-13 10:16:36,341 - INFO - Trade closed for EUR_USD at row 1669 at 2022-06-09 07:00:00.
+2024-12-13 10:16:36,343 - INFO - Order filled for EUR_USD at row 1669 at 2022-06-08 12:00:00.
+2024-12-13 10:16:36,360 - INFO - Trade closed for EUR_USD at row 1669 at 2022-06-09 00:00:00.
+2024-12-13 10:16:36,362 - INFO - Order cancelled for EUR_USD at row 1671.
+2024-12-13 10:16:36,367 - INFO - Order filled for EUR_USD at row 1750 at 2022-09-28 21:00:00.
+2024-12-13 10:16:36,454 - INFO - Trade closed for EUR_USD at row 1750 at 2022-09-30 10:00:00.
+2024-12-13 10:16:36,456 - INFO - Order filled for EUR_USD at row 1761 at 2022-10-13 21:00:00.
+2024-12-13 10:16:36,596 - INFO - Trade closed for EUR_USD at row 1761 at 2022-10-18 07:00:00.
+2024-12-13 10:16:36,598 - INFO - Order cancelled for EUR_USD at row 1767.
+2024-12-13 10:16:36,599 - INFO - Order cancelled for EUR_USD at row 1775.
+2024-12-13 10:16:36,601 - INFO - Order filled for EUR_USD at row 1793 at 2022-11-28 22:00:00.
+2024-12-13 10:16:36,698 - INFO - Trade closed for EUR_USD at row 1793 at 2022-11-30 13:00:00.
+2024-12-13 10:16:36,699 - INFO - Order cancelled for EUR_USD at row 1795.
+2024-12-13 10:16:36,703 - INFO - Order cancelled for EUR_USD at row 1851.
+2024-12-13 10:16:36,704 - INFO - Order cancelled for EUR_USD at row 1875.
+2024-12-13 10:16:36,707 - INFO - Order filled for EUR_USD at row 1927 at 2023-06-05 21:00:00.
+2024-12-13 10:16:36,725 - INFO - Trade closed for EUR_USD at row 1927 at 2023-06-06 12:00:00.
+2024-12-13 10:16:36,727 - INFO - Order filled for EUR_USD at row 1962 at 2023-07-24 21:00:00.
+2024-12-13 10:16:36,881 - INFO - Trade closed for EUR_USD at row 1962 at 2023-07-26 06:00:00.
+2024-12-13 10:16:36,883 - INFO - Order filled for EUR_USD at row 1965 at 2023-07-27 21:00:00.
+2024-12-13 10:16:36,954 - INFO - Trade closed for EUR_USD at row 1965 at 2023-07-31 07:00:00.
+2024-12-13 10:16:36,955 - INFO - Order cancelled for EUR_USD at row 1975.
+2024-12-13 10:16:36,957 - INFO - Order filled for EUR_USD at row 1983 at 2023-08-22 21:00:00.
+2024-12-13 10:16:37,113 - INFO - Trade closed for EUR_USD at row 1983 at 2023-08-23 13:00:00.
+2024-12-13 10:16:37,114 - INFO - Order cancelled for EUR_USD at row 2011.
+2024-12-13 10:16:37,116 - INFO - Order cancelled for EUR_USD at row 2020.
+2024-12-13 10:16:37,117 - INFO - Order cancelled for EUR_USD at row 2034.
+2024-12-13 10:16:37,117 - INFO - Order cancelled for EUR_USD at row 2034.
+2024-12-13 10:16:37,118 - INFO - Order cancelled for EUR_USD at row 2037.
+2024-12-13 10:16:37,119 - INFO - Creating DataFrame from trade results for EUR_USD.
+2024-12-13 10:16:37,442 - INFO - Equity curve saved as C:\Users\grave\OneDrive\Coding\PAC\results\plots\EUR_USD\equity_curve_EUR_USD.png.
+2024-12-13 10:16:37,451 - INFO - Trade analysis completed and results saved to 'C:\Users\grave\OneDrive\Coding\PAC\results\csv\EUR_USD\trade_results_with_metrics_EUR_USD.csv'.
+2024-12-13 10:16:37,451 - INFO - Completed analysis for EUR_USD.
+2024-12-13 10:16:37,452 - INFO - Processing Instrument: GBP_USD
+2024-12-13 10:16:40,034 - INFO - Fetched daily data: C:\Users\grave\OneDrive\Coding\PAC\fxdata\GBP_USD_D.xlsx
+2024-12-13 10:16:40,035 - INFO - Fetched hourly data: C:\Users\grave\OneDrive\Coding\PAC\fxdata\GBP_USD_H1.xlsx
+2024-12-13 10:16:40,389 - INFO - Calculated signals and ATR.
+2024-12-13 10:18:22,899 - INFO - Loaded and calculated zigzag data.
+2024-12-13 10:18:25,413 - INFO - Processed signals and generated 266 entries for GBP_USD.
+2024-12-13 10:18:41,501 - INFO - Calculated Stop Loss and Take Profit for entries.
+2024-12-13 10:18:41,504 - INFO - Sorted hourly data by time.
+2024-12-13 10:18:41,582 - INFO - Order cancelled for GBP_USD at row 34.
+2024-12-13 10:18:41,588 - INFO - Order cancelled for GBP_USD at row 48.
+2024-12-13 10:18:41,594 - INFO - Order filled for GBP_USD at row 62 at 2016-03-30 21:00:00.
+2024-12-13 10:18:41,595 - INFO - Order filled for GBP_USD at row 62 at 2016-03-31 03:00:00.
+2024-12-13 10:18:41,651 - INFO - Trade closed for GBP_USD at row 62 at 2016-04-01 05:00:00.
+2024-12-13 10:18:41,696 - INFO - Trade closed for GBP_USD at row 62 at 2016-04-01 05:00:00.
+2024-12-13 10:18:41,699 - INFO - Order filled for GBP_USD at row 67 at 2016-04-06 21:00:00.
+2024-12-13 10:18:41,795 - INFO - Trade closed for GBP_USD at row 67 at 2016-04-11 05:00:00.
+2024-12-13 10:18:41,797 - INFO - Order cancelled for GBP_USD at row 67.
+2024-12-13 10:18:41,800 - INFO - Order cancelled for GBP_USD at row 75.
+2024-12-13 10:18:41,804 - INFO - Order cancelled for GBP_USD at row 86.
+2024-12-13 10:18:41,813 - INFO - Order cancelled for GBP_USD at row 110.
+2024-12-13 10:18:41,824 - INFO - Order filled for GBP_USD at row 138 at 2016-07-14 21:00:00.
+2024-12-13 10:18:41,895 - INFO - Trade closed for GBP_USD at row 138 at 2016-07-18 09:00:00.
+2024-12-13 10:18:41,897 - INFO - Order cancelled for GBP_USD at row 144.
+2024-12-13 10:18:41,902 - INFO - Order cancelled for GBP_USD at row 157.
+2024-12-13 10:18:41,904 - INFO - Order filled for GBP_USD at row 157 at 2016-08-11 09:00:00.
+2024-12-13 10:18:41,995 - INFO - Trade closed for GBP_USD at row 157 at 2016-08-12 12:00:00.
+2024-12-13 10:18:41,997 - INFO - Order cancelled for GBP_USD at row 159.
+2024-12-13 10:18:42,001 - INFO - Order cancelled for GBP_USD at row 169.
+2024-12-13 10:18:42,026 - INFO - Order cancelled for GBP_USD at row 254.
+2024-12-13 10:18:42,028 - INFO - Order filled for GBP_USD at row 256 at 2016-12-28 22:00:00.
+2024-12-13 10:18:42,069 - INFO - Trade closed for GBP_USD at row 256 at 2016-12-29 23:00:00.
+2024-12-13 10:18:42,074 - INFO - Order filled for GBP_USD at row 265 at 2017-01-11 22:00:00.
+2024-12-13 10:18:42,106 - INFO - Trade closed for GBP_USD at row 265 at 2017-01-12 10:00:00.
+2024-12-13 10:18:42,116 - INFO - Order cancelled for GBP_USD at row 290.
+2024-12-13 10:18:42,131 - INFO - Order filled for GBP_USD at row 334 at 2017-04-18 21:00:00.
+2024-12-13 10:18:42,419 - INFO - Trade closed for GBP_USD at row 334 at 2017-04-26 17:00:00.
+2024-12-13 10:18:42,424 - INFO - Order cancelled for GBP_USD at row 350.
+2024-12-13 10:18:42,425 - INFO - Order cancelled for GBP_USD at row 350.
+2024-12-13 10:18:42,427 - INFO - Order filled for GBP_USD at row 353 at 2017-05-15 21:00:00.
+2024-12-13 10:18:42,442 - INFO - Trade closed for GBP_USD at row 353 at 2017-05-16 06:00:00.
+2024-12-13 10:18:42,447 - INFO - Order filled for GBP_USD at row 365 at 2017-05-31 21:00:00.
+2024-12-13 10:18:42,480 - INFO - Trade closed for GBP_USD at row 365 at 2017-06-01 16:00:00.
+2024-12-13 10:18:42,490 - INFO - Order filled for GBP_USD at row 394 at 2017-07-11 21:00:00.
+2024-12-13 10:18:42,531 - INFO - Trade closed for GBP_USD at row 394 at 2017-07-13 06:00:00.
+2024-12-13 10:18:42,535 - INFO - Order filled for GBP_USD at row 404 at 2017-07-25 21:00:00.
+2024-12-13 10:18:42,548 - INFO - Trade closed for GBP_USD at row 404 at 2017-07-26 18:00:00.
+2024-12-13 10:18:42,560 - INFO - Order cancelled for GBP_USD at row 429.
+2024-12-13 10:18:42,563 - INFO - Order filled for GBP_USD at row 431 at 2017-09-01 14:00:00.
+2024-12-13 10:18:42,593 - INFO - Trade closed for GBP_USD at row 431 at 2017-09-04 07:00:00.
+2024-12-13 10:18:42,595 - INFO - Order filled for GBP_USD at row 434 at 2017-09-05 21:00:00.
+2024-12-13 10:18:42,654 - INFO - Trade closed for GBP_USD at row 434 at 2017-09-06 18:00:00.
+2024-12-13 10:18:42,669 - INFO - Order filled for GBP_USD at row 495 at 2017-11-27 22:00:00.
+2024-12-13 10:18:42,684 - INFO - Trade closed for GBP_USD at row 495 at 2017-11-28 19:00:00.
+2024-12-13 10:18:42,688 - INFO - Order filled for GBP_USD at row 503 at 2017-12-07 22:00:00.
+2024-12-13 10:18:42,701 - INFO - Trade closed for GBP_USD at row 503 at 2017-12-08 15:00:00.
+2024-12-13 10:18:42,705 - INFO - Order filled for GBP_USD at row 513 at 2017-12-21 22:00:00.
+2024-12-13 10:18:42,739 - INFO - Trade closed for GBP_USD at row 513 at 2017-12-22 21:00:00.
+2024-12-13 10:18:42,757 - INFO - Order filled for GBP_USD at row 586 at 2018-04-05 21:00:00.
+2024-12-13 10:18:42,785 - INFO - Trade closed for GBP_USD at row 586 at 2018-04-06 12:00:00.
+2024-12-13 10:18:42,787 - INFO - Order cancelled for GBP_USD at row 592.
+2024-12-13 10:18:42,794 - INFO - Order filled for GBP_USD at row 619 at 2018-05-23 08:00:00.
+2024-12-13 10:18:42,860 - INFO - Trade closed for GBP_USD at row 619 at 2018-05-25 08:00:00.
+2024-12-13 10:18:42,864 - INFO - Order filled for GBP_USD at row 626 at 2018-06-01 04:00:00.
+2024-12-13 10:18:42,889 - INFO - Trade closed for GBP_USD at row 626 at 2018-06-01 15:00:00.
+2024-12-13 10:18:42,895 - INFO - Order filled for GBP_USD at row 651 at 2018-07-05 21:00:00.
+2024-12-13 10:18:42,906 - INFO - Trade closed for GBP_USD at row 651 at 2018-07-06 13:00:00.
+2024-12-13 10:18:42,909 - INFO - Order cancelled for GBP_USD at row 657.
+2024-12-13 10:18:42,910 - INFO - Order filled for GBP_USD at row 658 at 2018-07-16 21:00:00.
+2024-12-13 10:18:43,637 - INFO - Trade closed for GBP_USD at row 658 at 2018-07-19 13:00:00.
+2024-12-13 10:18:43,638 - INFO - Order cancelled for GBP_USD at row 658.
+2024-12-13 10:18:43,644 - INFO - Order cancelled for GBP_USD at row 679.
+2024-12-13 10:18:43,648 - INFO - Order cancelled for GBP_USD at row 690.
+2024-12-13 10:18:43,649 - INFO - Order filled for GBP_USD at row 694 at 2018-09-04 21:00:00.
+2024-12-13 10:18:43,662 - INFO - Trade closed for GBP_USD at row 694 at 2018-09-05 08:00:00.
+2024-12-13 10:18:43,667 - INFO - Order filled for GBP_USD at row 713 at 2018-10-02 08:00:00.
+2024-12-13 10:18:43,755 - INFO - Trade closed for GBP_USD at row 713 at 2018-10-04 08:00:00.
+2024-12-13 10:18:43,767 - INFO - Order filled for GBP_USD at row 769 at 2018-12-18 22:00:00.
+2024-12-13 10:18:43,823 - INFO - Trade closed for GBP_USD at row 769 at 2018-12-20 09:00:00.
+2024-12-13 10:18:43,826 - INFO - Order cancelled for GBP_USD at row 779.
+2024-12-13 10:18:43,827 - INFO - Order filled for GBP_USD at row 779 at 2019-01-04 09:00:00.
+2024-12-13 10:18:43,896 - INFO - Trade closed for GBP_USD at row 779 at 2019-01-07 07:00:00.
+2024-12-13 10:18:43,898 - INFO - Order cancelled for GBP_USD at row 787.
+2024-12-13 10:18:43,900 - INFO - Order filled for GBP_USD at row 787 at 2019-01-17 18:00:00.
+2024-12-13 10:18:43,939 - INFO - Trade closed for GBP_USD at row 787 at 2019-01-21 09:00:00.
+2024-12-13 10:18:43,942 - INFO - Order filled for GBP_USD at row 799 at 2019-02-01 11:00:00.
+2024-12-13 10:18:44,004 - INFO - Trade closed for GBP_USD at row 799 at 2019-02-04 15:00:00.
+2024-12-13 10:18:44,009 - INFO - Order filled for GBP_USD at row 822 at 2019-03-05 22:00:00.
+2024-12-13 10:18:44,058 - INFO - Trade closed for GBP_USD at row 822 at 2019-03-06 21:00:00.
+2024-12-13 10:18:44,060 - INFO - Order filled for GBP_USD at row 824 at 2019-03-07 22:00:00.
+2024-12-13 10:18:44,131 - INFO - Trade closed for GBP_USD at row 824 at 2019-03-10 22:00:00.
+2024-12-13 10:18:44,133 - INFO - Order filled for GBP_USD at row 826 at 2019-03-11 21:00:00.
+2024-12-13 10:18:44,252 - INFO - Trade closed for GBP_USD at row 826 at 2019-03-14 03:00:00.
+2024-12-13 10:18:44,273 - INFO - Order cancelled for GBP_USD at row 880.
+2024-12-13 10:18:44,280 - INFO - Order cancelled for GBP_USD at row 904.
+2024-12-13 10:18:44,291 - INFO - Order cancelled for GBP_USD at row 956.
+2024-12-13 10:18:44,302 - INFO - Order cancelled for GBP_USD at row 1018.
+2024-12-13 10:18:44,310 - INFO - Order cancelled for GBP_USD at row 1053.
+2024-12-13 10:18:44,312 - INFO - Order cancelled for GBP_USD at row 1058.
+2024-12-13 10:18:44,316 - INFO - Order filled for GBP_USD at row 1071 at 2020-02-12 22:00:00.
+2024-12-13 10:18:44,337 - INFO - Trade closed for GBP_USD at row 1071 at 2020-02-13 12:00:00.
+2024-12-13 10:18:44,345 - INFO - Order cancelled for GBP_USD at row 1123.
+2024-12-13 10:18:44,347 - INFO - Order filled for GBP_USD at row 1125 at 2020-04-28 21:00:00.
+2024-12-13 10:18:44,383 - INFO - Trade closed for GBP_USD at row 1125 at 2020-04-29 12:00:00.
+2024-12-13 10:18:44,385 - INFO - Order filled for GBP_USD at row 1125 at 2020-04-29 12:00:00.
+2024-12-13 10:18:44,482 - INFO - Trade closed for GBP_USD at row 1125 at 2020-04-30 09:00:00.
+2024-12-13 10:18:44,486 - INFO - Order filled for GBP_USD at row 1137 at 2020-05-14 21:00:00.
+2024-12-13 10:18:44,503 - INFO - Trade closed for GBP_USD at row 1137 at 2020-05-15 11:00:00.
+2024-12-13 10:18:44,510 - INFO - Order filled for GBP_USD at row 1164 at 2020-06-22 21:00:00.
+2024-12-13 10:18:44,606 - INFO - Trade closed for GBP_USD at row 1164 at 2020-06-24 07:00:00.
+2024-12-13 10:18:44,608 - INFO - Order filled for GBP_USD at row 1166 at 2020-06-24 21:00:00.
+2024-12-13 10:18:44,681 - INFO - Trade closed for GBP_USD at row 1166 at 2020-06-26 11:00:00.
+2024-12-13 10:18:44,684 - INFO - Order filled for GBP_USD at row 1177 at 2020-07-09 21:00:00.
+2024-12-13 10:18:44,741 - INFO - Trade closed for GBP_USD at row 1177 at 2020-07-13 13:00:00.
+2024-12-13 10:18:44,742 - INFO - Order cancelled for GBP_USD at row 1179.
+2024-12-13 10:18:44,743 - INFO - Order cancelled for GBP_USD at row 1180.
+2024-12-13 10:18:44,745 - INFO - Order filled for GBP_USD at row 1180 at 2020-07-15 00:00:00.
+2024-12-13 10:18:44,809 - INFO - Trade closed for GBP_USD at row 1180 at 2020-07-16 00:00:00.
+2024-12-13 10:18:44,811 - INFO - Order cancelled for GBP_USD at row 1183.
+2024-12-13 10:18:44,814 - INFO - Order filled for GBP_USD at row 1193 at 2020-08-03 11:00:00.
+2024-12-13 10:18:44,840 - INFO - Trade closed for GBP_USD at row 1193 at 2020-08-04 02:00:00.
+2024-12-13 10:18:44,844 - INFO - Order cancelled for GBP_USD at row 1215.
+2024-12-13 10:18:44,845 - INFO - Order filled for GBP_USD at row 1215 at 2020-09-02 09:00:00.
+2024-12-13 10:18:44,898 - INFO - Trade closed for GBP_USD at row 1215 at 2020-09-02 23:00:00.
+2024-12-13 10:18:44,899 - INFO - Order cancelled for GBP_USD at row 1218.
+2024-12-13 10:18:44,901 - INFO - Order filled for GBP_USD at row 1222 at 2020-09-10 21:00:00.
+2024-12-13 10:18:44,955 - INFO - Trade closed for GBP_USD at row 1222 at 2020-09-14 10:00:00.
+2024-12-13 10:18:44,968 - INFO - Order filled for GBP_USD at row 1259 at 2020-11-03 11:00:00.
+2024-12-13 10:18:45,127 - INFO - Trade closed for GBP_USD at row 1259 at 2020-11-06 14:00:00.
+2024-12-13 10:18:45,130 - INFO - Order cancelled for GBP_USD at row 1272.
+2024-12-13 10:18:45,134 - INFO - Order filled for GBP_USD at row 1302 at 2021-01-04 22:00:00.
+2024-12-13 10:18:45,161 - INFO - Trade closed for GBP_USD at row 1302 at 2021-01-05 16:00:00.
+2024-12-13 10:18:45,163 - INFO - Order cancelled for GBP_USD at row 1306.
+2024-12-13 10:18:45,165 - INFO - Order cancelled for GBP_USD at row 1312.
+2024-12-13 10:18:45,167 - INFO - Order filled for GBP_USD at row 1318 at 2021-01-26 22:00:00.
+2024-12-13 10:18:45,213 - INFO - Trade closed for GBP_USD at row 1318 at 2021-01-28 08:00:00.
+2024-12-13 10:18:45,218 - INFO - Order cancelled for GBP_USD at row 1345.
+2024-12-13 10:18:45,221 - INFO - Order cancelled for GBP_USD at row 1353.
+2024-12-13 10:18:45,225 - INFO - Order cancelled for GBP_USD at row 1376.
+2024-12-13 10:18:45,226 - INFO - Order filled for GBP_USD at row 1379 at 2021-04-21 21:00:00.
+2024-12-13 10:18:45,243 - INFO - Trade closed for GBP_USD at row 1379 at 2021-04-22 12:00:00.
+2024-12-13 10:18:45,245 - INFO - Order cancelled for GBP_USD at row 1385.
+2024-12-13 10:18:45,247 - INFO - Order filled for GBP_USD at row 1402 at 2021-05-24 21:00:00.
+2024-12-13 10:18:45,303 - INFO - Trade closed for GBP_USD at row 1402 at 2021-05-26 06:00:00.
+2024-12-13 10:18:45,305 - INFO - Order filled for GBP_USD at row 1414 at 2021-06-09 21:00:00.
+2024-12-13 10:18:45,329 - INFO - Trade closed for GBP_USD at row 1414 at 2021-06-10 20:00:00.
+2024-12-13 10:18:45,332 - INFO - Order filled for GBP_USD at row 1433 at 2021-07-06 21:00:00.
+2024-12-13 10:18:45,371 - INFO - Trade closed for GBP_USD at row 1433 at 2021-07-07 18:00:00.
+2024-12-13 10:18:45,372 - INFO - Order cancelled for GBP_USD at row 1435.
+2024-12-13 10:18:45,377 - INFO - Order filled for GBP_USD at row 1473 at 2021-09-01 02:00:00.
+2024-12-13 10:18:45,396 - INFO - Trade closed for GBP_USD at row 1473 at 2021-09-01 12:00:00.
+2024-12-13 10:18:45,397 - INFO - Order cancelled for GBP_USD at row 1479.
+2024-12-13 10:18:45,399 - INFO - Order cancelled for GBP_USD at row 1481.
+2024-12-13 10:18:45,400 - INFO - Order filled for GBP_USD at row 1481 at 2021-09-13 06:00:00.
+2024-12-13 10:18:45,446 - INFO - Trade closed for GBP_USD at row 1481 at 2021-09-14 06:00:00.
+2024-12-13 10:18:45,447 - INFO - Order cancelled for GBP_USD at row 1483.
+2024-12-13 10:18:45,452 - INFO - Order filled for GBP_USD at row 1529 at 2021-11-17 22:00:00.
+2024-12-13 10:18:45,492 - INFO - Trade closed for GBP_USD at row 1529 at 2021-11-19 08:00:00.
+2024-12-13 10:18:45,496 - INFO - Order filled for GBP_USD at row 1549 at 2021-12-15 22:00:00.
+2024-12-13 10:18:45,599 - INFO - Trade closed for GBP_USD at row 1549 at 2021-12-16 11:00:00.
+2024-12-13 10:18:45,602 - INFO - Order filled for GBP_USD at row 1570 at 2022-01-13 22:00:00.
+2024-12-13 10:18:45,878 - INFO - Trade closed for GBP_USD at row 1570 at 2022-01-19 10:00:00.
+2024-12-13 10:18:45,881 - INFO - Order filled for GBP_USD at row 1589 at 2022-02-09 22:00:00.
+2024-12-13 10:18:45,901 - INFO - Trade closed for GBP_USD at row 1589 at 2022-02-10 15:00:00.
+2024-12-13 10:18:45,903 - INFO - Order filled for GBP_USD at row 1598 at 2022-02-22 22:00:00.
+2024-12-13 10:18:45,922 - INFO - Trade closed for GBP_USD at row 1598 at 2022-02-23 19:00:00.
+2024-12-13 10:18:45,924 - INFO - Order filled for GBP_USD at row 1610 at 2022-03-10 22:00:00.
+2024-12-13 10:18:46,454 - INFO - Trade closed for GBP_USD at row 1610 at 2022-03-11 02:00:00.
+2024-12-13 10:18:46,457 - INFO - Order filled for GBP_USD at row 1618 at 2022-03-22 21:00:00.
+2024-12-13 10:18:46,476 - INFO - Trade closed for GBP_USD at row 1618 at 2022-03-23 13:00:00.
+2024-12-13 10:18:46,479 - INFO - Order filled for GBP_USD at row 1634 at 2022-04-13 21:00:00.
+2024-12-13 10:18:46,491 - INFO - Trade closed for GBP_USD at row 1634 at 2022-04-14 14:00:00.
+2024-12-13 10:18:46,494 - INFO - Order cancelled for GBP_USD at row 1656.
+2024-12-13 10:18:46,507 - INFO - Order filled for GBP_USD at row 1705 at 2022-07-22 15:00:00.
+2024-12-13 10:18:46,542 - INFO - Trade closed for GBP_USD at row 1705 at 2022-07-25 00:00:00.
+2024-12-13 10:18:46,545 - INFO - Order cancelled for GBP_USD at row 1731.
+2024-12-13 10:18:46,547 - INFO - Order cancelled for GBP_USD at row 1738.
+2024-12-13 10:18:46,549 - INFO - Order filled for GBP_USD at row 1739 at 2022-09-07 21:00:00.
+2024-12-13 10:18:46,633 - INFO - Trade closed for GBP_USD at row 1739 at 2022-09-08 12:00:00.
+2024-12-13 10:18:46,635 - INFO - Order filled for GBP_USD at row 1754 at 2022-09-28 21:00:00.
+2024-12-13 10:18:46,713 - INFO - Trade closed for GBP_USD at row 1754 at 2022-09-30 09:00:00.
+2024-12-13 10:18:46,715 - INFO - Order filled for GBP_USD at row 1763 at 2022-10-11 21:00:00.
+2024-12-13 10:18:46,784 - INFO - Trade closed for GBP_USD at row 1763 at 2022-10-13 09:00:00.
+2024-12-13 10:18:46,789 - INFO - Order filled for GBP_USD at row 1812 at 2022-12-21 18:00:00.
+2024-12-13 10:18:46,934 - INFO - Trade closed for GBP_USD at row 1812 at 2022-12-23 11:00:00.
+2024-12-13 10:18:46,936 - INFO - Order cancelled for GBP_USD at row 1820.
+2024-12-13 10:18:46,937 - INFO - Order cancelled for GBP_USD at row 1825.
+2024-12-13 10:18:46,939 - INFO - Order filled for GBP_USD at row 1829 at 2023-01-12 22:00:00.
+2024-12-13 10:18:46,967 - INFO - Trade closed for GBP_USD at row 1829 at 2023-01-13 11:00:00.
+2024-12-13 10:18:46,969 - INFO - Order filled for GBP_USD at row 1862 at 2023-02-28 22:00:00.
+2024-12-13 10:18:47,122 - INFO - Trade closed for GBP_USD at row 1862 at 2023-03-03 08:00:00.
+2024-12-13 10:18:47,125 - INFO - Order filled for GBP_USD at row 1867 at 2023-03-07 22:00:00.
+2024-12-13 10:18:47,168 - INFO - Trade closed for GBP_USD at row 1867 at 2023-03-09 08:00:00.
+2024-12-13 10:18:47,170 - INFO - Order cancelled for GBP_USD at row 1879.
+2024-12-13 10:18:47,171 - INFO - Order cancelled for GBP_USD at row 1895.
+2024-12-13 10:18:47,173 - INFO - Order filled for GBP_USD at row 1913 at 2023-05-11 08:00:00.
+2024-12-13 10:18:47,416 - INFO - Trade closed for GBP_USD at row 1913 at 2023-05-15 07:00:00.
+2024-12-13 10:18:47,418 - INFO - Order filled for GBP_USD at row 1927 at 2023-05-30 21:00:00.
+2024-12-13 10:18:47,446 - INFO - Trade closed for GBP_USD at row 1927 at 2023-05-31 07:00:00.
+2024-12-13 10:18:47,448 - INFO - Order filled for GBP_USD at row 1954 at 2023-07-06 21:00:00.
+2024-12-13 10:18:48,022 - INFO - Trade closed for GBP_USD at row 1954 at 2023-07-07 19:00:00.
+2024-12-13 10:18:48,024 - INFO - Order cancelled for GBP_USD at row 1962.
+2024-12-13 10:18:48,025 - INFO - Order filled for GBP_USD at row 1969 at 2023-07-27 21:00:00.
+2024-12-13 10:18:48,112 - INFO - Trade closed for GBP_USD at row 1969 at 2023-07-28 06:00:00.
+2024-12-13 10:18:48,113 - INFO - Order cancelled for GBP_USD at row 1974.
+2024-12-13 10:18:48,115 - INFO - Order filled for GBP_USD at row 1974 at 2023-08-04 03:00:00.
+2024-12-13 10:18:48,460 - INFO - Trade closed for GBP_USD at row 1974 at 2023-08-10 17:00:00.
+2024-12-13 10:18:48,461 - INFO - Order filled for GBP_USD at row 1988 at 2023-08-23 21:00:00.
+2024-12-13 10:18:48,493 - INFO - Trade closed for GBP_USD at row 1988 at 2023-08-24 17:00:00.
+2024-12-13 10:18:48,495 - INFO - Order cancelled for GBP_USD at row 2015.
+2024-12-13 10:18:48,496 - INFO - Order cancelled for GBP_USD at row 2015.
+2024-12-13 10:18:48,497 - INFO - Order cancelled for GBP_USD at row 2045.
+2024-12-13 10:18:48,499 - INFO - Order cancelled for GBP_USD at row 2050.
+2024-12-13 10:18:48,500 - INFO - Creating DataFrame from trade results for GBP_USD.
+2024-12-13 10:18:48,909 - INFO - Equity curve saved as C:\Users\grave\OneDrive\Coding\PAC\results\plots\GBP_USD\equity_curve_GBP_USD.png.
+2024-12-13 10:18:48,955 - INFO - Trade analysis completed and results saved to 'C:\Users\grave\OneDrive\Coding\PAC\results\csv\GBP_USD\trade_results_with_metrics_GBP_USD.csv'.
+2024-12-13 10:18:48,955 - INFO - Completed analysis for GBP_USD.
+2024-12-13 10:18:48,955 - INFO - Creating DataFrame from trade results for Combined.
+2024-12-13 10:18:49,235 - INFO - Equity curve saved as C:\Users\grave\OneDrive\Coding\PAC\results\plots\Combined\equity_curve_Combined.png.
+2024-12-13 10:18:49,239 - INFO - Trade analysis completed and results saved to 'C:\Users\grave\OneDrive\Coding\PAC\results\csv\Combined\trade_results_with_metrics_Combined.csv'.
