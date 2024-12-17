@@ -313,7 +313,9 @@ def analyze_results(trade_results, name="Combined", results_path=r"C:\Users\grav
     plt.ylabel('Cumulative R')
     plt.xticks(rotation=45)
     plt.tight_layout()
+    plt.show()
 
+"""
     # Define output directories
     csv_output_dir = os.path.join(results_path, 'csv', name)
     plots_output_dir = os.path.join(results_path, 'plots', name)
@@ -334,5 +336,5 @@ def analyze_results(trade_results, name="Combined", results_path=r"C:\Users\grav
     trade_results_path = os.path.join(csv_output_dir, trade_results_filename)
     df.to_csv(trade_results_path, index=False)
     logging.info(f"Trade analysis completed and results saved to '{trade_results_path}'.")
-
+"""
 

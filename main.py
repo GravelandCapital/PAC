@@ -121,8 +121,6 @@ def main():
             # Calculate stop loss and take profit
             daily_zigzag = calculate_zigzag_daily(df_daily, depth=3, output_dir=output_dir, instrument=instrument)
             calculate_sl_tp(entries, df_daily, df_hourly, zigzag_df, daily_zigzag, instrument)
-            logging.info("Calculated Stop Loss and Take Profit for entries.")
-            print("Stop Loss and Take Profit calculated.")
         except Exception as e:
             logging.error(f"Error calculating SL/TP for {instrument}: {e}")
             print(f"Error calculating SL/TP for {instrument}: {e}")
