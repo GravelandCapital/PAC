@@ -12,14 +12,15 @@ class TradeManager:
 
     def get_pip_value(self, instrument):
         """Returns the pip value for a given instrument."""
-        if "JPY" in instrument:
-            return 0.01  # Pip value for JPY pairs
-        elif "XAG" in instrument:  # Silver
-            return 0.01  # Pip value for silver (e.g., XAG/USD)
+        instrument = instrument.upper().strip() # Ensure instrument is always in uppercase
+        if "JPY" in instrument or "XAG" in instrument:
+            pip_value = 0.01  # Pip value for JPY pairs and XAG/USD
         elif "XAU" in instrument:
-            return 1.0  # Pip value for gold (e.g., XAU/USD)
+            pip_value = 0.5  # Corrected pip value for gold (XAU/USD)
         else:
-            return 0.0001  # Default pip value for most instruments
+            pip_value = 0.0001  # Default pip value for most instruments
+        return pip_value
+
 
     def check_order_execution(self):
         start_time = self.entry.order_time 
@@ -353,3 +354,4 @@ class TradeManager:
             exit_condition = current_row['h'] >= stop_loss
             return exit_condition
         return False
+

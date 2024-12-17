@@ -296,12 +296,24 @@ class EngulfingHandler:
         return hourly_data
 
     def get_pip_value(self, instrument):
-        """Returns the pip value for a given currency pair."""
-        # If the pair involves JPY, XAG or XAU, pip is 0.01, else it's 0.0001
-        if "JPY" in instrument or instrument in ["XAU_USD", "XAG_USD"]:
-            return 0.01
+        """Returns the pip value for a given instrument."""
+        instrument = instrument.upper().strip() # Ensure instrument is always in uppercase
+        if "JPY" in instrument or "XAG" in instrument:
+            pip_value = 0.01  # Pip value for JPY pairs and XAG/USD
+        elif "XAU" in instrument:
+            pip_value = 0.5  # Corrected pip value for gold (XAU/USD)
         else:
-            return 0.0001
+            pip_value = 0.0001  # Default pip value for most instruments
+        return pip_value
+        
+    def round_stop_loss(self, stop_loss, pip_value):
+        """Rounds stop loss based on the pip value."""
+        if pip_value == 0.1:  # XAU/USD precision
+            return round(stop_loss, 2)
+        elif pip_value == 0.01:  # XAG/USD or JPY precision
+            return round(stop_loss, 3)
+        else:  # Default for most FX pairs
+            return round(stop_loss, 5)
 
     def calculate_stop_loss(self, entry):
         sl_pivots = self.sl_pivots(entry.price)
@@ -321,6 +333,7 @@ class EngulfingHandler:
             failure_point = self.df_daily.loc[self.row_index, 'l']
             signal_high = self.df_daily.loc[self.row_index, 'h']
             stop_loss = failure_point - pip_value
+            stop_loss = self.round_stop_loss(stop_loss, pip_value)
             original_stop_loss = stop_loss
             stop_loss_list.append(original_stop_loss)
 
@@ -353,6 +366,7 @@ class EngulfingHandler:
 
                             if temp_stop_loss < original_pivot_price and stop_loss_value >= min_atr:
                                 temp_stop_loss = breakout_low - pip_value
+                                temp_stop_loss = self.round_stop_loss(temp_stop_loss, pip_value)
                                 stop_loss_list.append(temp_stop_loss)
                                 break
                             else:
@@ -368,6 +382,7 @@ class EngulfingHandler:
             failure_point = self.df_daily.loc[self.row_index, 'h']
             signal_low = self.df_daily.loc[self.row_index, 'l']
             stop_loss = failure_point + pip_value
+            stop_loss = self.round_stop_loss(stop_loss, pip_value)
             original_stop_loss = stop_loss
             stop_loss_list.append(original_stop_loss)
 
@@ -400,6 +415,7 @@ class EngulfingHandler:
 
                             if temp_stop_loss > original_pivot_price and stop_loss_value >= min_atr:
                                 temp_stop_loss = breakout_high + pip_value
+                                temp_stop_loss = self.round_stop_loss(temp_stop_loss, pip_value)
                                 stop_loss_list.append(temp_stop_loss)
                                 break
                             else:
@@ -470,6 +486,7 @@ class EngulfingHandler:
 
         sl_pivots_df = pd.DataFrame(sl_pivots)
         return sl_pivots_df
+    
 
     def calculate_take_profit(self, entry, daily_zigzag):
         entry_price = entry.price

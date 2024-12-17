@@ -308,15 +308,15 @@ def analyze_results(trade_results, name="Combined", show_plots=True):
     print(df)
 
     # 4. Plot Equity Curve
-    df_sorted = df.sort_values('Exit Time').reset_index(drop=True)
+    df_sorted = df.sort_values('Filled Time', ascending=True).reset_index(drop=True)
     df_sorted['Cumulative R'] = df_sorted['R_Ratio'].cumsum()
 
     # Plot the equity curve
     if show_plots:
         plt.figure(figsize=(10, 6), num = f'Equity Curve for {name}')
-        sns.lineplot(data=df_sorted, x='Exit Time', y='Cumulative R', marker='o')
+        sns.lineplot(data=df_sorted, x='Filled Time', y='Cumulative R', marker='o')
         plt.title(f'Equity Curve for {name}')
-        plt.xlabel('Exit Time')
+        plt.xlabel('Filled Time')
         plt.ylabel('Cumulative R')
         plt.xticks(rotation=45)
         plt.tight_layout()

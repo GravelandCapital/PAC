@@ -216,12 +216,24 @@ class HammerShootingStarHandler:
         return entries
     
     def get_pip_value(self, instrument):
-        """Returns the pip value for a given currency pair."""
-        # If the pair involves JPY, XAG or XAU, pip is 0.01, else it's 0.0001
-        if "JPY" in instrument or instrument in ["XAU_USD", "XAG_USD"]:
-            return 0.01
+        """Returns the pip value for a given instrument."""
+        instrument = instrument.upper().strip() # Ensure instrument is always in uppercase
+        if "JPY" in instrument or "XAG" in instrument:
+            pip_value = 0.01  # Pip value for JPY pairs and XAG/USD
+        elif "XAU" in instrument:
+            pip_value = 0.5  # Corrected pip value for gold (XAU/USD)
         else:
-            return 0.0001
+            pip_value = 0.0001  # Default pip value for most instruments
+        return pip_value
+        
+    def round_stop_loss(self, stop_loss, pip_value):
+        """Rounds stop loss based on the pip value."""
+        if pip_value == 0.1:  # XAU/USD precision
+            return round(stop_loss, 2)
+        elif pip_value == 0.01:  # XAG/USD or JPY precision
+            return round(stop_loss, 3)
+        else:  # Default for most FX pairs
+            return round(stop_loss, 5)
 
     def calculate_stop_loss(self, entry):
         pip_value = self.get_pip_value(self.instrument)
@@ -231,12 +243,14 @@ class HammerShootingStarHandler:
         if entry.entry_type == "PDH":
             stop_loss_list = []
             stop_loss = self.df_daily.loc[entry.row_index, 'h'] + pip_value
+            stop_loss = self.round_stop_loss(stop_loss, pip_value)
             stop_loss_list.append(stop_loss)
             return stop_loss_list
 
         elif entry.entry_type == "PDL":
             stop_loss_list = []
             stop_loss = self.df_daily.loc[entry.row_index, 'l'] - pip_value
+            stop_loss = self.round_stop_loss(stop_loss, pip_value)
             stop_loss_list.append(stop_loss)
             return stop_loss_list
 
@@ -246,6 +260,7 @@ class HammerShootingStarHandler:
                 entry_time = entry.order_time
                 failure_point = self.df_daily.loc[self.row_index, 'l']
                 stop_loss = failure_point - pip_value
+                stop_loss = self.round_stop_loss(stop_loss, pip_value)
                 original_stop_loss = stop_loss
                 stop_loss_list.append(original_stop_loss)
 
@@ -273,6 +288,7 @@ class HammerShootingStarHandler:
                             stop_loss_value = entry_price - temp_stop_loss
                             if stop_loss_value >= min_atr:
                                 stop_loss = temp_stop_loss
+                                stop_loss = self.round_stop_loss(stop_loss, pip_value)
                                 stop_loss_list.append(stop_loss)
                                 break
                             else:
@@ -287,6 +303,7 @@ class HammerShootingStarHandler:
                 entry_time = entry.order_time
                 failure_point = self.df_daily.loc[self.row_index, 'h']
                 stop_loss = failure_point + pip_value
+                stop_loss = self.round_stop_loss(stop_loss, pip_value)
                 original_stop_loss = stop_loss
                 stop_loss_list.append(original_stop_loss)
 
@@ -313,6 +330,7 @@ class HammerShootingStarHandler:
                             stop_loss_value = temp_stop_loss - entry_price
                             if stop_loss_value >= min_atr:
                                 stop_loss = temp_stop_loss
+                                stop_loss = self.round_stop_loss(stop_loss, pip_value)
                                 stop_loss_list.append(stop_loss)
                                 break
                             else:
