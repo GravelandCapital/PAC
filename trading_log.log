@@ -5719,3 +5719,39 @@ Trade Analysis:
 2024-12-13 12:27:18,093 - INFO - Completed analysis for XAU_USD.
 2024-12-13 12:27:19,683 - INFO - Equity curve saved as C:\Users\grave\OneDrive\Coding\PAC\results\plots\Combined\equity_curve_Combined.png.
 2024-12-13 12:27:19,703 - INFO - Trade analysis completed and results saved to 'C:\Users\grave\OneDrive\Coding\PAC\results\csv\Combined\trade_results_with_metrics_Combined.csv'.
+2024-12-17 09:20:31,577 - INFO - Processing Instrument: EUR_USD
+2024-12-17 09:20:35,025 - INFO - Fetched daily data: C:\Users\grave\OneDrive\Coding\fxdata\EUR_USD_D.xlsx
+2024-12-17 09:20:35,026 - INFO - Fetched hourly data: C:\Users\grave\OneDrive\Coding\fxdata\EUR_USD_H1.xlsx
+2024-12-17 09:20:35,458 - INFO - Calculated signals and ATR.
+2024-12-17 09:20:35,878 - INFO - Loaded and calculated zigzag data.
+2024-12-17 09:20:38,877 - INFO - Processed signals and generated 356 entries for EUR_USD.
+2024-12-17 09:20:53,514 - INFO - Sorted hourly data by time.
+2024-12-17 09:22:12,720 - INFO - Completed analysis for EUR_USD.
+2024-12-17 09:22:12,721 - INFO - Processing Instrument: GBP_USD
+2024-12-17 09:22:15,951 - INFO - Fetched daily data: C:\Users\grave\OneDrive\Coding\fxdata\GBP_USD_D.xlsx
+2024-12-17 09:22:15,951 - INFO - Fetched hourly data: C:\Users\grave\OneDrive\Coding\fxdata\GBP_USD_H1.xlsx
+2024-12-17 09:22:16,409 - INFO - Calculated signals and ATR.
+2024-12-17 09:22:16,801 - INFO - Loaded and calculated zigzag data.
+2024-12-17 09:22:19,796 - INFO - Processed signals and generated 317 entries for GBP_USD.
+2024-12-17 09:22:32,386 - INFO - Sorted hourly data by time.
+2024-12-17 09:34:09,473 - INFO - Processing Instrument: XAG_USD
+2024-12-17 09:34:12,738 - INFO - Data fetched for XAG_USD.
+2024-12-17 09:34:31,981 - ERROR - Error analyzing results for XAG_USD: 'NoneType' object has no attribute 'head'
+2024-12-17 09:34:31,982 - INFO - Processing Instrument: XAU_USD
+2024-12-17 09:34:35,014 - INFO - Data fetched for XAU_USD.
+2024-12-17 09:34:52,396 - ERROR - Error analyzing results for XAU_USD: 'NoneType' object has no attribute 'head'
+2024-12-17 09:36:27,829 - INFO - Processing Instrument: XAG_USD
+2024-12-17 09:36:30,952 - INFO - Data fetched for XAG_USD.
+2024-12-17 09:36:50,150 - ERROR - Error analyzing results for XAG_USD: 'NoneType' object has no attribute 'tail'
+2024-12-17 09:36:50,151 - INFO - Processing Instrument: XAU_USD
+2024-12-17 09:36:53,152 - INFO - Data fetched for XAU_USD.
+2024-12-17 09:37:12,296 - ERROR - Error analyzing results for XAU_USD: 'NoneType' object has no attribute 'tail'
+2024-12-17 09:44:23,928 - INFO - Processing Instrument: XAG_USD
+2024-12-17 09:44:27,054 - INFO - Data fetched for XAG_USD.
+2024-12-17 09:50:19,057 - INFO - Processing Instrument: XAG_USD
+2024-12-17 09:50:22,208 - INFO - Data fetched for XAG_USD.
+2024-12-17 09:52:20,276 - INFO - Processing Instrument: XAG_USD
+2024-12-17 09:52:23,477 - INFO - Data fetched for XAG_USD.
+2024-12-17 09:56:27,797 - INFO - Completed analysis for XAG_USD.
+2024-12-17 09:56:27,799 - INFO - Processing Instrument: XAU_USD
+2024-12-17 09:56:30,969 - INFO - Data fetched for XAU_USD.

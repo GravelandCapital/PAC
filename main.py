@@ -37,18 +37,6 @@ def main():
     
     # List of file_pairs: [(daily_file1, hourly_file1), (daily_file2, hourly_file2), ...]
     file_pairs = [
-        ('EUR_USD_D.xlsx', 'EUR_USD_H1.xlsx'),
-        ('GBP_USD_D.xlsx', 'GBP_USD_H1.xlsx'),
-        ('USD_JPY_D.xlsx', 'USD_JPY_H1.xlsx'),
-        ('AUD_USD_D.xlsx', 'AUD_USD_H1.xlsx'),
-        ('USD_CAD_D.xlsx', 'USD_CAD_H1.xlsx'),
-        ('USD_CHF_D.xlsx', 'USD_CHF_H1.xlsx'),
-        ('EUR_GBP_D.xlsx', 'EUR_GBP_H1.xlsx'),
-        ('EUR_JPY_D.xlsx', 'EUR_JPY_H1.xlsx'),
-        ('GBP_JPY_D.xlsx', 'GBP_JPY_H1.xlsx'),
-        ('CAD_JPY_D.xlsx', 'CAD_JPY_H1.xlsx'),
-        ('AUD_JPY_D.xlsx', 'AUD_JPY_H1.xlsx'),
-        ('EUR_NZD_D.xlsx', 'EUR_NZD_H1.xlsx'),
         ('XAG_USD_D.xlsx', 'XAG_USD_H1.xlsx'),
         ('XAU_USD_D.xlsx', 'XAU_USD_H1.xlsx'),
         # Add additional file pairs here
@@ -56,6 +44,7 @@ def main():
     
     # Combined trades across all instruments
     combined_closed_trades = []
+    start_date = '2015-01-01'
 
     for daily_file, hourly_file in file_pairs:
         # Extract instrument name from daily_file (assuming naming convention like 'EUR_USD_D.xlsx')
@@ -76,9 +65,8 @@ def main():
             data_fetcher.fetch_data()
             df_daily = data_fetcher.df_daily
             df_hourly = data_fetcher.df_hourly
-            logging.info(f"Fetched daily data: {daily_path}")
-            logging.info(f"Fetched hourly data: {hourly_path}")
-            print("Data fetched successfully.")
+            logging.info(f"Data fetched for {instrument}.")
+            print(f"Data fetched for {instrument}.")
         except Exception as e:
             logging.error(f"Error fetching data for {instrument}: {e}")
             print(f"Error fetching data for {instrument}: {e}")
@@ -89,8 +77,6 @@ def main():
             signal_calculator = SignalCalculator(df_hourly, df_daily)
             df_daily = signal_calculator.calculate_signal()
             df_daily = signal_calculator.calculate_atr()
-            logging.info("Calculated signals and ATR.")
-            print("Signals and ATR calculated.")
         except Exception as e:
             logging.error(f"Error calculating signals and ATR for {instrument}: {e}")
             print(f"Error calculating signals and ATR for {instrument}: {e}")
@@ -100,8 +86,6 @@ def main():
             # Load precomputed zigzag data
             zigzag_df = calculate_zigzag(df_hourly, depth=4, output_dir=output_dir, instrument=instrument)
             zigzag_df['time'] = pd.to_datetime(zigzag_df['time'])
-            logging.info(f"Loaded and calculated zigzag data.")
-            print("Zigzag data loaded and calculated.")
         except Exception as e:
             logging.error(f"Error loading/calculating zigzag data for {instrument}: {e}")
             print(f"Error loading/calculating zigzag data for {instrument}: {e}")
@@ -109,9 +93,7 @@ def main():
 
         try:
             # Process signals and calculate entries
-            entries = process_signals(df_daily, df_hourly, zigzag_df, instrument)
-            logging.info(f"Processed signals and generated {len(entries)} entries for {instrument}.")
-            print(f"Processed signals and generated {len(entries)} entries.")
+            entries = process_signals(df_daily, df_hourly, zigzag_df, instrument, start_date)
         except Exception as e:
             logging.error(f"Error processing signals for {instrument}: {e}")
             print(f"Error processing signals for {instrument}: {e}")
@@ -134,8 +116,6 @@ def main():
         try:
             # Ensure hourly data is sorted by time
             df_hourly = df_hourly.sort_values('time').reset_index(drop=True)
-            logging.info("Sorted hourly data by time.")
-            print("Hourly data sorted.")
         except Exception as e:
             logging.error(f"Error sorting hourly data for {instrument}: {e}")
             print(f"Error sorting hourly data for {instrument}: {e}")
@@ -175,7 +155,6 @@ def main():
                                 entry.exit_price = exit_info['exit_price']
                                 closed_trades.append(entry)
                                 open_trades.remove(entry)
-                                print(f"Trade closed for {instrument} at row {entry.row_index} at {entry.exit_time}.")
                         except Exception as e:
                             logging.error(f"Error managing open trades for {instrument}: {e}")
                             print(f"Error managing open trades for {instrument}: {e}")
@@ -194,7 +173,6 @@ def main():
                     entry.exit_time = last_row['time']
                     entry.exit_price = last_row['c']  # Closing price of the last bar
                     closed_trades.append(entry)
-                    print(f"Trade forcefully closed for {instrument} at row {entry.row_index} at end of data.")
                 except Exception as e:
                     logging.error(f"Error forcefully closing trade for {instrument} at row {entry.row_index}: {e}")
                     print(f"Error forcefully closing trade for {instrument} at row {entry.row_index}: {e}")

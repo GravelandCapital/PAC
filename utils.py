@@ -34,7 +34,6 @@ def calculate_zigzag_daily(df_daily, depth=3, output_dir = None, instrument = No
     file_path = os.path.join(output_dir, f"{instrument}, {depth}, _Daily_ZigZag.xlsx")
 
     if os.path.exists(file_path):
-        print(f"ZigZag pivots already calculated for {instrument}.")
         return pd.read_excel(file_path)
 
     pivots = []
@@ -76,7 +75,6 @@ def calculate_zigzag(df_hourly, depth=4, output_dir = None, instrument = None):
         file_path = os.path.join(output_dir, f"{instrument}, {depth}, _Hourly_ZigZag.xlsx")
 
         if os.path.exists(file_path):
-            print(f"ZigZag pivots already calculated for {instrument}.")
             return pd.read_excel(file_path)
                                  
         pivots = []
@@ -112,11 +110,16 @@ def calculate_zigzag(df_hourly, depth=4, output_dir = None, instrument = None):
 
         return zigzag_df
 
-def process_signals(df_daily, df_hourly, zigzag_df, instrument):
+def process_signals(df_daily, df_hourly, zigzag_df, instrument, start_date = None):
     """
     Processes trading signals and generates Entry objects.
     """
     entries = []
+
+    if start_date:
+        df_daily = df_daily[df_daily['time'] >= start_date]
+        df_hourly = df_hourly[df_hourly['time'] >= start_date]
+
     for row_index in df_daily.index:
         signal = df_daily.loc[row_index, 'signal']
         if signal in ['bull_eng', 'bear_eng']:
@@ -270,7 +273,7 @@ def analyze_results(trade_results, name="Combined", results_path=r"C:\Users\grav
         }
         data_list.append(trade_data)
     df = pd.DataFrame(data_list)
-
+     
     # Ensure Date is datetime
     df['Date'] = pd.to_datetime(df['Date'])
 
@@ -301,6 +304,8 @@ def analyze_results(trade_results, name="Combined", results_path=r"C:\Users\grav
     print(f"\n--- Basic Trade Statistics for {name} ---")
     for key, value in stats.items():
         print(f"{key}: {value}")
+
+    print(df)
 
     # 4. Plot Equity Curve
     df_sorted = df.sort_values('Exit Time').reset_index(drop=True)
