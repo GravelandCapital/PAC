@@ -17,7 +17,7 @@ class TradeManager:
         elif "XAG" in instrument:  # Silver
             return 0.01  # Pip value for silver (e.g., XAG/USD)
         elif "XAU" in instrument:
-            return 0.1  # Pip value for gold (e.g., XAU/USD)
+            return 1.0  # Pip value for gold (e.g., XAU/USD)
         else:
             return 0.0001  # Default pip value for most instruments
 

@@ -5755,3 +5755,31 @@ Trade Analysis:
 2024-12-17 09:56:27,797 - INFO - Completed analysis for XAG_USD.
 2024-12-17 09:56:27,799 - INFO - Processing Instrument: XAU_USD
 2024-12-17 09:56:30,969 - INFO - Data fetched for XAU_USD.
+2024-12-17 09:57:12,741 - INFO - Completed analysis for XAU_USD.
+2024-12-17 10:00:09,229 - INFO - Processing Instrument: XAG_USD
+2024-12-17 10:00:12,385 - INFO - Data fetched for XAG_USD.
+2024-12-17 10:06:23,322 - INFO - Processing Instrument: XAG_USD
+2024-12-17 10:06:26,562 - INFO - Data fetched for XAG_USD.
+2024-12-17 10:09:01,073 - INFO - Processing Instrument: XAG_USD
+2024-12-17 10:09:04,374 - INFO - Data fetched for XAG_USD.
+2024-12-17 10:10:59,954 - INFO - Completed analysis for XAG_USD.
+2024-12-17 10:10:59,955 - INFO - Processing Instrument: XAU_USD
+2024-12-17 10:11:03,159 - INFO - Data fetched for XAU_USD.
+2024-12-17 10:15:54,054 - INFO - Processing Instrument: XAG_USD
+2024-12-17 10:15:57,835 - INFO - Data fetched for XAG_USD.
+2024-12-17 10:16:17,724 - ERROR - Error analyzing results for XAG_USD: 'Cumulative R'
+2024-12-17 10:16:17,725 - INFO - Processing Instrument: XAU_USD
+2024-12-17 10:16:20,909 - INFO - Data fetched for XAU_USD.
+2024-12-17 10:16:38,534 - ERROR - Error analyzing results for XAU_USD: 'Cumulative R'
+2024-12-17 10:18:59,961 - INFO - Processing Instrument: XAG_USD
+2024-12-17 10:19:03,218 - INFO - Data fetched for XAG_USD.
+2024-12-17 10:19:23,819 - INFO - Completed analysis for XAG_USD.
+2024-12-17 10:19:23,819 - INFO - Processing Instrument: XAU_USD
+2024-12-17 10:19:26,989 - INFO - Data fetched for XAU_USD.
+2024-12-17 10:19:45,077 - INFO - Completed analysis for XAU_USD.
+2024-12-17 10:20:48,580 - INFO - Processing Instrument: XAG_USD
+2024-12-17 10:20:51,821 - INFO - Data fetched for XAG_USD.
+2024-12-17 10:21:12,593 - INFO - Completed analysis for XAG_USD.
+2024-12-17 10:21:12,594 - INFO - Processing Instrument: XAU_USD
+2024-12-17 10:21:15,785 - INFO - Data fetched for XAU_USD.
+2024-12-17 10:21:33,745 - INFO - Completed analysis for XAU_USD.

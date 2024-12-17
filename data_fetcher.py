@@ -17,4 +17,3 @@ class DataFetcher:
         self.df_daily['time'] = pd.to_datetime(self.df_daily['time']) + pd.Timedelta(hours=24)
         self.df_hourly['time'] = pd.to_datetime(self.df_hourly['time'])
 
-        print(f"Data fetched for {self.daily_path} and {self.hourly_path}")

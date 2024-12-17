@@ -242,7 +242,7 @@ def extract_instrument_from_filename(filename):
     """Extracts the instrument name from the filename."""
     return filename.split('_')[0] + '_' + filename.split('_')[1]
 
-def analyze_results(trade_results, name="Combined", results_path=r"C:\Users\grave\OneDrive\Coding\Coding\results"):
+def analyze_results(trade_results, name="Combined", show_plots=True):
     """
     Analyzes trade results by creating a DataFrame, calculating basic statistics,
     and plotting a simple equity curve.
@@ -311,14 +311,15 @@ def analyze_results(trade_results, name="Combined", results_path=r"C:\Users\grav
     df_sorted = df.sort_values('Exit Time').reset_index(drop=True)
     df_sorted['Cumulative R'] = df_sorted['R_Ratio'].cumsum()
 
-    plt.figure(figsize=(10, 6))
-    sns.lineplot(data=df_sorted, x='Exit Time', y='Cumulative R', marker='o')
-    plt.title(f'Equity Curve for {name}')
-    plt.xlabel('Exit Time')
-    plt.ylabel('Cumulative R')
-    plt.xticks(rotation=45)
-    plt.tight_layout()
-    plt.show()
+    # Plot the equity curve
+    if show_plots:
+        plt.figure(figsize=(10, 6), num = f'Equity Curve for {name}')
+        sns.lineplot(data=df_sorted, x='Exit Time', y='Cumulative R', marker='o')
+        plt.title(f'Equity Curve for {name}')
+        plt.xlabel('Exit Time')
+        plt.ylabel('Cumulative R')
+        plt.xticks(rotation=45)
+        plt.tight_layout()
 
 """
     # Define output directories

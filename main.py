@@ -16,6 +16,7 @@ from utils import (
 )
 from entry import Entry
 import logging
+import matplotlib.pyplot as plt
 
 def main():
     # Configure logging
@@ -183,7 +184,7 @@ def main():
 
         try:
             # Analyze results
-            analyze_results(closed_trades, name=instrument, results_path=results_path)
+            analyze_results(closed_trades, name=instrument)
             logging.info(f"Completed analysis for {instrument}.")
             print(f"Completed analysis for {instrument}.")
         except Exception as e:
@@ -194,7 +195,11 @@ def main():
         # Append to combined trades
         combined_closed_trades.extend(closed_trades)
 
-    analyze_results(combined_closed_trades, name="Combined", results_path=results_path)
+    analyze_results(combined_closed_trades, name="Combined")
+
+    plt.show()
+
+
 
 if __name__ == "__main__":
     main()
