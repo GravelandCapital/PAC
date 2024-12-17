@@ -5536,3 +5536,186 @@ Trade Analysis:
 2024-12-13 10:18:48,955 - INFO - Creating DataFrame from trade results for Combined.
 2024-12-13 10:18:49,235 - INFO - Equity curve saved as C:\Users\grave\OneDrive\Coding\PAC\results\plots\Combined\equity_curve_Combined.png.
 2024-12-13 10:18:49,239 - INFO - Trade analysis completed and results saved to 'C:\Users\grave\OneDrive\Coding\PAC\results\csv\Combined\trade_results_with_metrics_Combined.csv'.
+2024-12-13 11:38:54,168 - INFO - Processing Instrument: EUR_USD
+2024-12-13 11:38:54,170 - ERROR - Error fetching data for EUR_USD: [Errno 2] No such file or directory: 'C:\\Users\\grave\\OneDrive\\Coding\\PAC\\fxdata\\EUR_USD_D.xlsx'
+2024-12-13 11:38:54,171 - INFO - Processing Instrument: GBP_USD
+2024-12-13 11:38:54,172 - ERROR - Error fetching data for GBP_USD: [Errno 2] No such file or directory: 'C:\\Users\\grave\\OneDrive\\Coding\\PAC\\fxdata\\GBP_USD_D.xlsx'
+2024-12-13 11:43:24,150 - INFO - Processing Instrument: EUR_USD
+2024-12-13 11:43:27,665 - INFO - Fetched daily data: C:\Users\grave\OneDrive\Coding\fxdata\EUR_USD_D.xlsx
+2024-12-13 11:43:27,666 - INFO - Fetched hourly data: C:\Users\grave\OneDrive\Coding\fxdata\EUR_USD_H1.xlsx
+2024-12-13 11:43:28,113 - INFO - Calculated signals and ATR.
+2024-12-13 11:45:36,163 - INFO - Loaded and calculated zigzag data.
+2024-12-13 11:45:39,496 - INFO - Processed signals and generated 356 entries for EUR_USD.
+2024-12-13 11:45:59,776 - INFO - Calculated Stop Loss and Take Profit for entries.
+2024-12-13 11:45:59,778 - INFO - Sorted hourly data by time.
+2024-12-13 11:46:12,568 - INFO - Equity curve saved as C:\Users\grave\OneDrive\Coding\PAC\results\plots\EUR_USD\equity_curve_EUR_USD.png.
+2024-12-13 11:46:12,578 - INFO - Trade analysis completed and results saved to 'C:\Users\grave\OneDrive\Coding\PAC\results\csv\EUR_USD\trade_results_with_metrics_EUR_USD.csv'.
+2024-12-13 11:46:12,578 - INFO - Completed analysis for EUR_USD.
+2024-12-13 11:46:12,579 - INFO - Processing Instrument: GBP_USD
+2024-12-13 11:46:15,822 - INFO - Fetched daily data: C:\Users\grave\OneDrive\Coding\fxdata\GBP_USD_D.xlsx
+2024-12-13 11:46:15,823 - INFO - Fetched hourly data: C:\Users\grave\OneDrive\Coding\fxdata\GBP_USD_H1.xlsx
+2024-12-13 11:46:16,265 - INFO - Calculated signals and ATR.
+2024-12-13 11:48:28,607 - INFO - Loaded and calculated zigzag data.
+2024-12-13 11:48:31,907 - INFO - Processed signals and generated 317 entries for GBP_USD.
+2024-12-13 11:48:49,831 - INFO - Calculated Stop Loss and Take Profit for entries.
+2024-12-13 11:48:49,834 - INFO - Sorted hourly data by time.
+2024-12-13 11:48:58,407 - INFO - Equity curve saved as C:\Users\grave\OneDrive\Coding\PAC\results\plots\GBP_USD\equity_curve_GBP_USD.png.
+2024-12-13 11:48:58,412 - INFO - Trade analysis completed and results saved to 'C:\Users\grave\OneDrive\Coding\PAC\results\csv\GBP_USD\trade_results_with_metrics_GBP_USD.csv'.
+2024-12-13 11:48:58,412 - INFO - Completed analysis for GBP_USD.
+2024-12-13 11:48:58,690 - INFO - Equity curve saved as C:\Users\grave\OneDrive\Coding\PAC\results\plots\Combined\equity_curve_Combined.png.
+2024-12-13 11:48:58,696 - INFO - Trade analysis completed and results saved to 'C:\Users\grave\OneDrive\Coding\PAC\results\csv\Combined\trade_results_with_metrics_Combined.csv'.
+2024-12-13 11:54:22,827 - INFO - Processing Instrument: EUR_USD
+2024-12-13 11:54:26,329 - INFO - Fetched daily data: C:\Users\grave\OneDrive\Coding\fxdata\EUR_USD_D.xlsx
+2024-12-13 11:54:26,330 - INFO - Fetched hourly data: C:\Users\grave\OneDrive\Coding\fxdata\EUR_USD_H1.xlsx
+2024-12-13 11:54:26,763 - INFO - Calculated signals and ATR.
+2024-12-13 11:54:27,143 - INFO - Loaded and calculated zigzag data.
+2024-12-13 11:54:30,133 - INFO - Processed signals and generated 356 entries for EUR_USD.
+2024-12-13 11:54:45,339 - INFO - Calculated Stop Loss and Take Profit for entries.
+2024-12-13 11:54:45,341 - INFO - Sorted hourly data by time.
+2024-12-13 11:54:58,227 - INFO - Equity curve saved as C:\Users\grave\OneDrive\Coding\PAC\results\plots\EUR_USD\equity_curve_EUR_USD.png.
+2024-12-13 11:54:58,235 - INFO - Trade analysis completed and results saved to 'C:\Users\grave\OneDrive\Coding\PAC\results\csv\EUR_USD\trade_results_with_metrics_EUR_USD.csv'.
+2024-12-13 11:54:58,235 - INFO - Completed analysis for EUR_USD.
+2024-12-13 11:54:58,236 - INFO - Processing Instrument: GBP_USD
+2024-12-13 11:55:01,847 - INFO - Fetched daily data: C:\Users\grave\OneDrive\Coding\fxdata\GBP_USD_D.xlsx
+2024-12-13 11:55:01,847 - INFO - Fetched hourly data: C:\Users\grave\OneDrive\Coding\fxdata\GBP_USD_H1.xlsx
+2024-12-13 11:55:02,306 - INFO - Calculated signals and ATR.
+2024-12-13 11:55:02,687 - INFO - Loaded and calculated zigzag data.
+2024-12-13 11:55:05,691 - INFO - Processed signals and generated 317 entries for GBP_USD.
+2024-12-13 11:55:18,460 - INFO - Calculated Stop Loss and Take Profit for entries.
+2024-12-13 11:55:18,463 - INFO - Sorted hourly data by time.
+2024-12-13 11:55:26,730 - INFO - Equity curve saved as C:\Users\grave\OneDrive\Coding\PAC\results\plots\GBP_USD\equity_curve_GBP_USD.png.
+2024-12-13 11:55:26,733 - INFO - Trade analysis completed and results saved to 'C:\Users\grave\OneDrive\Coding\PAC\results\csv\GBP_USD\trade_results_with_metrics_GBP_USD.csv'.
+2024-12-13 11:55:26,733 - INFO - Completed analysis for GBP_USD.
+2024-12-13 11:55:26,733 - INFO - Processing Instrument: USD_JPY
+2024-12-13 11:55:29,919 - INFO - Fetched daily data: C:\Users\grave\OneDrive\Coding\fxdata\USD_JPY_D.xlsx
+2024-12-13 11:55:29,919 - INFO - Fetched hourly data: C:\Users\grave\OneDrive\Coding\fxdata\USD_JPY_H1.xlsx
+2024-12-13 11:55:30,373 - INFO - Calculated signals and ATR.
+2024-12-13 11:57:40,759 - INFO - Loaded and calculated zigzag data.
+2024-12-13 11:57:44,251 - INFO - Processed signals and generated 337 entries for USD_JPY.
+2024-12-13 11:58:03,464 - INFO - Calculated Stop Loss and Take Profit for entries.
+2024-12-13 11:58:03,466 - INFO - Sorted hourly data by time.
+2024-12-13 11:58:12,000 - INFO - Equity curve saved as C:\Users\grave\OneDrive\Coding\PAC\results\plots\USD_JPY\equity_curve_USD_JPY.png.
+2024-12-13 11:58:12,005 - INFO - Trade analysis completed and results saved to 'C:\Users\grave\OneDrive\Coding\PAC\results\csv\USD_JPY\trade_results_with_metrics_USD_JPY.csv'.
+2024-12-13 11:58:12,005 - INFO - Completed analysis for USD_JPY.
+2024-12-13 11:58:12,006 - INFO - Processing Instrument: AUD_USD
+2024-12-13 11:58:15,278 - INFO - Fetched daily data: C:\Users\grave\OneDrive\Coding\fxdata\AUD_USD_D.xlsx
+2024-12-13 11:58:15,278 - INFO - Fetched hourly data: C:\Users\grave\OneDrive\Coding\fxdata\AUD_USD_H1.xlsx
+2024-12-13 11:58:15,725 - INFO - Calculated signals and ATR.
+2024-12-13 12:00:22,585 - INFO - Loaded and calculated zigzag data.
+2024-12-13 12:00:26,028 - INFO - Processed signals and generated 429 entries for AUD_USD.
+2024-12-13 12:00:45,207 - INFO - Calculated Stop Loss and Take Profit for entries.
+2024-12-13 12:00:45,209 - INFO - Sorted hourly data by time.
+2024-12-13 12:00:55,424 - INFO - Equity curve saved as C:\Users\grave\OneDrive\Coding\PAC\results\plots\AUD_USD\equity_curve_AUD_USD.png.
+2024-12-13 12:00:55,428 - INFO - Trade analysis completed and results saved to 'C:\Users\grave\OneDrive\Coding\PAC\results\csv\AUD_USD\trade_results_with_metrics_AUD_USD.csv'.
+2024-12-13 12:00:55,429 - INFO - Completed analysis for AUD_USD.
+2024-12-13 12:00:55,429 - INFO - Processing Instrument: USD_CAD
+2024-12-13 12:00:59,018 - INFO - Fetched daily data: C:\Users\grave\OneDrive\Coding\fxdata\USD_CAD_D.xlsx
+2024-12-13 12:00:59,019 - INFO - Fetched hourly data: C:\Users\grave\OneDrive\Coding\fxdata\USD_CAD_H1.xlsx
+2024-12-13 12:00:59,534 - INFO - Calculated signals and ATR.
+2024-12-13 12:03:08,360 - INFO - Loaded and calculated zigzag data.
+2024-12-13 12:03:11,980 - INFO - Processed signals and generated 384 entries for USD_CAD.
+2024-12-13 12:03:31,243 - INFO - Calculated Stop Loss and Take Profit for entries.
+2024-12-13 12:03:31,246 - INFO - Sorted hourly data by time.
+2024-12-13 12:03:40,734 - INFO - Equity curve saved as C:\Users\grave\OneDrive\Coding\PAC\results\plots\USD_CAD\equity_curve_USD_CAD.png.
+2024-12-13 12:03:40,737 - INFO - Trade analysis completed and results saved to 'C:\Users\grave\OneDrive\Coding\PAC\results\csv\USD_CAD\trade_results_with_metrics_USD_CAD.csv'.
+2024-12-13 12:03:40,737 - INFO - Completed analysis for USD_CAD.
+2024-12-13 12:03:40,738 - INFO - Processing Instrument: USD_CHF
+2024-12-13 12:03:43,972 - INFO - Fetched daily data: C:\Users\grave\OneDrive\Coding\fxdata\USD_CHF_D.xlsx
+2024-12-13 12:03:43,973 - INFO - Fetched hourly data: C:\Users\grave\OneDrive\Coding\fxdata\USD_CHF_H1.xlsx
+2024-12-13 12:03:44,406 - INFO - Calculated signals and ATR.
+2024-12-13 12:05:50,591 - INFO - Loaded and calculated zigzag data.
+2024-12-13 12:05:53,927 - INFO - Processed signals and generated 373 entries for USD_CHF.
+2024-12-13 12:06:10,872 - INFO - Calculated Stop Loss and Take Profit for entries.
+2024-12-13 12:06:10,875 - INFO - Sorted hourly data by time.
+2024-12-13 12:06:24,935 - INFO - Equity curve saved as C:\Users\grave\OneDrive\Coding\PAC\results\plots\USD_CHF\equity_curve_USD_CHF.png.
+2024-12-13 12:06:24,939 - INFO - Trade analysis completed and results saved to 'C:\Users\grave\OneDrive\Coding\PAC\results\csv\USD_CHF\trade_results_with_metrics_USD_CHF.csv'.
+2024-12-13 12:06:24,939 - INFO - Completed analysis for USD_CHF.
+2024-12-13 12:06:24,940 - INFO - Processing Instrument: EUR_GBP
+2024-12-13 12:06:28,180 - INFO - Fetched daily data: C:\Users\grave\OneDrive\Coding\fxdata\EUR_GBP_D.xlsx
+2024-12-13 12:06:28,180 - INFO - Fetched hourly data: C:\Users\grave\OneDrive\Coding\fxdata\EUR_GBP_H1.xlsx
+2024-12-13 12:06:28,612 - INFO - Calculated signals and ATR.
+2024-12-13 12:08:36,228 - INFO - Loaded and calculated zigzag data.
+2024-12-13 12:08:39,295 - INFO - Processed signals and generated 319 entries for EUR_GBP.
+2024-12-13 12:08:58,164 - INFO - Calculated Stop Loss and Take Profit for entries.
+2024-12-13 12:08:58,166 - INFO - Sorted hourly data by time.
+2024-12-13 12:09:04,796 - INFO - Equity curve saved as C:\Users\grave\OneDrive\Coding\PAC\results\plots\EUR_GBP\equity_curve_EUR_GBP.png.
+2024-12-13 12:09:04,799 - INFO - Trade analysis completed and results saved to 'C:\Users\grave\OneDrive\Coding\PAC\results\csv\EUR_GBP\trade_results_with_metrics_EUR_GBP.csv'.
+2024-12-13 12:09:04,800 - INFO - Completed analysis for EUR_GBP.
+2024-12-13 12:09:04,800 - INFO - Processing Instrument: EUR_JPY
+2024-12-13 12:09:07,940 - INFO - Fetched daily data: C:\Users\grave\OneDrive\Coding\fxdata\EUR_JPY_D.xlsx
+2024-12-13 12:09:07,941 - INFO - Fetched hourly data: C:\Users\grave\OneDrive\Coding\fxdata\EUR_JPY_H1.xlsx
+2024-12-13 12:09:08,405 - INFO - Calculated signals and ATR.
+2024-12-13 12:11:14,235 - INFO - Loaded and calculated zigzag data.
+2024-12-13 12:11:17,413 - INFO - Processed signals and generated 328 entries for EUR_JPY.
+2024-12-13 12:11:30,841 - INFO - Calculated Stop Loss and Take Profit for entries.
+2024-12-13 12:11:30,844 - INFO - Sorted hourly data by time.
+2024-12-13 12:11:45,000 - INFO - Equity curve saved as C:\Users\grave\OneDrive\Coding\PAC\results\plots\EUR_JPY\equity_curve_EUR_JPY.png.
+2024-12-13 12:11:45,003 - INFO - Trade analysis completed and results saved to 'C:\Users\grave\OneDrive\Coding\PAC\results\csv\EUR_JPY\trade_results_with_metrics_EUR_JPY.csv'.
+2024-12-13 12:11:45,004 - INFO - Completed analysis for EUR_JPY.
+2024-12-13 12:11:45,004 - INFO - Processing Instrument: GBP_JPY
+2024-12-13 12:11:48,595 - INFO - Fetched daily data: C:\Users\grave\OneDrive\Coding\fxdata\GBP_JPY_D.xlsx
+2024-12-13 12:11:48,596 - INFO - Fetched hourly data: C:\Users\grave\OneDrive\Coding\fxdata\GBP_JPY_H1.xlsx
+2024-12-13 12:11:49,039 - INFO - Calculated signals and ATR.
+2024-12-13 12:13:56,171 - INFO - Loaded and calculated zigzag data.
+2024-12-13 12:13:59,550 - INFO - Processed signals and generated 348 entries for GBP_JPY.
+2024-12-13 12:14:17,846 - INFO - Calculated Stop Loss and Take Profit for entries.
+2024-12-13 12:14:17,848 - INFO - Sorted hourly data by time.
+2024-12-13 12:14:24,798 - INFO - Equity curve saved as C:\Users\grave\OneDrive\Coding\PAC\results\plots\GBP_JPY\equity_curve_GBP_JPY.png.
+2024-12-13 12:14:24,801 - INFO - Trade analysis completed and results saved to 'C:\Users\grave\OneDrive\Coding\PAC\results\csv\GBP_JPY\trade_results_with_metrics_GBP_JPY.csv'.
+2024-12-13 12:14:24,801 - INFO - Completed analysis for GBP_JPY.
+2024-12-13 12:14:28,368 - INFO - Fetched daily data: C:\Users\grave\OneDrive\Coding\fxdata\CAD_JPY_D.xlsx
+2024-12-13 12:14:28,368 - INFO - Fetched hourly data: C:\Users\grave\OneDrive\Coding\fxdata\CAD_JPY_H1.xlsx
+2024-12-13 12:14:28,837 - INFO - Calculated signals and ATR.
+2024-12-13 12:16:35,723 - INFO - Loaded and calculated zigzag data.
+2024-12-13 12:16:38,621 - INFO - Processed signals and generated 305 entries for CAD_JPY.
+2024-12-13 12:16:53,172 - INFO - Calculated Stop Loss and Take Profit for entries.
+2024-12-13 12:16:53,175 - INFO - Sorted hourly data by time.
+2024-12-13 12:17:02,352 - INFO - Equity curve saved as C:\Users\grave\OneDrive\Coding\PAC\results\plots\CAD_JPY\equity_curve_CAD_JPY.png.
+2024-12-13 12:17:02,355 - INFO - Trade analysis completed and results saved to 'C:\Users\grave\OneDrive\Coding\PAC\results\csv\CAD_JPY\trade_results_with_metrics_CAD_JPY.csv'.
+2024-12-13 12:17:02,356 - INFO - Completed analysis for CAD_JPY.
+2024-12-13 12:17:02,356 - INFO - Processing Instrument: AUD_JPY
+2024-12-13 12:17:05,680 - INFO - Fetched daily data: C:\Users\grave\OneDrive\Coding\fxdata\AUD_JPY_D.xlsx
+2024-12-13 12:17:05,681 - INFO - Fetched hourly data: C:\Users\grave\OneDrive\Coding\fxdata\AUD_JPY_H1.xlsx
+2024-12-13 12:17:06,112 - INFO - Calculated signals and ATR.
+2024-12-13 12:19:12,573 - INFO - Loaded and calculated zigzag data.
+2024-12-13 12:19:15,223 - INFO - Processed signals and generated 349 entries for AUD_JPY.
+2024-12-13 12:19:27,995 - INFO - Calculated Stop Loss and Take Profit for entries.
+2024-12-13 12:19:27,998 - INFO - Sorted hourly data by time.
+2024-12-13 12:19:41,507 - INFO - Equity curve saved as C:\Users\grave\OneDrive\Coding\PAC\results\plots\AUD_JPY\equity_curve_AUD_JPY.png.
+2024-12-13 12:19:41,510 - INFO - Trade analysis completed and results saved to 'C:\Users\grave\OneDrive\Coding\PAC\results\csv\AUD_JPY\trade_results_with_metrics_AUD_JPY.csv'.
+2024-12-13 12:19:41,510 - INFO - Completed analysis for AUD_JPY.
+2024-12-13 12:19:41,511 - INFO - Processing Instrument: EUR_NZD
+2024-12-13 12:19:44,764 - INFO - Fetched daily data: C:\Users\grave\OneDrive\Coding\fxdata\EUR_NZD_D.xlsx
+2024-12-13 12:19:44,764 - INFO - Fetched hourly data: C:\Users\grave\OneDrive\Coding\fxdata\EUR_NZD_H1.xlsx
+2024-12-13 12:19:45,203 - INFO - Calculated signals and ATR.
+2024-12-13 12:21:51,661 - INFO - Loaded and calculated zigzag data.
+2024-12-13 12:21:54,681 - INFO - Processed signals and generated 367 entries for EUR_NZD.
+2024-12-13 12:22:10,861 - INFO - Calculated Stop Loss and Take Profit for entries.
+2024-12-13 12:22:10,863 - INFO - Sorted hourly data by time.
+2024-12-13 12:22:19,587 - INFO - Equity curve saved as C:\Users\grave\OneDrive\Coding\PAC\results\plots\EUR_NZD\equity_curve_EUR_NZD.png.
+2024-12-13 12:22:19,591 - INFO - Trade analysis completed and results saved to 'C:\Users\grave\OneDrive\Coding\PAC\results\csv\EUR_NZD\trade_results_with_metrics_EUR_NZD.csv'.
+2024-12-13 12:22:19,592 - INFO - Completed analysis for EUR_NZD.
+2024-12-13 12:22:19,593 - INFO - Processing Instrument: XAG_USD
+2024-12-13 12:22:22,956 - INFO - Fetched daily data: C:\Users\grave\OneDrive\Coding\fxdata\XAG_USD_D.xlsx
+2024-12-13 12:22:22,956 - INFO - Fetched hourly data: C:\Users\grave\OneDrive\Coding\fxdata\XAG_USD_H1.xlsx
+2024-12-13 12:22:23,430 - INFO - Calculated signals and ATR.
+2024-12-13 12:24:24,279 - INFO - Loaded and calculated zigzag data.
+2024-12-13 12:24:27,523 - INFO - Processed signals and generated 335 entries for XAG_USD.
+2024-12-13 12:24:40,589 - INFO - Calculated Stop Loss and Take Profit for entries.
+2024-12-13 12:24:40,591 - INFO - Sorted hourly data by time.
+2024-12-13 12:24:50,247 - INFO - Equity curve saved as C:\Users\grave\OneDrive\Coding\PAC\results\plots\XAG_USD\equity_curve_XAG_USD.png.
+2024-12-13 12:24:50,251 - INFO - Trade analysis completed and results saved to 'C:\Users\grave\OneDrive\Coding\PAC\results\csv\XAG_USD\trade_results_with_metrics_XAG_USD.csv'.
+2024-12-13 12:24:50,252 - INFO - Completed analysis for XAG_USD.
+2024-12-13 12:24:50,253 - INFO - Processing Instrument: XAU_USD
+2024-12-13 12:24:53,927 - INFO - Fetched daily data: C:\Users\grave\OneDrive\Coding\fxdata\XAU_USD_D.xlsx
+2024-12-13 12:24:53,928 - INFO - Fetched hourly data: C:\Users\grave\OneDrive\Coding\fxdata\XAU_USD_H1.xlsx
+2024-12-13 12:24:54,412 - INFO - Calculated signals and ATR.
+2024-12-13 12:26:54,927 - INFO - Loaded and calculated zigzag data.
+2024-12-13 12:26:57,928 - INFO - Processed signals and generated 313 entries for XAU_USD.
+2024-12-13 12:27:09,346 - INFO - Calculated Stop Loss and Take Profit for entries.
+2024-12-13 12:27:09,348 - INFO - Sorted hourly data by time.
+2024-12-13 12:27:18,088 - INFO - Equity curve saved as C:\Users\grave\OneDrive\Coding\PAC\results\plots\XAU_USD\equity_curve_XAU_USD.png.
+2024-12-13 12:27:18,092 - INFO - Trade analysis completed and results saved to 'C:\Users\grave\OneDrive\Coding\PAC\results\csv\XAU_USD\trade_results_with_metrics_XAU_USD.csv'.
+2024-12-13 12:27:18,093 - INFO - Completed analysis for XAU_USD.
+2024-12-13 12:27:19,683 - INFO - Equity curve saved as C:\Users\grave\OneDrive\Coding\PAC\results\plots\Combined\equity_curve_Combined.png.
+2024-12-13 12:27:19,703 - INFO - Trade analysis completed and results saved to 'C:\Users\grave\OneDrive\Coding\PAC\results\csv\Combined\trade_results_with_metrics_Combined.csv'.

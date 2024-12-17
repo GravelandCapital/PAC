@@ -297,8 +297,8 @@ class EngulfingHandler:
 
     def get_pip_value(self, instrument):
         """Returns the pip value for a given currency pair."""
-        # If the pair involves JPY, pip is 0.01, else it's 0.0001
-        if "JPY" in instrument:
+        # If the pair involves JPY, XAG or XAU, pip is 0.01, else it's 0.0001
+        if "JPY" in instrument or instrument in ["XAU_USD", "XAG_USD"]:
             return 0.01
         else:
             return 0.0001

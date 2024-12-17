@@ -38,3 +38,4 @@ for instrument in instruments:
 
     save_to_excel(df_daily, instrument, "D", output_dir)
     save_to_excel(df_hourly, instrument, "H1", output_dir)
+

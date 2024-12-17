@@ -28,8 +28,15 @@ def get_group_key(entry):
     else:
         return None  # For signals that don't require grouping
 
-def calculate_zigzag_daily(df_daily, depth=3):
+def calculate_zigzag_daily(df_daily, depth=3, output_dir = None, instrument = None):
     """Calculates ZigZag pivots for the provided depth in the daily data."""
+
+    file_path = os.path.join(output_dir, f"{instrument}, {depth}, _Daily_ZigZag.xlsx")
+
+    if os.path.exists(file_path):
+        print(f"ZigZag pivots already calculated for {instrument}.")
+        return pd.read_excel(file_path)
+
     pivots = []
     total_rows = len(df_daily)
 
@@ -58,9 +65,20 @@ def calculate_zigzag_daily(df_daily, depth=3):
 
     daily_zigzag = pd.DataFrame(pivots, columns=['index', 'time', 'price', 'type'])
     daily_zigzag['time'] = pd.to_datetime(daily_zigzag['time'])
+
+    daily_zigzag.to_excel(file_path, index=False)
+    print(f"ZigZag pivots calculated and saved to {file_path}.")
+
     return daily_zigzag
 
-def calculate_zigzag(df_hourly, depth=4):
+def calculate_zigzag(df_hourly, depth=4, output_dir = None, instrument = None):
+        
+        file_path = os.path.join(output_dir, f"{instrument}, {depth}, _Hourly_ZigZag.xlsx")
+
+        if os.path.exists(file_path):
+            print(f"ZigZag pivots already calculated for {instrument}.")
+            return pd.read_excel(file_path)
+                                 
         pivots = []
 
         # Ensure row_index is within valid bounds
@@ -88,6 +106,9 @@ def calculate_zigzag(df_hourly, depth=4):
 
         zigzag_df = pd.DataFrame(pivots, columns=['index', 'time', 'price', 'type'])
         zigzag_df['time'] = pd.to_datetime(zigzag_df['time'])
+
+        zigzag_df.to_excel(file_path, index=False)
+        print(f"ZigZag pivots calculated and saved to {file_path}.")
 
         return zigzag_df
 

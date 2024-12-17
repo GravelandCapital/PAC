@@ -29,8 +29,9 @@ def main():
     )
     
     # Base path where your data files are stored
-    base_path = r"C:\Users\grave\OneDrive\Coding\PAC\fxdata"
+    base_path = r"C:\Users\grave\OneDrive\Coding\fxdata"
     results_path = r"C:\Users\grave\OneDrive\Coding\PAC\results"
+    output_dir = r"C:\Users\grave\OneDrive\Coding\fxdata"
     # For MacOS/Linux, uncomment the line below
     # base_path = r"/Users/koengraveland/PAC/fxdata"
     
@@ -38,6 +39,18 @@ def main():
     file_pairs = [
         ('EUR_USD_D.xlsx', 'EUR_USD_H1.xlsx'),
         ('GBP_USD_D.xlsx', 'GBP_USD_H1.xlsx'),
+        ('USD_JPY_D.xlsx', 'USD_JPY_H1.xlsx'),
+        ('AUD_USD_D.xlsx', 'AUD_USD_H1.xlsx'),
+        ('USD_CAD_D.xlsx', 'USD_CAD_H1.xlsx'),
+        ('USD_CHF_D.xlsx', 'USD_CHF_H1.xlsx'),
+        ('EUR_GBP_D.xlsx', 'EUR_GBP_H1.xlsx'),
+        ('EUR_JPY_D.xlsx', 'EUR_JPY_H1.xlsx'),
+        ('GBP_JPY_D.xlsx', 'GBP_JPY_H1.xlsx'),
+        ('CAD_JPY_D.xlsx', 'CAD_JPY_H1.xlsx'),
+        ('AUD_JPY_D.xlsx', 'AUD_JPY_H1.xlsx'),
+        ('EUR_NZD_D.xlsx', 'EUR_NZD_H1.xlsx'),
+        ('XAG_USD_D.xlsx', 'XAG_USD_H1.xlsx'),
+        ('XAU_USD_D.xlsx', 'XAU_USD_H1.xlsx'),
         # Add additional file pairs here
     ]
     
@@ -85,7 +98,7 @@ def main():
 
         try:
             # Load precomputed zigzag data
-            zigzag_df = calculate_zigzag(df_hourly, depth=4)
+            zigzag_df = calculate_zigzag(df_hourly, depth=4, output_dir=output_dir, instrument=instrument)
             zigzag_df['time'] = pd.to_datetime(zigzag_df['time'])
             logging.info(f"Loaded and calculated zigzag data.")
             print("Zigzag data loaded and calculated.")
@@ -106,7 +119,7 @@ def main():
 
         try:
             # Calculate stop loss and take profit
-            daily_zigzag = calculate_zigzag_daily(df_daily, depth=3)
+            daily_zigzag = calculate_zigzag_daily(df_daily, depth=3, output_dir=output_dir, instrument=instrument)
             calculate_sl_tp(entries, df_daily, df_hourly, zigzag_df, daily_zigzag, instrument)
             logging.info("Calculated Stop Loss and Take Profit for entries.")
             print("Stop Loss and Take Profit calculated.")
