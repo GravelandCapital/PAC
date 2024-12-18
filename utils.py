@@ -241,7 +241,7 @@ def extract_instrument_from_filename(filename):
     """Extracts the instrument name from the filename."""
     return filename.split('_')[0] + '_' + filename.split('_')[1]
 
-def analyze_results(trade_results, name="Combined", show_plots=True):
+def analyze_results(trade_results, name="Combined", show_plots=True, output_path = r"C:\Users\grave\OneDrive\Coding\PAC\results"):
     """
     Analyzes trade results by creating a DataFrame, calculating basic statistics,
     and plotting a simple equity curve.
@@ -319,6 +319,13 @@ def analyze_results(trade_results, name="Combined", show_plots=True):
         plt.ylabel('Cumulative R')
         plt.xticks(rotation=45)
         plt.tight_layout()
+
+    # 5. Export results to Excel
+    if output_path:
+        output_file = os.path.join(output_path, f"{name}_trade_results.xlsx")
+        df.to_excel(output_file, index=False)
+        print(f"Results exported to {output_file}")
+    
 
 """
     # Define output directories

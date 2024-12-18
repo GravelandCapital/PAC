@@ -19231,3 +19231,179 @@ Trade Analysis:
 2024-12-18 08:47:07,233 - INFO - Processing Instrument: GBP_USD
 2024-12-18 08:48:03,925 - INFO - Processing Instrument: EUR_USD
 2024-12-18 08:48:07,317 - INFO - Data fetched for EUR_USD.
+2024-12-18 08:48:52,669 - INFO - Processing Instrument: EUR_USD
+2024-12-18 08:48:56,217 - INFO - Data fetched for EUR_USD.
+2024-12-18 08:49:25,650 - INFO - Completed analysis for EUR_USD.
+2024-12-18 08:49:25,651 - INFO - Processing Instrument: GBP_USD
+2024-12-18 08:49:28,681 - INFO - Data fetched for GBP_USD.
+2024-12-18 08:49:50,247 - INFO - Completed analysis for GBP_USD.
+2024-12-18 08:49:50,247 - INFO - Processing Instrument: USD_JPY
+2024-12-18 08:49:53,446 - INFO - Data fetched for USD_JPY.
+2024-12-18 08:50:17,915 - INFO - Completed analysis for USD_JPY.
+2024-12-18 08:50:17,915 - INFO - Processing Instrument: AUD_USD
+2024-12-18 08:50:21,121 - INFO - Data fetched for AUD_USD.
+2024-12-18 08:50:44,807 - INFO - Completed analysis for AUD_USD.
+2024-12-18 08:50:44,807 - INFO - Processing Instrument: USD_CAD
+2024-12-18 08:50:48,217 - INFO - Data fetched for USD_CAD.
+2024-12-18 08:51:13,551 - INFO - Completed analysis for USD_CAD.
+2024-12-18 08:51:13,552 - INFO - Processing Instrument: USD_CHF
+2024-12-18 08:51:17,052 - INFO - Data fetched for USD_CHF.
+2024-12-18 08:51:47,439 - INFO - Completed analysis for USD_CHF.
+2024-12-18 08:51:47,439 - INFO - Processing Instrument: EUR_GBP
+2024-12-18 08:51:50,915 - INFO - Data fetched for EUR_GBP.
+2024-12-18 08:52:14,208 - INFO - Completed analysis for EUR_GBP.
+2024-12-18 08:52:14,209 - INFO - Processing Instrument: EUR_JPY
+2024-12-18 08:52:17,578 - INFO - Data fetched for EUR_JPY.
+2024-12-18 08:52:37,178 - INFO - Completed analysis for EUR_JPY.
+2024-12-18 08:52:37,179 - INFO - Processing Instrument: GBP_JPY
+2024-12-18 08:52:40,507 - INFO - Data fetched for GBP_JPY.
+2024-12-18 08:53:02,012 - INFO - Completed analysis for GBP_JPY.
+2024-12-18 08:53:02,013 - INFO - Processing Instrument: CAD_JPY
+2024-12-18 08:53:05,286 - INFO - Data fetched for CAD_JPY.
+2024-12-18 08:53:25,416 - INFO - Completed analysis for CAD_JPY.
+2024-12-18 08:53:25,417 - INFO - Processing Instrument: AUD_JPY
+2024-12-18 08:53:28,428 - INFO - Data fetched for AUD_JPY.
+2024-12-18 08:53:51,428 - INFO - Completed analysis for AUD_JPY.
+2024-12-18 08:53:51,428 - INFO - Processing Instrument: EUR_NZD
+2024-12-18 08:53:55,924 - INFO - Data fetched for EUR_NZD.
+2024-12-18 08:54:17,262 - INFO - Completed analysis for EUR_NZD.
+2024-12-18 08:54:17,263 - INFO - Processing Instrument: XAG_USD
+2024-12-18 08:54:20,260 - INFO - Data fetched for XAG_USD.
+2024-12-18 08:54:40,138 - INFO - Completed analysis for XAG_USD.
+2024-12-18 08:54:40,139 - INFO - Processing Instrument: XAU_USD
+2024-12-18 08:54:43,132 - INFO - Data fetched for XAU_USD.
+2024-12-18 08:55:00,285 - INFO - Completed analysis for XAU_USD.
+2024-12-18 08:58:21,868 - INFO - Processing Instrument: EUR_USD
+2024-12-18 08:58:25,159 - INFO - Data fetched for EUR_USD.
+2024-12-18 08:58:53,224 - INFO - Completed analysis for EUR_USD.
+2024-12-18 08:58:53,225 - INFO - Processing Instrument: GBP_USD
+2024-12-18 08:58:56,475 - INFO - Data fetched for GBP_USD.
+2024-12-18 08:59:18,208 - INFO - Completed analysis for GBP_USD.
+2024-12-18 08:59:18,209 - INFO - Processing Instrument: USD_JPY
+2024-12-18 08:59:21,357 - INFO - Data fetched for USD_JPY.
+2024-12-18 08:59:45,634 - INFO - Completed analysis for USD_JPY.
+2024-12-18 08:59:45,635 - INFO - Processing Instrument: AUD_USD
+2024-12-18 08:59:48,718 - INFO - Data fetched for AUD_USD.
+2024-12-18 09:00:10,894 - INFO - Completed analysis for AUD_USD.
+2024-12-18 09:00:10,894 - INFO - Processing Instrument: USD_CAD
+2024-12-18 09:00:13,998 - INFO - Data fetched for USD_CAD.
+2024-12-18 09:00:37,763 - INFO - Completed analysis for USD_CAD.
+2024-12-18 09:00:37,764 - INFO - Processing Instrument: USD_CHF
+2024-12-18 09:00:40,890 - INFO - Data fetched for USD_CHF.
+2024-12-18 09:01:07,009 - INFO - Completed analysis for USD_CHF.
+2024-12-18 09:01:07,010 - INFO - Processing Instrument: EUR_GBP
+2024-12-18 09:01:10,122 - INFO - Data fetched for EUR_GBP.
+2024-12-18 09:01:31,944 - INFO - Completed analysis for EUR_GBP.
+2024-12-18 09:01:31,945 - INFO - Processing Instrument: EUR_JPY
+2024-12-18 09:01:35,109 - INFO - Data fetched for EUR_JPY.
+2024-12-18 09:01:53,925 - INFO - Completed analysis for EUR_JPY.
+2024-12-18 09:01:53,926 - INFO - Processing Instrument: GBP_JPY
+2024-12-18 09:01:57,045 - INFO - Data fetched for GBP_JPY.
+2024-12-18 09:02:17,716 - INFO - Completed analysis for GBP_JPY.
+2024-12-18 09:02:17,716 - INFO - Processing Instrument: CAD_JPY
+2024-12-18 09:02:20,871 - INFO - Data fetched for CAD_JPY.
+2024-12-18 09:02:39,888 - INFO - Completed analysis for CAD_JPY.
+2024-12-18 09:02:39,889 - INFO - Processing Instrument: AUD_JPY
+2024-12-18 09:02:42,974 - INFO - Data fetched for AUD_JPY.
+2024-12-18 09:03:04,596 - INFO - Completed analysis for AUD_JPY.
+2024-12-18 09:03:04,597 - INFO - Processing Instrument: EUR_NZD
+2024-12-18 09:03:07,599 - INFO - Data fetched for EUR_NZD.
+2024-12-18 09:03:28,445 - INFO - Completed analysis for EUR_NZD.
+2024-12-18 09:03:28,446 - INFO - Processing Instrument: XAG_USD
+2024-12-18 09:03:31,428 - INFO - Data fetched for XAG_USD.
+2024-12-18 09:03:50,857 - INFO - Completed analysis for XAG_USD.
+2024-12-18 09:03:50,858 - INFO - Processing Instrument: XAU_USD
+2024-12-18 09:03:54,032 - INFO - Data fetched for XAU_USD.
+2024-12-18 09:04:10,192 - INFO - Completed analysis for XAU_USD.
+2024-12-18 09:08:39,803 - INFO - Processing Instrument: EUR_USD
+2024-12-18 09:08:43,207 - INFO - Data fetched for EUR_USD.
+2024-12-18 09:09:12,613 - INFO - Completed analysis for EUR_USD.
+2024-12-18 09:09:12,613 - INFO - Processing Instrument: GBP_USD
+2024-12-18 09:09:15,638 - INFO - Data fetched for GBP_USD.
+2024-12-18 09:09:37,927 - INFO - Completed analysis for GBP_USD.
+2024-12-18 09:09:37,927 - INFO - Processing Instrument: USD_JPY
+2024-12-18 09:09:41,178 - INFO - Data fetched for USD_JPY.
+2024-12-18 09:09:54,383 - INFO - Processing Instrument: EUR_USD
+2024-12-18 09:09:57,750 - INFO - Data fetched for EUR_USD.
+2024-12-18 09:10:26,973 - INFO - Completed analysis for EUR_USD.
+2024-12-18 09:10:26,974 - INFO - Processing Instrument: GBP_USD
+2024-12-18 09:10:30,041 - INFO - Data fetched for GBP_USD.
+2024-12-18 09:10:51,779 - INFO - Completed analysis for GBP_USD.
+2024-12-18 09:10:51,780 - INFO - Processing Instrument: USD_JPY
+2024-12-18 09:10:54,937 - INFO - Data fetched for USD_JPY.
+2024-12-18 09:11:19,279 - INFO - Completed analysis for USD_JPY.
+2024-12-18 09:11:19,280 - INFO - Processing Instrument: AUD_USD
+2024-12-18 09:11:22,518 - INFO - Data fetched for AUD_USD.
+2024-12-18 09:11:46,446 - INFO - Completed analysis for AUD_USD.
+2024-12-18 09:11:46,447 - INFO - Processing Instrument: USD_CAD
+2024-12-18 09:11:49,502 - INFO - Data fetched for USD_CAD.
+2024-12-18 09:12:13,840 - INFO - Completed analysis for USD_CAD.
+2024-12-18 09:12:13,841 - INFO - Processing Instrument: USD_CHF
+2024-12-18 09:12:16,916 - INFO - Data fetched for USD_CHF.
+2024-12-18 09:12:44,764 - INFO - Completed analysis for USD_CHF.
+2024-12-18 09:12:44,765 - INFO - Processing Instrument: EUR_GBP
+2024-12-18 09:12:48,094 - INFO - Data fetched for EUR_GBP.
+2024-12-18 09:13:12,019 - INFO - Completed analysis for EUR_GBP.
+2024-12-18 09:13:12,020 - INFO - Processing Instrument: EUR_JPY
+2024-12-18 09:13:15,261 - INFO - Data fetched for EUR_JPY.
+2024-12-18 09:13:34,088 - INFO - Completed analysis for EUR_JPY.
+2024-12-18 09:13:34,089 - INFO - Processing Instrument: GBP_JPY
+2024-12-18 09:13:37,211 - INFO - Data fetched for GBP_JPY.
+2024-12-18 09:13:58,768 - INFO - Completed analysis for GBP_JPY.
+2024-12-18 09:13:58,769 - INFO - Processing Instrument: CAD_JPY
+2024-12-18 09:14:02,198 - INFO - Data fetched for CAD_JPY.
+2024-12-18 09:14:21,793 - INFO - Completed analysis for CAD_JPY.
+2024-12-18 09:14:21,794 - INFO - Processing Instrument: AUD_JPY
+2024-12-18 09:14:24,912 - INFO - Data fetched for AUD_JPY.
+2024-12-18 09:14:47,380 - INFO - Completed analysis for AUD_JPY.
+2024-12-18 09:14:47,381 - INFO - Processing Instrument: EUR_NZD
+2024-12-18 09:14:50,520 - INFO - Data fetched for EUR_NZD.
+2024-12-18 09:15:12,624 - INFO - Completed analysis for EUR_NZD.
+2024-12-18 09:15:12,624 - INFO - Processing Instrument: XAG_USD
+2024-12-18 09:15:15,525 - INFO - Data fetched for XAG_USD.
+2024-12-18 09:15:35,661 - INFO - Completed analysis for XAG_USD.
+2024-12-18 09:15:35,662 - INFO - Processing Instrument: XAU_USD
+2024-12-18 09:15:38,724 - INFO - Data fetched for XAU_USD.
+2024-12-18 09:15:55,857 - INFO - Completed analysis for XAU_USD.
+2024-12-18 09:32:02,152 - INFO - Processing Instrument: EUR_USD
+2024-12-18 09:32:05,430 - INFO - Data fetched for EUR_USD.
+2024-12-18 09:32:34,150 - INFO - Completed analysis for EUR_USD.
+2024-12-18 09:32:34,151 - INFO - Processing Instrument: GBP_USD
+2024-12-18 09:32:37,245 - INFO - Data fetched for GBP_USD.
+2024-12-18 09:32:58,488 - INFO - Completed analysis for GBP_USD.
+2024-12-18 09:32:58,489 - INFO - Processing Instrument: USD_JPY
+2024-12-18 09:33:01,623 - INFO - Data fetched for USD_JPY.
+2024-12-18 09:33:25,590 - INFO - Completed analysis for USD_JPY.
+2024-12-18 09:33:25,591 - INFO - Processing Instrument: AUD_USD
+2024-12-18 09:33:28,636 - INFO - Data fetched for AUD_USD.
+2024-12-18 09:33:51,352 - INFO - Completed analysis for AUD_USD.
+2024-12-18 09:33:51,353 - INFO - Processing Instrument: USD_CAD
+2024-12-18 09:33:54,435 - INFO - Data fetched for USD_CAD.
+2024-12-18 09:34:18,582 - INFO - Completed analysis for USD_CAD.
+2024-12-18 09:34:18,583 - INFO - Processing Instrument: USD_CHF
+2024-12-18 09:34:21,740 - INFO - Data fetched for USD_CHF.
+2024-12-18 09:34:49,246 - INFO - Completed analysis for USD_CHF.
+2024-12-18 09:34:49,247 - INFO - Processing Instrument: EUR_GBP
+2024-12-18 09:34:52,354 - INFO - Data fetched for EUR_GBP.
+2024-12-18 09:35:14,754 - INFO - Completed analysis for EUR_GBP.
+2024-12-18 09:35:14,754 - INFO - Processing Instrument: EUR_JPY
+2024-12-18 09:35:17,868 - INFO - Data fetched for EUR_JPY.
+2024-12-18 09:35:36,390 - INFO - Completed analysis for EUR_JPY.
+2024-12-18 09:35:36,390 - INFO - Processing Instrument: GBP_JPY
+2024-12-18 09:35:39,540 - INFO - Data fetched for GBP_JPY.
+2024-12-18 09:36:00,559 - INFO - Completed analysis for GBP_JPY.
+2024-12-18 09:36:00,560 - INFO - Processing Instrument: CAD_JPY
+2024-12-18 09:36:04,252 - INFO - Data fetched for CAD_JPY.
+2024-12-18 09:36:24,456 - INFO - Completed analysis for CAD_JPY.
+2024-12-18 09:36:24,457 - INFO - Processing Instrument: AUD_JPY
+2024-12-18 09:36:28,227 - INFO - Data fetched for AUD_JPY.
+2024-12-18 09:36:51,683 - INFO - Completed analysis for AUD_JPY.
+2024-12-18 09:36:51,684 - INFO - Processing Instrument: EUR_NZD
+2024-12-18 09:36:54,986 - INFO - Data fetched for EUR_NZD.
+2024-12-18 09:37:16,294 - INFO - Completed analysis for EUR_NZD.
+2024-12-18 09:37:16,295 - INFO - Processing Instrument: XAG_USD
+2024-12-18 09:37:19,387 - INFO - Data fetched for XAG_USD.
+2024-12-18 09:37:39,903 - INFO - Completed analysis for XAG_USD.
+2024-12-18 09:37:39,904 - INFO - Processing Instrument: XAU_USD
+2024-12-18 09:37:43,144 - INFO - Data fetched for XAU_USD.
+2024-12-18 09:38:00,799 - INFO - Completed analysis for XAU_USD.

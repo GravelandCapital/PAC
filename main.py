@@ -207,7 +207,7 @@ def main():
         # Append to combined trades
         combined_closed_trades.extend(closed_trades)
 
-    analyze_results(combined_closed_trades, name="Combined")
+    analyze_results(combined_closed_trades, name="Combined", output_path = r"C:\Users\grave\OneDrive\Coding\PAC\results")
 
     plt.show()
 
