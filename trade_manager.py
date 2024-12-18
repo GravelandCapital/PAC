@@ -51,8 +51,6 @@ class TradeManager:
         # Check if order should be canceled due to price reaching beyond 70% TP mark
         if cancel_condition.any():
             cancel_time = hourly_data[cancel_condition].iloc[0]['time']
-            print(f"Order cancelled for {self.entry.instrument} at {cancel_time}. "
-                f"70% TP reached before entry. Entry Price: {entry_price}, 70% TP: {threshold_70}")
             self.entry.order_status = "CANCELLED"
             return False
 
@@ -61,12 +59,10 @@ class TradeManager:
             fill_time = hourly_data[entry_condition].iloc[0]['time']
             self.entry.filled_time = fill_time
             self.entry.order_status = "FILLED"
-            print(f"Order filled for {self.entry.instrument} at {fill_time}. Entry Price: {entry_price}")
             return True
 
         # If neither condition is met, mark order as cancelled after 24 hours
         self.entry.order_status = "CANCELLED"
-        print(f"Order expired for {self.entry.instrument}. No fill or 70% TP reached within 24 hours.")
         return False
 
     def manage_trade(self):
