@@ -23,25 +23,51 @@ class TradeManager:
 
 
     def check_order_execution(self):
-        start_time = self.entry.order_time 
+        """
+        Checks whether the order is executed or should be cancelled if price 
+        reaches 70% toward take profit before filling.
+        """
+        start_time = self.entry.order_time
         end_time = start_time + pd.Timedelta(hours=24)
         hourly_data = self.df_hourly[(self.df_hourly['time'] > start_time) & (self.df_hourly['time'] <= end_time)]
 
-        if self.entry.signal in ['bull_eng', 'hammer']:
-            condition = hourly_data['l'] <= self.entry.price
-        elif self.entry.signal in ['bear_eng', 'shooting_star']:
-            condition = hourly_data['h'] >= self.entry.price
-        else: 
-            return False 
+        entry_price = self.entry.price
+        take_profit = self.entry.take_profit
 
-        if condition.any():
-            fill_time = hourly_data[condition].iloc[0]['time']
-            self.entry.filled_time = fill_time
-            self.entry.order_status = "FILLED"
-            return True
-        else: 
+        # Calculate the 70% threshold toward take profit
+        if self.entry.signal in ['bull_eng', 'hammer']:
+            threshold_70 = entry_price + (0.7 * (take_profit - entry_price))
+            # Check for both conditions: price hits entry and doesn't exceed the 70% TP threshold
+            entry_condition = hourly_data['l'] <= self.entry.price
+            cancel_condition = hourly_data['h'] >= threshold_70
+        elif self.entry.signal in ['bear_eng', 'shooting_star']:
+            threshold_70 = entry_price - (0.7 * (entry_price - take_profit))
+            # Check for both conditions: price hits entry and doesn't exceed the 70% TP threshold
+            entry_condition = hourly_data['h'] >= self.entry.price
+            cancel_condition = hourly_data['l'] <= threshold_70
+        else:
+            return False  # No valid signal
+
+        # Check if order should be canceled due to price reaching beyond 70% TP mark
+        if cancel_condition.any():
+            cancel_time = hourly_data[cancel_condition].iloc[0]['time']
+            print(f"Order cancelled for {self.entry.instrument} at {cancel_time}. "
+                f"70% TP reached before entry. Entry Price: {entry_price}, 70% TP: {threshold_70}")
             self.entry.order_status = "CANCELLED"
             return False
+
+        # If entry condition is met, fill the order
+        if entry_condition.any():
+            fill_time = hourly_data[entry_condition].iloc[0]['time']
+            self.entry.filled_time = fill_time
+            self.entry.order_status = "FILLED"
+            print(f"Order filled for {self.entry.instrument} at {fill_time}. Entry Price: {entry_price}")
+            return True
+
+        # If neither condition is met, mark order as cancelled after 24 hours
+        self.entry.order_status = "CANCELLED"
+        print(f"Order expired for {self.entry.instrument}. No fill or 70% TP reached within 24 hours.")
+        return False
 
     def manage_trade(self):
         start_time = self.entry.filled_time

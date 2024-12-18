@@ -216,7 +216,6 @@ def generate_valid_combinations(stop_loss_list, entry):
         if rr_ratio >= 1.5:
             valid_combos.append({'entry_price': entry_price, 'stop_loss': stop_loss, 'take_profit': take_profit})
 
-
     return valid_combos
 
 def select_best_trade(valid_combos, entry):

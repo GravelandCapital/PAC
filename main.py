@@ -38,9 +38,7 @@ def main():
     
     # List of file_pairs: [(daily_file1, hourly_file1), (daily_file2, hourly_file2), ...]
     file_pairs = [
-        ('AUD_JPY_D.xlsx', 'AUD_JPY_H1.xlsx'),
-        ('XAG_USD_D.xlsx', 'XAG_USD_H1.xlsx'),
-        ('XAU_USD_D.xlsx', 'XAU_USD_H1.xlsx'),
+        ('AUD_JPY_D.xlsx', 'AUD_JPY_H1.xlsx')
         # Add additional file pairs here
     ]
     
